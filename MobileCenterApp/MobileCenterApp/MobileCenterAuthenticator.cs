@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using SimpleAuth;
-namespace MobileCenter
+namespace MobileCenterApi
 {
 	public class MobileCenterAuthenticator : BasicAuthAuthenticator
 	{

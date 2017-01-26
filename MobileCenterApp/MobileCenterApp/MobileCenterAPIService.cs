@@ -10,7 +10,7 @@
 using System;
 using System.Text;
 
-namespace MobileCenter {
+namespace MobileCenterApi {
     using SimpleAuth;
     using System.Net.Http;
     using System.Threading.Tasks;

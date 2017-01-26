@@ -4,6 +4,9 @@ using System.Linq;
 
 using Foundation;
 using UIKit;
+using Microsoft.Azure.Mobile;
+using Microsoft.Azure.Mobile.Analytics;
+using Microsoft.Azure.Mobile.Crashes;
 
 namespace MobileCenterApp.iOS
 {
@@ -22,6 +25,8 @@ namespace MobileCenterApp.iOS
 		//
 		public override bool FinishedLaunching(UIApplication app, NSDictionary options)
 		{
+			MobileCenter.Start("81189c75-21a1-43b1-bc25-0ef309adc634",
+					typeof(Analytics), typeof(Crashes));
 			global::Xamarin.Forms.Forms.Init ();
 			LoadApplication (new MobileCenterApp.App ());
 

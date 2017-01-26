@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MobileCenter;
+using MobileCenterApi;
 using Xamarin.Forms;
 
 namespace MobileCenterApp
@@ -12,7 +12,7 @@ namespace MobileCenterApp
 		MobileCenterAPIServiceApiKeyApi api;
 		public App ()
 		{
-			api = new MobileCenter.MobileCenterAPIServiceApiKeyApi("MobileCenter","foo");
+			api = new MobileCenterAPIServiceApiKeyApi("MobileCenter","foo");
 			// The root page of your application
 			MainPage = new ContentPage {
 				Content = new StackLayout {
