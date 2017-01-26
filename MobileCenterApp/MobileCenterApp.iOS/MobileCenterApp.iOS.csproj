@@ -26,6 +26,7 @@
     <MtouchArch>i386, x86_64</MtouchArch>
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
+    <CodesignKey>iPhone Developer</CodesignKey>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -36,6 +37,7 @@
     <MtouchLink>None</MtouchLink>
     <MtouchArch>i386, x86_64</MtouchArch>
     <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -59,7 +61,7 @@
     <WarningLevel>4</WarningLevel>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <ConsolePause>false</ConsolePause>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Distribution</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
@@ -97,6 +99,9 @@
     <ITunesArtwork Include="iTunesArtwork" />
     <ITunesArtwork Include="iTunesArtwork@2x" />
     <None Include="packages.config" />
+    <Compile Include="Renderers\SvgImageViewRenderer.cs" />
+    <Compile Include="Helpers\ImageHelper.cs" />
+    <Compile Include="Helpers\NGraphicsExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Default-568h%402x.png" />
@@ -178,6 +183,22 @@
     <Reference Include="SimpleDatabase">
       <HintPath>..\..\packages\Clancey.SimpleDatabase.1.0.1\lib\Xamarin.iOS10\SimpleDatabase.dll</HintPath>
     </Reference>
+    <Reference Include="NGraphics">
+      <HintPath>..\..\packages\NGraphics.0.4.0\lib\Xamarin.iOS10\NGraphics.dll</HintPath>
+    </Reference>
+    <Reference Include="NGraphics.iOS">
+      <HintPath>..\..\packages\NGraphics.0.4.0\lib\Xamarin.iOS10\NGraphics.iOS.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Renderers\" />
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MobileCenterApp.Resources\MobileCenterApp.Resources.csproj">
+      <Project>{D147A6DD-C8AF-4835-9BDA-A68D38ACC54B}</Project>
+      <Name>MobileCenterApp.Resources</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\MobileCenterApp\MobileCenterApp.projitems" Label="Shared" Condition="Exists('..\MobileCenterApp\MobileCenterApp.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

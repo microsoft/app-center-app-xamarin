@@ -34,6 +34,7 @@ namespace MobileCenterApp.Droid
 			global::SimpleAuth.Resource.String.Hello = global::MobileCenterApp.Droid.Resource.String.Hello;
 			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::MobileCenterApp.Droid.Resource.Attribute.actionBarSize;
 			global::ModernHttpClient.Resource.String.library_name = global::MobileCenterApp.Droid.Resource.String.library_name;
+			global::NGraphics.Android.Resource.String.library_name = global::MobileCenterApp.Droid.Resource.String.library_name;
 		}
 		
 		public partial class Animation

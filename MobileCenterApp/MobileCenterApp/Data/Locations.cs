@@ -11,6 +11,7 @@ namespace MobileCenterApp.Data
 		{
 			Directory.CreateDirectory(Locations.DocumentsDir);
 			Directory.CreateDirectory(Locations.LibDir);
+			Directory.CreateDirectory(Locations.ImageCache);
 		}
 
 
@@ -36,5 +37,6 @@ namespace MobileCenterApp.Data
 
 		public static readonly string LibDir = Path.Combine(BaseDir, "Library/");
 		public static readonly string DocumentsDir = Path.Combine(BaseDir, "Documents/");
+		public static readonly string ImageCache = Path.Combine(LibDir, "Images");
 	}
 }
