@@ -9,7 +9,7 @@ namespace MobileCenterApp
 		{
 		}
 
-		public IListDatabaseSource<AppClass> Items { get; set; } = new IListDatabaseSource<AppClass> { Database = Database.Main };
+		public SimpleDatabaseSource<AppClass> Items { get; set; } = new SimpleDatabaseSource<AppClass> { Database = Database.Main };
 		async void Shared_AppsChanged(object sender, EventArgs e)
 		{
 			ProcPropertyChanged("Items");

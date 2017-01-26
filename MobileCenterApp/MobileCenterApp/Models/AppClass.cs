@@ -47,6 +47,7 @@ namespace MobileCenterApp
 
 		public string AzureSubscriptionId { get; set; }
 
+		[Indexed]
 		public DateTime DateImported { get; set; }
 	}
 }

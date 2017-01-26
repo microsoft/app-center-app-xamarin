@@ -18,7 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Managers\LogManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AppListViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\BaseViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\IListDatabaseSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SimpleDatabaseSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Database.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Locations.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\AppClass.cs" />
