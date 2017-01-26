@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using MobileCenter;
 using Xamarin.Forms;
 
 namespace MobileCenterApp
 {
 	public class App : Application
 	{
+		MobileCenterAPIServiceApiKeyApi api;
 		public App ()
 		{
+			api = new MobileCenter.MobileCenterAPIServiceApiKeyApi("MobileCenter","foo");
 			// The root page of your application
 			MainPage = new ContentPage {
 				Content = new StackLayout {
@@ -19,10 +21,25 @@ namespace MobileCenterApp
 						new Label {
 							HorizontalTextAlignment = TextAlignment.Center,
 							Text = "Welcome to Xamarin Forms!"
-						}
+						},
+						CreateButton("Login",async ()=>{
+							var apps = await api.GetApps();
+							Console.WriteLine(apps);
+						}),
+
 					}
 				}
 			};
+		}
+
+		Button CreateButton(string text, Action tapped)
+		{
+			var button = new Button
+			{
+				Text = text,
+			};
+			button.Clicked += (sender, e) => tapped?.Invoke();;
+			return button;
 		}
 
 		protected override void OnStart ()
