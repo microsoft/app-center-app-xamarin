@@ -1,0 +1,53 @@
+﻿<Application
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MobileCenterApp.App">
+    <Application.Resources>
+		<ResourceDictionary>
+			<Color x:Key="azur">#007fff</Color>
+			<Color x:Key="azure-light2">#95CAF5</Color>
+			<Color x:Key="azure-light1">#4EA1E6</Color>
+			<Color x:Key="azure-dark1">#005396</Color>
+			<Color x:Key="azure-dark2">#0A416E</Color>
+			<Color x:Key="cyan-light2">#91E2F4</Color>
+			<Color x:Key="cyan-light1">#4FCAE6</Color>
+			<Color x:Key="cyan">#1FAECE</Color>
+			<Color x:Key="cyan-dark1">#3192B3</Color>
+			<Color x:Key="cyan-dark2">#2C7797</Color>
+			<Color x:Key="teal-light2">#A3EBE1</Color>
+			<Color x:Key="teal-light1">#7AD5C9</Color>
+			<Color x:Key="teal">#44B8A8</Color>
+			<Color x:Key="teal-dark1">#38A495</Color>
+			<Color x:Key="teal-dark2">#278E80</Color>
+			<Color x:Key="green-light2">#CFEFA7</Color>
+			<Color x:Key="green-light1">#B3E770</Color>
+			<Color x:Key="green">#91CA47</Color>
+			<Color x:Key="green-dark1">#6FA22E</Color>
+			<Color x:Key="green-dark2">#5A8622</Color>
+			<Color x:Key="violet-light2">#CEC0EC</Color>
+			<Color x:Key="violet-light1">#B5A1E0</Color>
+			<Color x:Key="violet">#9378CD</Color>
+			<Color x:Key="violet-dark1">#7E68C2</Color>
+			<Color x:Key="violet-dark2">#614CA0</Color>
+			<Color x:Key="red-light2">#F8C6BB</Color>
+			<Color x:Key="red-light1">#F69781</Color>
+			<Color x:Key="red">#F56D4F</Color>
+			<Color x:Key="red-dark1">#E2553D</Color>
+			<Color x:Key="red-dark2">#BC3C26</Color>
+			<Color x:Key="amber-light2">#F7E28B</Color>
+			<Color x:Key="amber-light1">#F9D33C</Color>
+			<Color x:Key="amber">#F1C40F</Color>
+			<Color x:Key="amber-dark1">#F0B240</Color>
+			<Color x:Key="amber-dark2">#E7963B</Color>
+			<Color x:Key="gray-light3">#F8F8F8</Color>
+			<Color x:Key="gray-light2">#F2F2F2</Color>
+			<Color x:Key="gray-light1">#DEDEDE</Color>
+			<Color x:Key="gray">#BFBFBF</Color>
+			<Color x:Key="gray-dark1">#9C9C9C</Color>
+			<Color x:Key="gray-dark2">#787878</Color>
+			<Color x:Key="gray-dark3">#303030</Color>
+			<Color x:Key="vs-purple">#794090</Color>
+			<Color x:Key="navigationBackground">#282d32</Color>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

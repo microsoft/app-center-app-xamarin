@@ -9,7 +9,6 @@
     <Import_RootNamespace>MobileCenterApp</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)App.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenterAPIService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenterAuthenticator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\LoginPage.xaml.cs">
@@ -36,6 +35,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Managers\NotificationManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\EventHandlerExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\LinqHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />
@@ -50,6 +52,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\AppListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)App.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

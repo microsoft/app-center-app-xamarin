@@ -8,9 +8,11 @@ using SimpleAuth;
 using Xamarin.Forms;
 using System.Threading.Tasks;
 
+using Xamarin.Forms;
+
 namespace MobileCenterApp
 {
-	public class App : Application
+	public partial class App : Application
 	{
 		public App()
 		{
