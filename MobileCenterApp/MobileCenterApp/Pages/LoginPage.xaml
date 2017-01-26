@@ -1,9 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns:local="clr-namespace:MobileCenterApp;" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MobileCenterApp.LoginPage">
 	<StackLayout Padding="10,40,10,10">
-		<local:SvgImageView Svg="{x:Static local:Images.LoginHeaderLogo}" HeightRequest="25" WidthRequest="25" />
-		<Entry x:Name="Username" Placeholder="Username" Completed="UsernameCompleted" ></Entry>
-		<Entry x:Name="Password" Placeholder="Password" Completed="PasswordCompleted" IsPassword="true"/>
+		<local:SvgImageView Svg="{x:Static local:Images.LoginHeaderLogo}" HeightRequest="40" />
+		<Frame BackgroundColor="{StaticResource vs-purple}" HorizontalOptions="Center" Padding="10,5,10,5" HasShadow="false">
+			<Label TextColor="White" Text="Preview" HorizontalOptions="Center" />
+		</Frame>
+		<BoxView HeightRequest="1" BackgroundColor="Gray" />
+		<Entry x:Name="Username" Placeholder="Username" Completed="UsernameCompleted" />
+		<Entry x:Name="Password" Placeholder="Password" Completed="PasswordCompleted" IsPassword="true" />
 		<Button Text="Login" Clicked="Handle_Clicked" />
 	</StackLayout>
 </ContentPage>

@@ -4,7 +4,7 @@
     x:Class="MobileCenterApp.App">
     <Application.Resources>
 		<ResourceDictionary>
-			<Color x:Key="azur">#007fff</Color>
+			<Color x:Key="azure">#007fff</Color>
 			<Color x:Key="azure-light2">#95CAF5</Color>
 			<Color x:Key="azure-light1">#4EA1E6</Color>
 			<Color x:Key="azure-dark1">#005396</Color>

@@ -21,6 +21,7 @@ namespace MobileCenterApp
 			{
 				MainPage.Navigation.PushModalAsync(new NavigationPage(new LoginPage(obj)));
 			};
+			InitializeComponent();
 			// The root page of your application
 			NavigationService.SetRoot(new AppListViewModel());
 		}
