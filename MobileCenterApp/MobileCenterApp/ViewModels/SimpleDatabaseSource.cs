@@ -229,29 +229,5 @@ namespace MobileCenterApp
 		{
 			throw new NotImplementedException();
 		}
-
-		//public object this[int index]
-		//{
-		//	get
-		//	{
-		//		Console.WriteLine($"Loading {Section}:{index}");
-		//		return Database.ObjectForRow<T>(Section, index);
-		//	}
-
-		//	set
-		//	{
-		//		throw new NotImplementedException();
-		//	}
-		//}
-		//IEnumerator IEnumerable.GetEnumerator()
-		//{
-		//	int position = -1;
-		//	while (position < Count - 1)
-		//	{
-		//		position++;
-		//		yield return this[position];
-		//	}
-		//}
-
 	}
 }
