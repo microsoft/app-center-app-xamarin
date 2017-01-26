@@ -11,5 +11,6 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)App.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenterAPIService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MobileCenterAuthenticator.cs" />
   </ItemGroup>
 </Project>
