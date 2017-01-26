@@ -36,13 +36,15 @@ namespace MobileCenterApp
 
 		async void Login()
 		{
-			if (string.IsNullOrWhiteSpace(Username.Text))
+			var username = Username.Text;
+			var password = Password.Text;
+			if (string.IsNullOrWhiteSpace(username))
 			{
 				await this.DisplayAlert("Error", "Username is invalid", "Ok");
 				return;
 			}
 
-			if (string.IsNullOrWhiteSpace(Password.Text))
+			if (string.IsNullOrWhiteSpace(password))
 			{
 				await this.DisplayAlert("Error", "Password is invalid", "Ok");
 				return;
@@ -50,8 +52,8 @@ namespace MobileCenterApp
 
 			try
 			{
-				bool success = await authenticator.VerifyCredentials(Username.Text, Password.Text);
-
+				bool success = await authenticator.VerifyCredentials(username, password);
+				LogManager.Shared.UserLoggedIn(username);
 				if (success)
 					await this.Navigation.PopModalAsync();
 				else
