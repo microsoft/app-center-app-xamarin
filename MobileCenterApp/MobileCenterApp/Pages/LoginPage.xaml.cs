@@ -7,14 +7,34 @@ namespace MobileCenterApp
 {
 	public partial class LoginPage : ContentPage
 	{
+
 		IBasicAuthenicator authenticator;
 		public LoginPage(IBasicAuthenicator authenticator)
 		{
 			this.authenticator = authenticator;
 			InitializeComponent();
+			this.Title = "Login";
+			this.ToolbarItems.Add(new ToolbarItem("Cancel", null, () =>
+			{
+				authenticator.OnCancelled();
+			}));
 		}
 
+
+		void UsernameCompleted(object sender, System.EventArgs e)
+		{
+			Password.Focus();
+		}
+		void PasswordCompleted(object sender, System.EventArgs e)
+		{
+			Login();
+		}
 		async void Handle_Clicked(object sender, System.EventArgs e)
+		{
+			Login();
+		}
+
+		async void Login()
 		{
 			if (string.IsNullOrWhiteSpace(Username.Text))
 			{
@@ -42,6 +62,11 @@ namespace MobileCenterApp
 			{
 				await this.DisplayAlert("Error", ex.Message, "Ok");
 			}
+		}
+		protected override void OnAppearing()
+		{
+			base.OnAppearing();
+			Username.Focus();
 		}
 		protected override bool OnBackButtonPressed()
 		{
