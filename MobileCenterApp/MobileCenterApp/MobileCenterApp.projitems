@@ -16,14 +16,40 @@
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Managers\LogManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AppListViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\BaseViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\IListDatabaseSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Database.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Locations.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\AppClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Owner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BaseModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\BaseNotify.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\iDirty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\BasePage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\AppListPage.xaml.cs">
+      <DependentUpon>AppListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\NavigationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\SimpleIoC.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Managers\SyncManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Managers\NotificationManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\EventHandlerExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\LinqHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />
     <Folder Include="$(MSBuildThisFileDirectory)Pages\" />
     <Folder Include="$(MSBuildThisFileDirectory)Managers\" />
+    <Folder Include="$(MSBuildThisFileDirectory)ViewModels\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Data\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\LoginPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\AppListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

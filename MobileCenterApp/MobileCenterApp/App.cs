@@ -2,55 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Azure.Mobile;
 using MobileCenterApi;
 using SimpleAuth;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace MobileCenterApp
 {
 	public class App : Application
 	{
-		MobileCenterAPIServiceApiKeyApi api;
 		public App()
 		{
-			BasicAuthApi.ShowAuthenticator = (IBasicAuthenicator obj) =>  {
+			RegisterViewModels();
+			BasicAuthApi.ShowAuthenticator = (IBasicAuthenicator obj) =>
+			{
 				MainPage.Navigation.PushModalAsync(new NavigationPage(new LoginPage(obj)));
-		   };
-			api = new MobileCenterAPIServiceApiKeyApi("MobileCenter", "foo");
+			};
 			// The root page of your application
-			MainPage = new ContentPage
-			{
-				Content = new StackLayout
-				{
-					VerticalOptions = LayoutOptions.Center,
-					Children = {
-						new Label {
-							HorizontalTextAlignment = TextAlignment.Center,
-							Text = "Welcome to Xamarin Forms!"
-						},
-						CreateButton("Login",async ()=>{
-							var apps = await api.GetApps();
-							Console.WriteLine(apps);
-						}),
-
-					}
-				}
-			};
+			NavigationService.SetRoot(new AppListViewModel());
 		}
 
-		Button CreateButton(string text, Action tapped)
+		void RegisterViewModels()
 		{
-			var button = new Button
-			{
-				Text = text,
-			};
-			button.Clicked += (sender, e) => tapped?.Invoke(); ;
-			return button;
+			SimpleIoC.RegisterPage<AppListViewModel, AppListPage>();
 		}
+
 
 		protected override void OnStart()
 		{
-			// Handle when your app starts
+
 		}
 
 		protected override void OnSleep()

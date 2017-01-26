@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<d:BasePage Title="Apps" xmlns:d="clr-namespace:MobileCenterApp;" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MobileCenterApp.AppListPage">
+	<ListView x:Name="listView" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Display}"  GroupShortNameBinding="{Binding Display}" ItemsSource="{Binding Items}">
+			<ListView.ItemTemplate>
+				<DataTemplate>
+					<ViewCell>
+						<StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+							<Image WidthRequest="44" HeightRequest="44" Source="{Binding IconUrl}" />
+							<StackLayout Padding="5,0,0,0" VerticalOptions="StartAndExpand" Orientation="Vertical">
+								<Label Text="{Binding DisplayName}" VerticalTextAlignment="Center" Font="Medium" />
+								<Label Text="{Binding Description}" VerticalTextAlignment="Center" Font="Micro" />
+							</StackLayout>
+						</StackLayout>
+					</ViewCell>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
+</d:BasePage>

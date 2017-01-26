@@ -25,7 +25,7 @@ namespace MobileCenterApp.iOS
 		//
 		public override bool FinishedLaunching(UIApplication app, NSDictionary options)
 		{
-			MobileCenter.Start("81189c75-21a1-43b1-bc25-0ef309adc634",
+			MobileCenter.Start("894ddd86-3771-44db-bf3a-fca3385abf68",
 					typeof(Analytics), typeof(Crashes));
 			global::Xamarin.Forms.Forms.Init ();
 			LoadApplication (new MobileCenterApp.App ());

@@ -140,6 +140,9 @@
     <Reference Include="Microsoft.Azure.Mobile.Crashes">
       <HintPath>..\..\packages\Microsoft.Azure.Mobile.Crashes.0.6.0\lib\MonoAndroid403\Microsoft.Azure.Mobile.Crashes.dll</HintPath>
     </Reference>
+    <Reference Include="SimpleDatabase">
+      <HintPath>..\..\packages\Clancey.SimpleDatabase.1.0.1\lib\MonoAndroid\SimpleDatabase.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
