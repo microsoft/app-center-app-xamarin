@@ -60,5 +60,27 @@ namespace MobileCenterApp
 			Database.Main.InsertOrReplaceAll(distintOwners);
 			NotificationManager.Shared.ProcAppsChanged();
 		}
+
+		Task<User> userTask;
+		public Task<User> GetUser()
+		{
+			if (userTask?.IsCompleted ?? true)
+				userTask = Task.Run(async () =>
+				{
+					var profile = await Api.GetUserProfile();
+					var user = new User
+					{
+						AvatarUrl = profile.AvatarUrl,
+						DisplayName = profile.DisplayName,
+						CanChangePassword = profile.CanChangePassword,
+						Email = profile.Email,
+						Id = profile.Id,
+						Name = profile.Name,
+					};
+					Settings.CurrentUser = user;
+					return user;
+				});
+			return userTask;
+		}
 	}
 }

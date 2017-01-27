@@ -19,7 +19,7 @@ namespace MobileCenterApp
 			RegisterViewModels();
 			BasicAuthApi.ShowAuthenticator = (IBasicAuthenicator obj) =>
 			{
-				MainPage.Navigation.PushModalAsync(new NavigationPage(new LoginPage(obj)));
+				Xamarin.Forms.Device.BeginInvokeOnMainThread(()=>MainPage.Navigation.PushModalAsync(new NavigationPage(new LoginPage(obj))));
 			};
 			InitializeComponent();
 			// The root page of your application
@@ -30,13 +30,16 @@ namespace MobileCenterApp
 		void SetRoot()
 		{
 			var model = string.IsNullOrWhiteSpace(Settings.CurrentApp) ? (BaseViewModel)new AppListViewModel() : new MainPageViewModel();
-			NavigationService.SetRoot(model);
+			NavigationService.SetRoot(model,false);
 		}
 
 		void RegisterViewModels()
 		{
 			SimpleIoC.RegisterPage<AppListViewModel, AppListPage>();
 			SimpleIoC.RegisterPage<MainPageViewModel, MainPage>();
+			SimpleIoC.RegisterPage<GettingStartedViewModel, GettingStartedPage>();
+			SimpleIoC.RegisterPage<BuildViewModel, BuildPage>();
+			SimpleIoC.RegisterPage<TestViewModel,TestPage>();
 		}
 
 		void Shared_CurrentAppChanged(object sender, MobileCenterApp.EventArgs<string> e)

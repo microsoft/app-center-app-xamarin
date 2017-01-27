@@ -31,7 +31,6 @@ namespace MobileCenterApi
 			return true;
 		}
 
-
 	}
 
 	public partial class MobileCenterAPIServiceApiKeyApi : SimpleAuth.BasicAuthApi
@@ -51,6 +50,11 @@ namespace MobileCenterApi
 		protected override BasicAuthAuthenticator CreateAuthenticator()
 		{
 			return new MobileCenterAuthenticator(Client, LoginUrl);
+		}
+
+		public override void OnException(object sender, System.Exception ex)
+		{
+			base.OnException(sender, ex);
 		}
 
 	}

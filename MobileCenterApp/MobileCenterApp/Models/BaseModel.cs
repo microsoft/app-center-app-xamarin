@@ -14,7 +14,6 @@ namespace MobileCenterApp
 			
 		}
 
-
 		/// <summary>
 		///     Dispose method.
 		/// </summary>

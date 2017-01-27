@@ -8,7 +8,7 @@ namespace MobileCenterApp
 	{
 		public BasePage()
 		{
-			
+			this.SetBinding(TitleProperty, "Title");
 		}
 		protected override void OnAppearing()
 		{
@@ -18,7 +18,7 @@ namespace MobileCenterApp
 		protected override void OnDisappearing()
 		{
 			base.OnDisappearing();
-			(BindingContext as BaseViewModel)?.OnDissapearing();
+			(BindingContext as BaseViewModel)?.OnDisappearing();
 		}
 	}
 }

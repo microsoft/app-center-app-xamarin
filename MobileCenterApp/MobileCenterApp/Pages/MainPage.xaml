@@ -1,5 +1,49 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MobileCenterApp.MainPage">
-	<ContentPage.Content>
-	</ContentPage.Content>
-</ContentPage>
+<MasterDetailPage xmlns:local="clr-namespace:MobileCenterApp;" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MobileCenterApp.MainPage">
+	<MasterDetailPage.Resources>
+		<ResourceDictionary>
+			<local:ViewModelToPageConverter x:Key="viewModelConverter">
+			</local:ViewModelToPageConverter>
+		</ResourceDictionary>
+	</MasterDetailPage.Resources>
+	<MasterDetailPage.Master>
+		<ContentPage Title="Mobile Center">
+			<ContentPage.Padding>
+				<OnPlatform x:TypeArguments="Thickness">
+					<OnPlatform.iOS>
+		        0, 20, 0, 0
+		      </OnPlatform.iOS>
+				</OnPlatform>
+			</ContentPage.Padding>
+			<ListView VerticalOptions="EndAndExpand" ItemsSource="{Binding Children}" ItemSelected="Handle_ItemSelected" >
+				<ListView.Header>
+					<Frame>
+						<StackLayout BindingContext="{Binding CurrentApp}">
+							<Label Text="{Binding DisplayName}" />
+						</StackLayout>
+					</Frame>
+				</ListView.Header>
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<ViewCell>
+							<StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+								<local:SvgImageView WidthRequest="44" HeightRequest="44" Svg="{Binding Icon}" />
+									<Label Text="{Binding Title}" VerticalTextAlignment="Center" Font="Medium" />
+							</StackLayout>
+						</ViewCell>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+				<ListView.Footer>
+					<Frame>
+						<StackLayout BindingContext="{Binding CurrentUser}">
+							<Label Text="{Binding DisplayName}" />
+						</StackLayout>
+					</Frame>
+				</ListView.Footer>
+			</ListView>
+		</ContentPage>
+	</MasterDetailPage.Master>
+	<MasterDetailPage.Detail>
+		<ContentPage Title="Temp Content Page" />
+	</MasterDetailPage.Detail>
+</MasterDetailPage>

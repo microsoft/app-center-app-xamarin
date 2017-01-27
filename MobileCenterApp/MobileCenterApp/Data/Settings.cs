@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Plugin.Settings;
 using Plugin.Settings.Abstractions;
+using SimpleAuth;
 
 namespace MobileCenterApp
 {
@@ -22,6 +23,26 @@ namespace MobileCenterApp
 			set { 
 				SetBool(value); 
 				NotificationManager.Shared.ProcOffineModeChanged(value);
+			}
+		}
+
+		static User currentUser;
+		public static User CurrentUser
+		{
+			get
+			{
+				if (currentUser != null)
+					return currentUser;
+				var json = GetString();
+				if (string.IsNullOrWhiteSpace(json))
+					return null;
+				return currentUser = json.ToObject<User>();
+			}
+			set
+			{
+				currentUser = value;
+				var json = value?.ToJson() ?? "";
+				SetString(json);
 			}
 		}
 

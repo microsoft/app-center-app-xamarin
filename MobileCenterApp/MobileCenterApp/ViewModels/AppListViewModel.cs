@@ -7,6 +7,7 @@ namespace MobileCenterApp
 	{
 		public AppListViewModel()
 		{
+			Title = "Apps";
 		}
 
 		SimpleDatabaseSource<AppClass> items = new SimpleDatabaseSource<AppClass> { Database = Database.Main };
@@ -33,9 +34,9 @@ namespace MobileCenterApp
 			}
 		}
 
-		public override void OnDissapearing()
+		public override void OnDisappearing()
 		{
-			base.OnDissapearing();
+			base.OnDisappearing();
 			NotificationManager.Shared.AppsChanged -= Shared_AppsChanged;
 		}
 
