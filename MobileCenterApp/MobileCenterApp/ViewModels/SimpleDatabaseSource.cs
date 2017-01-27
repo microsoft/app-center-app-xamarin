@@ -12,9 +12,9 @@ namespace MobileCenterApp
 			get
 			{
 				Console.WriteLine($"Loading {index}");
-				return new GroupedList<T>(Database, index)
+				return new GroupedList<T>(Database,GroupInfo, index)
 				{
-					Display = Database?.SectionHeader<T>(index) ?? "",
+					Display = Database?.SectionHeader<T>(GroupInfo,index) ?? "",
 				};
 			}
 
@@ -35,7 +35,7 @@ namespace MobileCenterApp
 		{
 			get
 			{
-				return Database?.NumberOfSections<T>() ?? 0;
+				return Database?.NumberOfSections<T>(GroupInfo) ?? 0;
 			}
 		}
 
@@ -122,11 +122,13 @@ namespace MobileCenterApp
 	}
 	public class GroupedList<T> : IList where T : new()
 	{
-		public GroupedList(SimpleDatabase.SimpleDatabaseConnection database, int section)
+		public GroupedList(SimpleDatabase.SimpleDatabaseConnection database, GroupInfo groupInfo, int section)
 		{
+			GroupInfo = groupInfo;
 			Database = database;
 			Section = section;
 		}
+		public GroupInfo GroupInfo { get; set; }
 		string display = "";
 		public string Display { 
 			get
@@ -159,7 +161,7 @@ namespace MobileCenterApp
 		{
 			get
 			{
-				return Database?.RowsInSection<T>(Section) ?? 0;
+				return Database?.RowsInSection<T>(GroupInfo,Section) ?? 0;
 			}
 		}
 
@@ -184,7 +186,7 @@ namespace MobileCenterApp
 			get
 			{
 				Console.WriteLine($"Loading {Section}:{index}");
-				return Database.ObjectForRow<T>(Section, index);
+				return Database.ObjectForRow<T>(GroupInfo, Section, index);
 			}
 
 			set
