@@ -32,6 +32,9 @@ namespace MobileCenterApp
 			SimpleIoC.RegisterPage<GettingStartedViewModel, GettingStartedPage>();
 			SimpleIoC.RegisterPage<BuildViewModel, BuildPage>();
 			SimpleIoC.RegisterPage<TestViewModel,TestPage>();
+			SimpleIoC.RegisterPage<DistributeViewModel, DistributePage>();
+			SimpleIoC.RegisterPage<CrashesViewModel, CrashesPage>();
+			SimpleIoC.RegisterPage<AnalyticsViewModel, AnalyticsPage>();
 		}
 
 

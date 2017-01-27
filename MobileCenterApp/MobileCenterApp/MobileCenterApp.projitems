@@ -66,6 +66,18 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Build\BuildViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AppManagement\CreateAppViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Test\TestViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Analytics\AnalyticsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Crashes\CrashesViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Distribute\DistributeViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Analytics\AnalyticsPage.xaml.cs">
+      <DependentUpon>AnalyticsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Crashes\CrashesPage.xaml.cs">
+      <DependentUpon>CrashesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Distribute\DistributePage.xaml.cs">
+      <DependentUpon>DistributePage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />
@@ -112,6 +124,15 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\AppManagement\CreateAppPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Analytics\AnalyticsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Crashes\CrashesPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Distribute\DistributePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

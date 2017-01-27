@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace MobileCenterApp
 {
-	public partial class CreateAppPage : ContentPage
+	public partial class CreateAppPage : BasePage
 	{
 		public CreateAppPage()
 		{

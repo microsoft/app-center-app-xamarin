@@ -16,6 +16,9 @@ namespace MobileCenterApp
 			new GettingStartedViewModel(),
 			new BuildViewModel(),
 			new TestViewModel(),
+			new DistributeViewModel(),
+			new CrashesViewModel(),
+			new AnalyticsViewModel(),
 		};
 
 		AppClass currentApp;
