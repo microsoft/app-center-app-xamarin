@@ -42,9 +42,11 @@ namespace MobileCenterApp
 		{
 			get
 			{
+				var masterDetail = Application.Current.MainPage as MasterDetailPage;
+				var currentPage = masterDetail?.Detail ?? Application.Current.MainPage;
 				//If the tab page has Navigation controllers as the contents, we need to use those.
-				var tabbed = Application.Current.MainPage as TabbedPage;
-				return tabbed?.CurrentPage?.Navigation ?? Application.Current.MainPage.Navigation;
+				var tabbed = currentPage as TabbedPage;
+				return tabbed?.CurrentPage?.Navigation ?? currentPage.Navigation;
 			}
 		}
 	}
