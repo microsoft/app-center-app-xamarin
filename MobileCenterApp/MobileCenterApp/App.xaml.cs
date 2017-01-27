@@ -23,15 +23,26 @@ namespace MobileCenterApp
 			};
 			InitializeComponent();
 			// The root page of your application
-			NavigationService.SetRoot(new AppListViewModel());
+			NotificationManager.Shared.CurrentAppChanged += Shared_CurrentAppChanged;
+			SetRoot();
+		}
+
+		void SetRoot()
+		{
+			var model = string.IsNullOrWhiteSpace(Settings.CurrentApp) ? (BaseViewModel)new AppListViewModel() : new MainPageViewModel();
+			NavigationService.SetRoot(model);
 		}
 
 		void RegisterViewModels()
 		{
 			SimpleIoC.RegisterPage<AppListViewModel, AppListPage>();
+			SimpleIoC.RegisterPage<MainPageViewModel, MainPage>();
 		}
 
-
+		void Shared_CurrentAppChanged(object sender, MobileCenterApp.EventArgs<string> e)
+		{
+			SetRoot();
+		}
 		protected override void OnStart()
 		{
 

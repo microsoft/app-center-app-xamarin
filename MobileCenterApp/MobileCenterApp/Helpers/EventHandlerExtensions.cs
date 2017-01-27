@@ -17,6 +17,11 @@ namespace MobileCenterApp
 			Device.BeginInvokeOnMainThread(() => handler.Invoke(sender, args));
 		}
 
+		public static void InvokeOnMainThread<T>(this EventHandler<EventArgs<T>> handler, object sender, T args)
+		{
+			Device.BeginInvokeOnMainThread(() => handler.Invoke(sender, new EventArgs<T>(args)));
+		}
+
 		public static void InvokeOnMainThread(this EventHandler handler, object sender)
 		{
 			handler.InvokeOnMainThread(sender, EventArgs.Empty);

@@ -10,5 +10,17 @@ namespace MobileCenterApp
 		{
 			AppsChanged?.InvokeOnMainThread(this);
 		}
+
+		public event EventHandler<EventArgs<string>> CurrentAppChanged;
+		public void ProcAppsChanged(string appId)
+		{
+			CurrentAppChanged?.InvokeOnMainThread(this,appId);
+		}
+
+		public event EventHandler<EventArgs<bool>> OffineModeChanged;
+		public void ProcOffineModeChanged(bool enabled)
+		{
+			OffineModeChanged?.InvokeOnMainThread(this, enabled);
+		}
 	}
 }

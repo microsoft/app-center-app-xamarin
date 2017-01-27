@@ -7,12 +7,11 @@ namespace MobileCenterApp
 {
 	public class BaseModel : INotifyPropertyChanged, IDisposable
 	{
-		readonly Dictionary<string, List<Action>> actions = new Dictionary<string, List<Action>>();
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		public BaseModel()
 		{
-			PropertyChanged += OnPropertyChanged;
+			
 		}
 
 
@@ -37,47 +36,9 @@ namespace MobileCenterApp
 			}
 		}
 
-		void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-		{
-			List<Action> actionList;
-			if (!actions.TryGetValue(propertyChangedEventArgs.PropertyName, out actionList)) return;
-			foreach (Action action in actionList)
-			{
-				action();
-			}
-		}
-
-		public void SubscribeToProperty(string property, Action action)
-		{
-			List<Action> actionList;
-			if (!actions.TryGetValue(property, out actionList))
-				actionList = new List<Action>();
-			actionList.Add(action);
-			actions[property] = actionList;
-		}
-
-		public void UnSubscribeToProperty(string property, Action action)
-		{
-			List<Action> actionList;
-			if (!actions.TryGetValue(property, out actionList))
-				return;
-			if (actionList.Contains(action))
-				actionList.Remove(action);
-			actions[property] = actionList;
-		}
-
-		public void UnSubscribeToProperty(string property)
-		{
-			List<Action> actionList;
-			if (!actions.TryGetValue(property, out actionList))
-				return;
-			actionList.Clear();
-			actions[property] = actionList;
-		}
 
 		public void ClearEvents()
 		{
-			actions.Clear();
 			if (PropertyChanged == null)
 				return;
 			var invocation = PropertyChanged.GetInvocationList();

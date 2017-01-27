@@ -9,10 +9,14 @@ namespace MobileCenterApp
 		{
 		}
 
-		public SimpleDatabaseSource<AppClass> Items { get; set; } = new SimpleDatabaseSource<AppClass> { Database = Database.Main };
+		SimpleDatabaseSource<AppClass> items = new SimpleDatabaseSource<AppClass> { Database = Database.Main };
+		public SimpleDatabaseSource<AppClass> Items { 
+			get { return items; }
+			set { ProcPropertyChanged(ref items, value); }
+		} 
 		async void Shared_AppsChanged(object sender, EventArgs e)
 		{
-			ProcPropertyChanged("Items");
+			Items = new SimpleDatabaseSource<AppClass> { Database = Database.Main };
 		}
 
 		public override async void OnAppearing()

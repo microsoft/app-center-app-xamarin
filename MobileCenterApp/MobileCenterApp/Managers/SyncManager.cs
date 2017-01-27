@@ -19,6 +19,8 @@ namespace MobileCenterApp
 
 		async Task syncApps()
 		{
+			if (Settings.IsOfflineMode)
+				return;
 			var apps = await Api.GetApps();
 			List<Owner> owners = new List<Owner>();
 			List<AppClass> myApps = new List<AppClass>();
