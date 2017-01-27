@@ -78,6 +78,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Pages\Distribute\DistributePage.xaml.cs">
       <DependentUpon>DistributePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Branch.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Commit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Build.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Build\BranchDetailsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Build\BranchDetailsPage.xaml.cs">
+      <DependentUpon>BranchDetailsPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />
@@ -133,6 +140,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Distribute\DistributePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Build\BranchDetailsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

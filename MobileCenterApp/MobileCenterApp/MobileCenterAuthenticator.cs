@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using SimpleAuth;
 namespace MobileCenterApi
 {
@@ -57,5 +58,11 @@ namespace MobileCenterApi
 			base.OnException(sender, ex);
 		}
 
+	}
+
+	public partial class BranchStatus
+	{
+        [JsonProperty("branch")]
+		public Branch Branch { get; set; }
 	}
 }

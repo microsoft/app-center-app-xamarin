@@ -46,5 +46,46 @@ namespace MobileCenterApp
 				Type = o.Type,
 			};
 		}
+
+		public static Branch ToBranch(this MobileCenterApi.BranchStatus b, string appId)
+		{
+			return new Branch
+			{
+				AppId = appId,
+				Name = b.Branch.Name,
+				LastBuildId = b.LastBuild?.Id ?? 0,
+				IndexCharacter = BaseModel.GetIndexChar(b.Branch.Name),
+				LastCommitId = b.Branch.Commit?.Sha,
+				BuildStatus = b?.LastBuild?.Status ?? "Never Built",
+			};
+		}
+
+		public static Commit ToCommit(this MobileCenterApi.Commit c, string appId)
+		{
+			return new Commit
+			{
+				AppId = appId,
+				Sha = c.Sha,
+				Url = c.Url,
+			};
+		}
+
+		public static Build ToBuild(this MobileCenterApi.Build b, string appId)
+		{
+			return new Build
+			{
+				Id = b.Id,
+				AppId = appId,
+				BuildNumber = b.BuildNumber,
+				FinishTime = b.FinishTime,
+				LastChangedDate = b.LastChangedDate,
+				QueueTime = b.QueueTime,
+				Result = b.Result,
+				SourceBranch = b.SourceBranch,
+				SourceVersion = b.SourceVersion,
+				StartTime = b.StartTime,
+				Status = b.Status,
+			};
+		}
 	}
 }

@@ -11,5 +11,11 @@ namespace MobileCenterApp
 		{
 			InitializeComponent();
 		}
+		async void Handle_ItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
+		{
+			var item = e.SelectedItem as Branch;
+			if (item == null)
+				return;
+		}
 	}
 }

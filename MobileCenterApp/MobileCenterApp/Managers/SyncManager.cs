@@ -8,7 +8,12 @@ namespace MobileCenterApp
 	{
 		public static SyncManager Shared { get; set; } = new SyncManager();
 		public MobileCenterApi.MobileCenterAPIServiceApiKeyApi Api { get; set; } = new MobileCenterApi.MobileCenterAPIServiceApiKeyApi("MobileCenter", "Ttw8AMUjYeEkr==");
-
+		public SyncManager()
+		{
+			#if DEBUG
+			Api.Verbose = true;
+			#endif
+		}
 		Task syncAppsTask;
 		public Task SyncApps()
 		{
@@ -102,6 +107,38 @@ namespace MobileCenterApp
 				Console.WriteLine(ex);
 			}
 			return false;
+		}
+
+		Task syncBranchTask;
+		public Task SyncBranch(AppClass app)
+		{
+			if (syncBranchTask?.IsCompleted ?? true)
+				syncBranchTask = syncBranch(app);
+			return syncBranchTask;
+		}
+
+		public async Task syncBranch(AppClass app)
+		{
+			var branchStatus = await Api.BuildGetBranches(app.Owner.Name, app.Name);
+
+			var branches  = new List<Branch>();
+			var commits = new List<Commit>();
+			var builds = new List<Build>();
+			branchStatus.ToList().ForEach(x =>
+			{
+				branches.Add(x.ToBranch(app.Id));
+				if(x?.Branch?.Commit != null)
+					commits.Add(x.Branch.Commit.ToCommit(app.Id));
+				if (x?.LastBuild != null)
+					builds.Add(x.LastBuild.ToBuild(app.Id));
+			});
+			await Database.Main.ExecuteAsync("delete from Branch where AppId = ?", app.Id);
+			await Database.Main.InsertAllAsync(branches);
+			var distinctCommits = commits.DistinctBy(x => x.Sha).ToList();
+			Database.Main.InsertOrReplaceAll(distinctCommits);
+			var distinctBuilds = builds.DistinctBy(x => x.Id).ToList();
+			Database.Main.InsertOrReplaceAll(distinctBuilds);
+			NotificationManager.Shared.ProcAppsChanged(app.Id);
 		}
 	}
 }

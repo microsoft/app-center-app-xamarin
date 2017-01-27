@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using SimpleDatabase;
 
 namespace MobileCenterApp
 {
@@ -21,6 +22,13 @@ namespace MobileCenterApp
 			{
 				throw new NotImplementedException();
 			}
+		}
+
+		GroupInfo groupInfo;
+		public GroupInfo GroupInfo
+		{
+			get { return groupInfo ?? (groupInfo =Database.GetGroupInfo<T>()); }
+			set { groupInfo = value; }
 		}
 
 		public int Count

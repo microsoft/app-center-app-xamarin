@@ -16,8 +16,11 @@ namespace MobileCenterApp
 		{
 			CreateTables(
 				typeof(AppClass),
-				typeof(Owner)
-				);
+				typeof(Owner),
+				typeof(Branch),
+				typeof(Commit),
+				typeof(Build)
+			);
 
 			this.MakeClassInstant<AppClass>();
 		}

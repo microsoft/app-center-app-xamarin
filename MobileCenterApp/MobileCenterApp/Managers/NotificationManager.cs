@@ -22,5 +22,12 @@ namespace MobileCenterApp
 		{
 			OffineModeChanged?.InvokeOnMainThread(this, enabled);
 		}
+
+
+		public event EventHandler<EventArgs<string>> BranchesChanged;
+		public void ProcBranchesChanged(string appId)
+		{
+			BranchesChanged?.InvokeOnMainThread(this, appId);
+		}
 	}
 }

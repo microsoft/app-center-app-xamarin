@@ -70,7 +70,6 @@ namespace MobileCenterApp
 		{
 			base.OnDisappearing();
 			NotificationManager.Shared.AppsChanged -= Shared_AppsChanged;
-			this.ClearEvents();
 		}
 	}
 }
