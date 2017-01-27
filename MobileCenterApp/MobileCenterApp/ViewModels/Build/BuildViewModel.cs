@@ -6,6 +6,7 @@ namespace MobileCenterApp
 		public BuildViewModel()
 		{
 			Title = "Build";
+			Icon = Images.BuildPageIcon;
 		}
 	}
 }

@@ -6,6 +6,7 @@ namespace MobileCenterApp
 		public DistributeViewModel()
 		{
 			Title = "Distribute";
+			Icon = Images.DistributePageIcon;
 		}
 	}
 }

@@ -6,6 +6,7 @@ namespace MobileCenterApp
 		public CrashesViewModel()
 		{
 			Title = "Crashes";
+			Icon = Images.CrashesPageIcon;
 		}
 	}
 }

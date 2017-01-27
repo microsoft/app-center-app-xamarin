@@ -7,7 +7,7 @@
 		</ResourceDictionary>
 	</MasterDetailPage.Resources>
 	<MasterDetailPage.Master>
-		<ContentPage Title="Mobile Center">
+		<ContentPage Title="Mobile Center" BackgroundColor="{StaticResource navigationBackground}">
 			<ContentPage.Padding>
 				<OnPlatform x:TypeArguments="Thickness">
 					<OnPlatform.iOS>
@@ -15,23 +15,23 @@
 		      </OnPlatform.iOS>
 				</OnPlatform>
 			</ContentPage.Padding>
-			<ListView VerticalOptions="EndAndExpand" ItemsSource="{Binding Children}" ItemSelected="Handle_ItemSelected">
+			<ListView VerticalOptions="EndAndExpand" ItemsSource="{Binding Children}" ItemSelected="Handle_ItemSelected" BackgroundColor="{StaticResource navigationBackground}">
 				<ListView.Header>
-					<Frame>
+					<Frame BackgroundColor="{StaticResource navigationAppBackground}">
 						<Frame.GestureRecognizers>
 							<TapGestureRecognizer Command="{Binding SwitchAppsCommand}" />
 						</Frame.GestureRecognizers>
 						<StackLayout BindingContext="{Binding CurrentApp}">
-							<Label Text="{Binding DisplayName}" />
+							<Label Text="{Binding DisplayName}" TextColor="{StaticResource navigationTextColor}" />
 						</StackLayout>
 					</Frame>
 				</ListView.Header>
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<ViewCell>
-							<StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
-								<local:SvgImageView WidthRequest="44" HeightRequest="44" Svg="{Binding Icon}" />
-								<Label Text="{Binding Title}" VerticalTextAlignment="Center" Font="Medium" />
+							<StackLayout BackgroundColor="{StaticResource navigationBackground}" HorizontalOptions="StartAndExpand" Orientation="Horizontal" Padding="10,0,0,5" Spacing="10" >
+								<local:SvgImageView WidthRequest="20" HeightRequest="20" Svg="{Binding Icon}"/>
+								<Label Text="{Binding Title}" TextColor="{StaticResource navigationTextColor}" VerticalTextAlignment="Center" Font="Medium" />
 							</StackLayout>
 						</ViewCell>
 					</DataTemplate>

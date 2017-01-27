@@ -6,6 +6,7 @@ namespace MobileCenterApp
 		public TestViewModel()
 		{
 			Title = "Test";
+			Icon = Images.TestPageIcon;
 		}
 	}
 }

@@ -37,6 +37,13 @@
   <ItemGroup>
     <EmbeddedResource Include="SVG\login-header-logo.svg" />
     <EmbeddedResource Include="SVG\overview.svg" />
+    <EmbeddedResource Include="SVG\app-test.svg" />
+    <EmbeddedResource Include="SVG\app-analytics.svg" />
+    <EmbeddedResource Include="SVG\app-build.svg" />
+    <EmbeddedResource Include="SVG\app-crashes.svg" />
+    <EmbeddedResource Include="SVG\app-distribute.svg" />
+    <EmbeddedResource Include="SVG\app-identity.svg" />
+    <EmbeddedResource Include="SVG\app-overview.svg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>

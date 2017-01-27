@@ -47,7 +47,10 @@
 			<Color x:Key="gray-dark2">#787878</Color>
 			<Color x:Key="gray-dark3">#303030</Color>
 			<Color x:Key="vs-purple">#794090</Color>
-			<Color x:Key="navigationBackground">#282d32</Color>
+			<!-- Main Navigation Bar -->
+			<Color x:Key="navigationBackground">#282D32</Color>
+			<Color x:Key="navigationTextColor">White</Color>
+			<Color x:Key="navigationAppBackground">#1D2225</Color>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

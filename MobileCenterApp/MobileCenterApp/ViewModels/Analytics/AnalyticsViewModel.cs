@@ -6,6 +6,7 @@ namespace MobileCenterApp
 		public AnalyticsViewModel()
 		{
 			Title = "Analytics";
+			Icon = Images.AnalyticsPageIcon;
 		}
 	}
 }

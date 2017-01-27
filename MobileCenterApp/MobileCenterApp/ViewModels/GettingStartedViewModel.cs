@@ -6,6 +6,7 @@ namespace MobileCenterApp
 		public GettingStartedViewModel()
 		{
 			Title = "Getting Started";
+			Icon = Images.GettingStartedPageIcon;
 		}
 	}
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="19px" height="19px" viewBox="0 0 19 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M1,0 C0.45,0 0,0.45 0,1 L0,18 C0,18.55 0.45,19 1,19 L14,19 C14.55,19 15,18.55 15,18 L15,16.6 L18.67,4.68 C18.92,3.85 18.43,2.98 17.6,2.78 L15,2.1 L15,1 C15,0.45 14.55,0 14,0 L1,0 Z M1,18 L1,1 L14,1 L14,18 L1,18 Z M15,13.17 L17.7,4.37 C17.8,4.09 17.63,3.8 17.36,3.73 L15,3.13 L15,13.17 Z M5.58,10.43 C6.16,10.15 6.81,10 7.5,10 C8.2,10 8.84,10.15 9.42,10.43 C10.94,11.15 12,12.7 12,14.5 L11,14.5 C11,12.57 9.43,11 7.5,11 C5.57,11 4,12.57 4,14.5 L3,14.5 C3,12.7 4.06,11.15 5.58,10.43 Z M7.5,5 C8.88,5 10,6.12 10,7.5 C10,8.88 8.88,10 7.5,10 C8.2,10 8.84,10.15 9.42,10.43 C10.37,9.8 11,8.73 11,7.5 C11,5.57 9.43,4 7.5,4 C5.57,4 4,5.57 4,7.5 C4,8.72 4.63,9.8 5.58,10.43 C6.16,10.15 6.81,10 7.5,10 C6.12,10 5,8.88 5,7.5 C5,6.12 6.12,5 7.5,5 Z" id="Shape" fill="#FFFFFF" fill-rule="nonzero"></path>
+    </g>
+</svg>
