@@ -29,8 +29,15 @@ namespace MobileCenterApp.iOS
 		CoreGraphics.CGRect lastRect;
 		public override void LayoutSubviews ()
 		{
-			base.LayoutSubviews ();
-			LoadImage();
+			try
+			{
+				base.LayoutSubviews();
+				LoadImage();
+			}
+			catch (Exception)
+			{
+				//Layout has been causing a null object exception :(
+			}
 		}
 		async void LoadImage()
 		{
