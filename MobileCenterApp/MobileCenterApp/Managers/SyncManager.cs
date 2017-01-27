@@ -83,5 +83,25 @@ namespace MobileCenterApp
 			}
 			return false;
 		}
+		public async Task<bool> DeleteApp(AppClass app)
+		{
+			try
+			{
+				await Api.DeleteApp(app.Name,app.Owner.Name);
+				Database.Main.Delete(app);
+				Database.Main.ClearMemory<AppClass>();
+				NotificationManager.Shared.ProcAppsChanged();
+				return true;
+			}
+			catch (Exception ex)
+			{
+				if (ex.Data.Contains("HttpContent"))
+				{
+					Console.WriteLine(ex.Data["HttpContent"]);
+				}
+				Console.WriteLine(ex);
+			}
+			return false;
+		}
 	}
 }

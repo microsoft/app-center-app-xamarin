@@ -20,5 +20,13 @@ namespace MobileCenterApp
 			Settings.CurrentApp = item.Id;
 			await NavigationService.PopModalAsync();
 		}
+
+		public async void OnDelete(object sender, EventArgs e)
+		{
+			var app = ((MenuItem)sender).CommandParameter as AppClass;
+			var result = await DisplayAlert("Are you sure?",$"Deleting '{app.DisplayName}'", "Delete","Nevermind");
+			if (result)
+				(BindingContext as AppListViewModel).DeleteCommand.Execute(sender);
+		}
 	}
 }
