@@ -15,7 +15,6 @@
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Managers\LogManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AppListViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\BaseViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SimpleDatabaseSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Database.cs" />
@@ -26,9 +25,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\BaseNotify.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\iDirty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\BasePage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Pages\AppListPage.xaml.cs">
-      <DependentUpon>AppListPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\NavigationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\SimpleIoC.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Managers\SyncManager.cs" />
@@ -48,24 +44,28 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\EventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\GettingStartedViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\BuildViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TestViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\GettingStartedPage.xaml.cs">
       <DependentUpon>GettingStartedPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Pages\BuildPage.xaml.cs">
-      <DependentUpon>BuildPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Pages\TestPage.xaml.cs">
-      <DependentUpon>TestPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ViewModelToPageConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\User.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CreateAppViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Pages\CreateAppPage.xaml.cs">
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ModelConversionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Build\BuildPage.xaml.cs">
+      <DependentUpon>BuildPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Test\TestPage.xaml.cs">
+      <DependentUpon>TestPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\AppManagement\AppListPage.xaml.cs">
+      <DependentUpon>AppListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\AppManagement\CreateAppPage.xaml.cs">
       <DependentUpon>CreateAppPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Models\ModelConversionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AppManagement\AppListViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Build\BuildViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AppManagement\CreateAppViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Test\TestViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />
@@ -76,12 +76,21 @@
     <Folder Include="$(MSBuildThisFileDirectory)Helpers\" />
     <Folder Include="$(MSBuildThisFileDirectory)Controls\" />
     <Folder Include="$(MSBuildThisFileDirectory)Converters\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Pages\Build\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Pages\Test\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Pages\AppManagement\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Pages\Distribute\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Pages\Crashes\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Pages\Analytics\" />
+    <Folder Include="$(MSBuildThisFileDirectory)ViewModels\Analytics\" />
+    <Folder Include="$(MSBuildThisFileDirectory)ViewModels\AppManagement\" />
+    <Folder Include="$(MSBuildThisFileDirectory)ViewModels\Build\" />
+    <Folder Include="$(MSBuildThisFileDirectory)ViewModels\Crashes\" />
+    <Folder Include="$(MSBuildThisFileDirectory)ViewModels\Distribute\" />
+    <Folder Include="$(MSBuildThisFileDirectory)ViewModels\Test\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\LoginPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\AppListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)App.xaml">
@@ -93,13 +102,16 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\GettingStartedPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\BuildPage.xaml">
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Build\BuildPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\TestPage.xaml">
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Test\TestPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\CreateAppPage.xaml">
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\AppManagement\AppListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\AppManagement\CreateAppPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
