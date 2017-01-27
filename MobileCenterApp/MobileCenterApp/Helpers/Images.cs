@@ -16,6 +16,7 @@ namespace MobileCenterApp
 		}
 
 		public const string LoginHeaderLogo = "login-header-logo.svg";
+		public const string GettingStartedHeader = "overview.svg";
 	}
 }
 
