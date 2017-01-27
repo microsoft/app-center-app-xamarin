@@ -27,31 +27,8 @@ namespace MobileCenterApp
 
 			apps.ToList().ForEach(x =>
 			{
-				myApps.Add(new AppClass
-				{
-					Id = x.Id,
-					AppSecret = x.AppSecret,
-					AzureSubscriptionId = x.AzureSubscriptionId,
-					DateImported = DateTime.Now,
-					Description = x.Description,
-					DisplayName = x.DisplayName,
-					IndexCharacter = BaseModel.GetIndexChar(x.DisplayName),
-					IconUrl = x.IconUrl,
-					Name = x.Name,
-					Os = x.Os,
-					OwnerId = x.Owner.Id,
-					Platform = x.Platform,
-				});
-				var o = x.Owner;
-				owners.Add(new Owner
-				{
-					AvatarUrl = o.AvatarUrl,
-					DisplayName = o.DisplayName,
-					Email = o.Email,
-					Id = o.Id,
-					Name = o.Name,
-					Type = o.Type,
-				});
+				myApps.Add((AppClass)x.ToAppClass());
+				owners.Add((Owner)x.Owner.ToAppOwner());
 			});
 
 			await Database.Main.ResetTable<AppClass>();
@@ -81,6 +58,30 @@ namespace MobileCenterApp
 					return user;
 				});
 			return userTask;
+		}
+
+		public async Task<bool> CreateApp(AppClass app)
+		{
+			try
+			{
+				var resp = await Api.PostCreateApp(app.ToAppRequest());
+				var newApp = resp.ToAppClass();
+				var owner = resp.Owner.ToAppOwner();
+				Database.Main.InsertOrReplace(newApp);
+				Database.Main.InsertOrReplace(owner);
+				Database.Main.ClearMemory<AppClass>();
+				NotificationManager.Shared.ProcAppsChanged();
+				return true;
+			}
+			catch (Exception ex)
+			{
+				if (ex.Data.Contains("HttpContent"))
+				{
+					Console.WriteLine(ex.Data["HttpContent"]);
+				}
+				Console.WriteLine(ex);
+			}
+			return false;
 		}
 	}
 }

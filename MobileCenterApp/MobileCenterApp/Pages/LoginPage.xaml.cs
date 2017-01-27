@@ -29,7 +29,7 @@ namespace MobileCenterApp
 		{
 			Login();
 		}
-		async void Handle_Clicked(object sender, System.EventArgs e)
+		void Handle_Clicked(object sender, System.EventArgs e)
 		{
 			Login();
 		}

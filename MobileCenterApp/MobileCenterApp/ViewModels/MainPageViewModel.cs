@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace MobileCenterApp
 {
@@ -35,12 +37,24 @@ namespace MobileCenterApp
 			set { ProcPropertyChanged(ref currentPage, value); }
 		}
 
+		public ICommand SwitchAppsCommand { get; private set; } = new Command(async (obj) =>
+		{
+			try
+			{
+				await NavigationService.PushModalAsync(new AppListViewModel());
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex);
+			}
+		});
+
 		public override void OnAppearing()
 		{
 			base.OnAppearing();
+			NotificationManager.Shared.CurrentAppChanged += Shared_CurrentAppChanged;
 			SetCurrentApp();
 			SetupCurrentUser();
-			NotificationManager.Shared.CurrentAppChanged += Shared_CurrentAppChanged;
 		}
 
 		public override void OnDisappearing()
@@ -49,9 +63,11 @@ namespace MobileCenterApp
 			NotificationManager.Shared.CurrentAppChanged -= Shared_CurrentAppChanged;
 		}
 
-		void SetCurrentApp()
+		async void SetCurrentApp()
 		{
 			var currentId = Settings.CurrentApp;
+			if (string.IsNullOrWhiteSpace(currentId))
+				await NavigationService.PushModalAsync(new AppListViewModel());
 			if (String.IsNullOrWhiteSpace(currentId) || CurrentApp?.Id == currentId)
 				return;
 			CurrentApp = Database.Main.GetObject<AppClass>(currentId);

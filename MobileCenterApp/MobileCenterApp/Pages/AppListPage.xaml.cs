@@ -12,12 +12,13 @@ namespace MobileCenterApp
 			InitializeComponent();
 		}
 
-		void Handle_ItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
+		async void Handle_ItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
 		{
 			var item = e.SelectedItem as AppClass;
 			if (item == null)
 				return;
 			Settings.CurrentApp = item.Id;
+			await NavigationService.PopModalAsync();
 		}
 	}
 }

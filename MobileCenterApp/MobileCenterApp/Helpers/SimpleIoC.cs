@@ -9,8 +9,6 @@ namespace MobileCenterApp
 	{
 		static readonly Dictionary<Type, Type> RegisteredTypes = new Dictionary<Type, Type>();
 
-		static readonly Dictionary<Type, object> Singletons = new Dictionary<Type, object>();
-
 		public static void Register<TType, TType1>() where TType1 : TType
 		{
 			RegisteredTypes[typeof(TType)] = typeof(TType1);
@@ -26,50 +24,44 @@ namespace MobileCenterApp
 			RegisteredTypes[typeof(TType)] = typeof(TType1);
 		}
 
-		public static Page GetPage(BaseViewModel model, bool singleton = true)
+		public static Page GetPage(BaseViewModel model)
 		{
-			var page = GetPage(model.GetType(), singleton);
+			var page = GetPage(model.GetType());
 			page.BindingContext = model;
 			return page;
 		}
 
-		public static T GetPage<T>(BaseViewModel model, bool singleton = true) where T : Page
+		public static T GetPage<T>(BaseViewModel model) where T : Page
 		{
-			var page = GetPage(model, singleton);
+			var page = GetPage(model);
 			return (T)page;
 		}
 
-		public static Page GetPage<T>(bool singleton = true)
+		public static Page GetPage<T>()
 		{
-			return GetObject<T, Page>(singleton);
+			return GetObject<T, Page>();
 		}
 
-		public static Page GetPage(Type type, bool singleton = true)
+		public static Page GetPage(Type type)
 		{
-			return GetObject<Page>(type, singleton);
+			return GetObject<Page>(type);
 		}
 
-		public static T GetObject<T>(bool singleton = true)
+		public static T GetObject<T>()
 		{
-			return GetObject<T, T>(singleton);
+			return GetObject<T, T>();
 		}
-		public static T1 GetObject<T, T1>(bool singleton = true)
+		public static T1 GetObject<T, T1>()
 		{
-			return GetObject<T1>(typeof(T), singleton);
+			return GetObject<T1>(typeof(T));
 		}
-		public static T GetObject<T>(Type type, bool singleton = true)
+		public static T GetObject<T>(Type type)
 		{
 			Type objectType;
 			if (!RegisteredTypes.TryGetValue(type, out objectType))
 				return default(T);
-			if (!singleton)
-				return (T)Activator.CreateInstance(objectType);
-			Object item;
-			if (!Singletons.TryGetValue(objectType, out item))
-			{
-				Singletons[objectType] = item = (T)Activator.CreateInstance(objectType);
-			}
-			return (T)item;
+
+			return (T)Activator.CreateInstance(objectType);
 		}
 	}
 }

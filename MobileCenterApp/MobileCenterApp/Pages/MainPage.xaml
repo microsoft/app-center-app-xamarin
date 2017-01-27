@@ -15,9 +15,12 @@
 		      </OnPlatform.iOS>
 				</OnPlatform>
 			</ContentPage.Padding>
-			<ListView VerticalOptions="EndAndExpand" ItemsSource="{Binding Children}" ItemSelected="Handle_ItemSelected" >
+			<ListView VerticalOptions="EndAndExpand" ItemsSource="{Binding Children}" ItemSelected="Handle_ItemSelected">
 				<ListView.Header>
 					<Frame>
+						<Frame.GestureRecognizers>
+							<TapGestureRecognizer Command="{Binding SwitchAppsCommand}" />
+						</Frame.GestureRecognizers>
 						<StackLayout BindingContext="{Binding CurrentApp}">
 							<Label Text="{Binding DisplayName}" />
 						</StackLayout>
@@ -28,7 +31,7 @@
 						<ViewCell>
 							<StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
 								<local:SvgImageView WidthRequest="44" HeightRequest="44" Svg="{Binding Icon}" />
-									<Label Text="{Binding Title}" VerticalTextAlignment="Center" Font="Medium" />
+								<Label Text="{Binding Title}" VerticalTextAlignment="Center" Font="Medium" />
 							</StackLayout>
 						</ViewCell>
 					</DataTemplate>

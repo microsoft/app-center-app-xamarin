@@ -8,8 +8,6 @@ using SimpleAuth;
 using Xamarin.Forms;
 using System.Threading.Tasks;
 
-using Xamarin.Forms;
-
 namespace MobileCenterApp
 {
 	public partial class App : Application
@@ -23,29 +21,20 @@ namespace MobileCenterApp
 			};
 			InitializeComponent();
 			// The root page of your application
-			NotificationManager.Shared.CurrentAppChanged += Shared_CurrentAppChanged;
-			SetRoot();
-		}
-
-		void SetRoot()
-		{
-			var model = string.IsNullOrWhiteSpace(Settings.CurrentApp) ? (BaseViewModel)new AppListViewModel() : new MainPageViewModel();
-			NavigationService.SetRoot(model,false);
+			MainPage = SimpleIoC.GetPage(new MainPageViewModel());
 		}
 
 		void RegisterViewModels()
 		{
 			SimpleIoC.RegisterPage<AppListViewModel, AppListPage>();
+			SimpleIoC.RegisterPage<CreateAppViewModel, CreateAppPage>();
 			SimpleIoC.RegisterPage<MainPageViewModel, MainPage>();
 			SimpleIoC.RegisterPage<GettingStartedViewModel, GettingStartedPage>();
 			SimpleIoC.RegisterPage<BuildViewModel, BuildPage>();
 			SimpleIoC.RegisterPage<TestViewModel,TestPage>();
 		}
 
-		void Shared_CurrentAppChanged(object sender, MobileCenterApp.EventArgs<string> e)
-		{
-			SetRoot();
-		}
+
 		protected override void OnStart()
 		{
 

@@ -22,7 +22,11 @@ namespace MobileCenterApp
 		[Indexed]
 		public string Name { get; set; }
 
-		public string Os { get; set; }
+		string os;
+		public string Os { 
+			get { return os;} 
+			set { ProcPropertyChanged(ref os, value); }
+		}
 
 		public string Platform { get; set; }
 

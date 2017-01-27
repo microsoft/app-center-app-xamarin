@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MobileCenterApp.CreateAppPage">
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Name="Cancel" Command="{Binding CancelCommand}">
+		</ToolbarItem>
+	</ContentPage.ToolbarItems>
+	<ContentPage.Content>
+		<StackLayout>
+			<Label Text="Name"/>
+			<Entry Placeholder="Name" Text="{Binding App.Name, Mode=TwoWay}" />
+			<Entry Placeholder="Enter a brief description (optional)" Text="{Binding App.Description, Mode=TwoWay}" />
+			<Label Text = "OS:"/>
+			<Picker x:Name="OsPicker">
+				<!-- Databinding is available in a pre-release. Waiting for it to come to stable -->
+				<Picker.Items>
+					<x:String>iOS</x:String>
+					<x:String>Android</x:String>
+				</Picker.Items>
+			</Picker>
+			<Label Text="Platform:"/>
+			<Picker x:Name="PlatformPicker">
+				<!-- Databinding is available in a pre-release. Waiting for it to come to stable -->
+				<Picker.Items>
+					<x:String>Objective-C-Swift</x:String>
+					<x:String>Java</x:String>
+					<x:String>React-Native</x:String>
+					<x:String>Xamarin</x:String>
+				</Picker.Items>
+			</Picker>
+			<Button Text="Add new app" Command="{Binding CreateCommand}" />
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>

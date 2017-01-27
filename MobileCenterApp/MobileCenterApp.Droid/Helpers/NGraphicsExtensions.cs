@@ -25,7 +25,7 @@ namespace MobileCenterApp
 		{
 			try {
 				var fileName = System.IO.Path.GetFileNameWithoutExtension (svg);
-				var file = File.OpenText (svg);
+				var file = File.OpenText (fileName);
 				return file.LoadImageFromSvgStream (size);
 			} catch (Exception ex) {
 				Console.WriteLine (ex);
