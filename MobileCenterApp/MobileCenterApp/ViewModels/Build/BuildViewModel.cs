@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+
 namespace MobileCenterApp
 {
 	public class BuildViewModel : BaseViewModel
@@ -71,6 +73,11 @@ namespace MobileCenterApp
 			if (e.Data != CurrentApp?.Id)
 				return;
 			SetupItems();
+		}
+
+		public Task BranchSelected(Branch branch)
+		{
+			return NavigationService.PushAsync(new BranchDetailsViewModel { CurrentBranch = branch });
 		}
 	}
 }

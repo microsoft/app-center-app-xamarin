@@ -4,12 +4,7 @@
 		<ListView IsGroupingEnabled="true" GroupDisplayBinding="{Binding Display}" GroupShortNameBinding="{Binding Display}" ItemsSource="{Binding Items}" ItemSelected="Handle_ItemSelected">
 			<ListView.ItemTemplate>
 				<DataTemplate>
-					<ViewCell>
-						<StackLayout HorizontalOptions="StartAndExpand">
-							<Label Text="{Binding Name}" VerticalTextAlignment="Center" Font="Medium" />
-							<Label Text="{Binding BuildStatus}" VerticalTextAlignment="Center" Font="Medium" />
-						</StackLayout>
-					</ViewCell>
+					<TextCell Text="{Binding Name}"  Detail="{Binding BuildStatus}"/>
 				</DataTemplate>
 			</ListView.ItemTemplate>
 		</ListView>

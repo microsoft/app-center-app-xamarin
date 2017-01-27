@@ -6,5 +6,7 @@ namespace MobileCenterApp
 		public BranchDetailsViewModel()
 		{
 		}
+
+		public Branch CurrentBranch { get; set; }
 	}
 }
