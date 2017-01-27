@@ -10,7 +10,7 @@
 			<Entry Placeholder="Name" Text="{Binding App.Name, Mode=TwoWay}" />
 			<Entry Placeholder="Enter a brief description (optional)" Text="{Binding App.Description, Mode=TwoWay}" />
 			<Label Text = "OS:"/>
-			<Picker x:Name="OsPicker">
+			<Picker x:Name="OsPicker" SelectedIndex="{Binding OsIndex}">
 				<!-- Databinding is available in a pre-release. Waiting for it to come to stable -->
 				<Picker.Items>
 					<x:String>iOS</x:String>
@@ -18,7 +18,7 @@
 				</Picker.Items>
 			</Picker>
 			<Label Text="Platform:"/>
-			<Picker x:Name="PlatformPicker">
+			<Picker x:Name="PlatformPicker" SelectedIndex="{Binding PlatformIndex}">
 				<!-- Databinding is available in a pre-release. Waiting for it to come to stable -->
 				<Picker.Items>
 					<x:String>Objective-C-Swift</x:String>

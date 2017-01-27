@@ -24,7 +24,12 @@ namespace MobileCenterApp
 		public int OsIndex
 		{
 			get { return Array.IndexOf(OsOptions, App.Os); }
-			set { App.Os = OsOptions[value]; }
+			set {
+				if (value < 0 || value >= OsOptions.Length)
+					App.Os = "";
+				else
+					App.Os = OsOptions[value];
+			}
 		}
 
 		//TODO: get this from the API
@@ -37,7 +42,12 @@ namespace MobileCenterApp
 		public int PlatformIndex
 		{
 			get { return Array.IndexOf(Platforms, App.Platform); }
-			set { App.Platform = Platforms[value]; }
+			set {
+
+				if (value < 0 || value >= Platforms.Length)
+					App.Platform = "";
+				else
+					App.Platform = Platforms[value]; }
 		}
 
 
@@ -52,7 +62,7 @@ namespace MobileCenterApp
 			if (success)
 				await NavigationService.PopModalAsync();
 			//TODO: Show error
-
+			MobileCenterApp.App.Current.MainPage.DisplayActionSheet($"Error: Invalid data", "Ok",null);
 		}
 
 		public ICommand CancelCommand { get; private set; } = new Command(async (obj) =>
