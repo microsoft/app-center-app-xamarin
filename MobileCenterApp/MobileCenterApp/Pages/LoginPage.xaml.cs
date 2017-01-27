@@ -17,6 +17,7 @@ namespace MobileCenterApp
 			this.ToolbarItems.Add(new ToolbarItem("Cancel", null, () =>
 			{
 				authenticator.OnCancelled();
+				NavigationService.PopModalAsync();
 			}));
 		}
 
