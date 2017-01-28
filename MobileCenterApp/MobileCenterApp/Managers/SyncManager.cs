@@ -40,6 +40,7 @@ namespace MobileCenterApp
 			await Database.Main.InsertAllAsync(myApps);
 			var distintOwners = owners.DistinctBy(x => x.Id).ToList();
 			Database.Main.InsertOrReplaceAll(distintOwners);
+			Database.Main.ClearMemory();
 			NotificationManager.Shared.ProcAppsChanged();
 		}
 
@@ -104,7 +105,8 @@ namespace MobileCenterApp
 				{
 					Console.WriteLine(ex.Data["HttpContent"]);
 				}
-				Console.WriteLine(ex);
+				else
+					Console.WriteLine(ex);
 			}
 			return false;
 		}
@@ -117,7 +119,7 @@ namespace MobileCenterApp
 			return syncBranchTask;
 		}
 
-		public async Task syncBranch(AppClass app)
+		async Task syncBranch(AppClass app)
 		{
 			var branchStatus = await Api.BuildGetBranches(app.Owner.Name, app.Name);
 
@@ -138,7 +140,24 @@ namespace MobileCenterApp
 			Database.Main.InsertOrReplaceAll(distinctCommits);
 			var distinctBuilds = builds.DistinctBy(x => x.Id).ToList();
 			Database.Main.InsertOrReplaceAll(distinctBuilds);
+			Database.Main.ClearMemory();
 			NotificationManager.Shared.ProcAppsChanged(app.Id);
+		}
+
+
+		Task syncRepoConfigTask;
+		public Task SyncRepoConfig(AppClass app)
+		{
+			if (syncRepoConfigTask?.IsCompleted ?? true)
+				syncRepoConfigTask = syncRepoConfig(app);
+			return syncRepoConfigTask;
+		}
+
+		async Task syncRepoConfig(AppClass app)
+		{
+			var configs = await Api.BuildGetRepositoryConfiguration(app.Owner.Name, app.Name,true);
+			Database.Main.InsertOrReplaceAll(configs.Select(x=> x.ToRepoConfig(app.Id)));
+			Database.Main.ClearMemory();
 		}
 	}
 }

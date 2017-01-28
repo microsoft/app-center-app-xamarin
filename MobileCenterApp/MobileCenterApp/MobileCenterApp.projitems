@@ -85,6 +85,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Pages\Build\BranchDetailsPage.xaml.cs">
       <DependentUpon>BranchDetailsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Models\RepoConfig.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />

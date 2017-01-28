@@ -87,5 +87,17 @@ namespace MobileCenterApp
 				Status = b.Status,
 			};
 		}
+
+		public static RepoConfig ToRepoConfig(this MobileCenterApi.RepoConfig rc, string appId)
+		{
+			return new RepoConfig
+			{
+				AppId = appId,
+				Id = rc.Id,
+				RepoUrl = rc.RepoUrl,
+				State = rc.State,
+				Type = rc.Type,
+			};
+		}
 	}
 }

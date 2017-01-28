@@ -36,10 +36,56 @@ namespace MobileCenterApp
 		public override async void OnAppearing()
 		{
 			base.OnAppearing();
-			SetCurrentApp();
-			SetupItems();
 			NotificationManager.Shared.AppsChanged += Shared_AppsChanged;
 			NotificationManager.Shared.BranchesChanged += Shared_BranchesChanged;
+			SetupData();
+		}
+
+		async void SetupData()
+		{
+			SetCurrentApp();
+
+			var syncRepoTask = SyncManager.Shared.SyncRepoConfig(CurrentApp);
+			//Lets check if there are any repo configs for this app;
+			var hasRepoConfigs = HasRepoConfigs();
+			if (hasRepoConfigs)
+				await SetupBranches();
+
+			try
+			{
+				await syncRepoTask;
+			}
+			catch (Exception ex)
+			{
+				if (ex.Data.Contains("HttpContent"))
+				{
+					Console.WriteLine(ex.Data["HttpContent"]);
+				}
+				else
+					Console.WriteLine(ex);
+			}
+			//Lets check again after the sync!
+			if (!hasRepoConfigs && HasRepoConfigs())
+			{
+				await SetupBranches();
+			}
+			else {
+				//TODO: present UI to pick/configure the repo
+				Console.WriteLine("No Repo configured");
+			}
+		}
+
+		bool HasRepoConfigs()
+		{
+			var groupInfo = Database.Main.GetGroupInfo<RepoConfig>().Clone();
+			groupInfo.Filter = "AppId = ?";
+			groupInfo.Params = CurrentApp?.Id;
+			return Database.Main.GetObjectCount<RepoConfig>(groupInfo) > 0;
+		}
+
+		async Task SetupBranches()
+		{
+			SetupItems();
 			try
 			{
 				await SyncManager.Shared.SyncBranch(CurrentApp);

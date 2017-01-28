@@ -19,7 +19,8 @@ namespace MobileCenterApp
 				typeof(Owner),
 				typeof(Branch),
 				typeof(Commit),
-				typeof(Build)
+				typeof(Build),
+				typeof(RepoConfig)
 			);
 
 			this.MakeClassInstant<AppClass>();
