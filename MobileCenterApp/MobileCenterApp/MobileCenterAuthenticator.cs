@@ -57,7 +57,29 @@ namespace MobileCenterApi
 		{
 			base.OnException(sender, ex);
 		}
-
+		protected override T Deserialize<T>(string data)
+		{
+			try
+			{
+				return base.Deserialize<T>(data);
+			}
+			catch (System.Exception ex)
+			{
+				Console.WriteLine(data);
+				throw ex;
+			}
+		}
+		protected override T Deserialize<T>(string data, object inObject)
+		{
+			try{
+				return base.Deserialize<T>(data, inObject);
+			}
+			catch (System.Exception ex)
+			{
+				Console.WriteLine(data);
+				throw ex;
+			}
+		}
 	}
 
 	public partial class BranchStatus

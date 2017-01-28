@@ -58,7 +58,9 @@ namespace MobileCenterApp
 
 			//TODO: validate the app.
 			App.DisplayName = App.Name;
+			IsLoading = true;
 			var success = await SyncManager.Shared.CreateApp(this.App);
+			IsLoading = false;
 			if (success)
 				await NavigationService.PopModalAsync();
 			//TODO: Show error

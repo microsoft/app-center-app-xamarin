@@ -155,8 +155,8 @@ namespace MobileCenterApp
 
 		async Task syncRepoConfig(AppClass app)
 		{
-			var configs = await Api.BuildGetRepositoryConfiguration(app.Owner.Name, app.Name,true);
-			Database.Main.InsertOrReplaceAll(configs.Select(x=> x.ToRepoConfig(app.Id)));
+			var config = await Api.BuildGetRepositoryConfiguration(app.Owner.Name, app.Name,true).ConfigureAwait(false);
+			Database.Main.InsertOrReplace(config.ToRepoConfig(app.Id));
 			Database.Main.ClearMemory();
 		}
 	}

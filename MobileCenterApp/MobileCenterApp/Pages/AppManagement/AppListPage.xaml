@@ -4,22 +4,25 @@
 		<ToolbarItem Name="Add new app" Command="{Binding CreateCommand}">
 		</ToolbarItem>
 	</ContentPage.ToolbarItems>
-	<ListView IsGroupingEnabled="true" GroupDisplayBinding="{Binding Display}" GroupShortNameBinding="{Binding Display}" ItemsSource="{Binding Items}" ItemSelected="Handle_ItemSelected">
-		<ListView.ItemTemplate>
-			<DataTemplate>
-				<ViewCell>
-					<ViewCell.ContextActions>
-						<MenuItem Clicked="OnDelete" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
-					</ViewCell.ContextActions>
-					<StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
-						<Image WidthRequest="44" HeightRequest="44" Source="{Binding IconUrl}" />
-						<StackLayout Padding="5,0,0,0" VerticalOptions="StartAndExpand" Orientation="Vertical">
-							<Label Text="{Binding DisplayName}" VerticalTextAlignment="Center" Font="Medium" />
-							<Label Text="{Binding Description}" VerticalTextAlignment="Center" Font="Micro" />
+	<StackLayout>
+		<ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}"/>
+		<ListView IsGroupingEnabled="true" GroupDisplayBinding="{Binding Display}" GroupShortNameBinding="{Binding Display}" ItemsSource="{Binding Items}" ItemSelected="Handle_ItemSelected">
+			<ListView.ItemTemplate>
+				<DataTemplate>
+					<ViewCell>
+						<ViewCell.ContextActions>
+							<MenuItem Clicked="OnDelete" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+						</ViewCell.ContextActions>
+						<StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+							<Image WidthRequest="44" HeightRequest="44" Source="{Binding IconUrl}" />
+							<StackLayout Padding="5,0,0,0" VerticalOptions="StartAndExpand" Orientation="Vertical">
+								<Label Text="{Binding DisplayName}" VerticalTextAlignment="Center" Font="Medium" />
+								<Label Text="{Binding Description}" VerticalTextAlignment="Center" Font="Micro" />
+							</StackLayout>
 						</StackLayout>
-					</StackLayout>
-				</ViewCell>
-			</DataTemplate>
-		</ListView.ItemTemplate>
-	</ListView>
+					</ViewCell>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
+	</StackLayout>
 </local:BasePage>

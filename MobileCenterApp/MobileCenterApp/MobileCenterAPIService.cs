@@ -2951,9 +2951,9 @@ namespace MobileCenterApi {
         }
         
         [Path("/v0.1/apps/{owner_name}/{app_name}/repo_config")]
-        public virtual Task<RepoConfig[]> BuildGetRepositoryConfiguration(string owner_name, string app_name, bool? includeInactive = null) {
-            var queryParameters = new Dictionary<string,string>{ { "owner_name" , owner_name },{ "app_name" , app_name },{ "includeInactive" , includeInactive?.ToString() } };
-            return Get<RepoConfig[]>( queryParameters: queryParameters, authenticated: true );
+		public virtual Task<RepoConfig> BuildGetRepositoryConfiguration(string owner_name, string app_name, bool? includeInactive = null) {
+			var queryParameters = new Dictionary<string,string>{ { "owner_name" , owner_name },{ "app_name" , app_name },{ "includeInactive" , includeInactive?.ToString().ToLower() } };
+            return Get<RepoConfig>( queryParameters: queryParameters, authenticated: true );
         }
         
         [Path("/v0.1/apps/{owner_name}/{app_name}/repo_config")]

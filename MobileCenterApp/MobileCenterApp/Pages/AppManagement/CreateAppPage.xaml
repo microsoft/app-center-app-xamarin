@@ -28,6 +28,7 @@
 				</Picker.Items>
 			</Picker>
 			<Button Text="Add new app" Command="{Binding CreateCommand}" />
+			<ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}"/>
 		</StackLayout>
 	</ContentPage.Content>
 </local:BasePage>

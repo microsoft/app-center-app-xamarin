@@ -54,6 +54,7 @@ namespace MobileCenterApp
 		public override async void OnAppearing()
 		{
 			base.OnAppearing();
+			IsLoading = true;
 			Items = new SimpleDatabaseSource<AppClass> { Database = Database.Main };
 			NotificationManager.Shared.AppsChanged += Shared_AppsChanged;
 			try
@@ -63,6 +64,10 @@ namespace MobileCenterApp
 			catch (Exception ex)
 			{
 				Console.WriteLine(ex);
+			}
+			finally
+			{
+				IsLoading = false;
 			}
 		}
 

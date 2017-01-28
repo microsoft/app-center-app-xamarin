@@ -44,7 +44,7 @@ namespace MobileCenterApp
 		async void SetupData()
 		{
 			SetCurrentApp();
-
+			IsLoading = true;
 			var syncRepoTask = SyncManager.Shared.SyncRepoConfig(CurrentApp);
 			//Lets check if there are any repo configs for this app;
 			var hasRepoConfigs = HasRepoConfigs();
@@ -65,15 +65,17 @@ namespace MobileCenterApp
 					Console.WriteLine(ex);
 			}
 			//Lets check again after the sync!
-			if (!hasRepoConfigs && HasRepoConfigs())
+			if (hasRepoConfigs || HasRepoConfigs())
 			{
 				await SetupBranches();
 			}
 			else {
 				var shouldAddRepo = await App.Current.MainPage.DisplayAlert("No Repo", "Would you like to associate a repo now?", "Ok", "Maybe later");
 				if (shouldAddRepo)
-					NavigationService.PushModalAsync(new RepoListViewModel { CurrentApp = CurrentApp});
+					await NavigationService.PushModalAsync(new RepoListViewModel { CurrentApp = CurrentApp});
 			}
+
+			IsLoading = false;
 		}
 
 		bool HasRepoConfigs()
@@ -81,7 +83,8 @@ namespace MobileCenterApp
 			var groupInfo = Database.Main.GetGroupInfo<RepoConfig>().Clone();
 			groupInfo.Filter = "AppId = ?";
 			groupInfo.Params = CurrentApp?.Id;
-			return Database.Main.GetObjectCount<RepoConfig>(groupInfo) > 0;
+			var count = Database.Main.RowsInSection<RepoConfig>(groupInfo,0);
+			return count > 0;
 		}
 
 		async Task SetupBranches()

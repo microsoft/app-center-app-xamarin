@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <d:BasePage xmlns:d="clr-namespace:MobileCenterApp;" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MobileCenterApp.TestPage">
-	<ContentPage.Content>
-	</ContentPage.Content>
+	<StackLayout>
+		<ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}"/>
+	</StackLayout>
 </d:BasePage>
