@@ -70,8 +70,9 @@ namespace MobileCenterApp
 				await SetupBranches();
 			}
 			else {
-				//TODO: present UI to pick/configure the repo
-				Console.WriteLine("No Repo configured");
+				var shouldAddRepo = await App.Current.MainPage.DisplayAlert("No Repo", "Would you like to associate a repo now?", "Ok", "Maybe later");
+				if (shouldAddRepo)
+					NavigationService.PushModalAsync(new RepoListViewModel { CurrentApp = CurrentApp});
 			}
 		}
 

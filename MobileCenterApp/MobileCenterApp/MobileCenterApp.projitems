@@ -86,6 +86,10 @@
       <DependentUpon>BranchDetailsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Models\RepoConfig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Build\RepoListViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Build\RepoListPage.xaml.cs">
+      <DependentUpon>RepoListPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />
@@ -144,6 +148,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Build\BranchDetailsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Build\RepoListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
