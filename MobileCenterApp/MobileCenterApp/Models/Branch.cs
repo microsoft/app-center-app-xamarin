@@ -15,6 +15,11 @@ namespace MobileCenterApp
 			set { }
 		}
 
+		public AppClass App
+		{
+			get { return Database.Main.GetObject<AppClass>(AppId); }
+		}
+
 		[Indexed]
 		public string AppId { get; set; }
 

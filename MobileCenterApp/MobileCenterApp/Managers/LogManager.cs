@@ -17,5 +17,13 @@ namespace MobileCenterApp
 			LogEvent("Login", new Dictionary<string, string> { { "Username", username } });
 		}
 
+		public void PageView(string title,Dictionary<string,string> data = null)
+		{
+			if (data == null)
+				data = new Dictionary<string, string> ();
+			data["Page Title"] = title;
+			LogEvent("Page View", data);
+		}
+
 	}
 }

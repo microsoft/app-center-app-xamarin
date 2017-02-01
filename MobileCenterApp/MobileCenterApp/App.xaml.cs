@@ -7,6 +7,7 @@ using MobileCenterApi;
 using SimpleAuth;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace MobileCenterApp
 {

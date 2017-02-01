@@ -16,7 +16,7 @@ namespace MobileCenterApp
 			var item = e.SelectedItem as Branch;
 			if (item == null)
 				return;
-			(BindingContext as BuildViewModel)?.BranchSelected(item);
+			await (BindingContext as BuildViewModel)?.BranchSelected(item);
 		}
 	}
 }

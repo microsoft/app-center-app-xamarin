@@ -21,9 +21,13 @@ namespace MobileCenterApp
 
 		public virtual void OnAppearing()
 		{
-
+			LoggingPageView();
 		}
 
+		protected virtual void LoggingPageView()
+		{
+			LogManager.Shared.PageView(Title);
+		}
 		public virtual void OnDisappearing()
 		{
 

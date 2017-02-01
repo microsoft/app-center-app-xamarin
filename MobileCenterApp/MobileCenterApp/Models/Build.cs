@@ -30,5 +30,16 @@ namespace MobileCenterApp
 
 		[Indexed]
 		public string AppId { get; set; }
+
+		[Indexed]
+		public string AppIdBranchId
+		{
+			get { return $"{AppId} - {SourceBranch}"; }
+			set { }
+		}
+
+		public CommitClass LastCommit => Database.Main.GetObject<CommitClass>(SourceVersion);
+
+		public string DisplayText => $"Build:{BuildNumber} - {LastCommit?.Message}";
 	}
 }

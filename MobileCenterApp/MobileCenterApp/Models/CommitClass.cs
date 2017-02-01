@@ -2,7 +2,7 @@
 using SQLite;
 namespace MobileCenterApp
 {
-	public class Commit
+	public class CommitClass
 	{
 		[PrimaryKey]
 		public string Sha { get; set; }
@@ -11,5 +11,7 @@ namespace MobileCenterApp
 
 		[Indexed]
 		public string AppId { get; set; }
+
+		public string Message { get; set; }
 	}
 }

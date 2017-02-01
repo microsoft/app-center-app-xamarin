@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,6 +62,8 @@ namespace MobileCenterApi
 		{
 			try
 			{
+				if (Verbose)
+					Console.WriteLine(data);
 				return base.Deserialize<T>(data);
 			}
 			catch (System.Exception ex)
@@ -72,6 +75,8 @@ namespace MobileCenterApi
 		protected override T Deserialize<T>(string data, object inObject)
 		{
 			try{
+				if (Verbose)
+					Console.WriteLine(data);
 				return base.Deserialize<T>(data, inObject);
 			}
 			catch (System.Exception ex)
@@ -80,11 +85,32 @@ namespace MobileCenterApi
 				throw ex;
 			}
 		}
+		[Path("/v0.1/apps/{owner_name}/{app_name}/commits/batch/{sha_collection}")]
+		public virtual Task<CommitsResult[]> GetCommits(string sha_collection, string owner_name, string app_name, string form = "full")
+		{
+			var queryParameters = new Dictionary<string, string> { { "sha_collection", sha_collection }, { "owner_name", owner_name }, { "app_name", app_name }, { "form", form } };
+			return Get<CommitsResult[]>(queryParameters: queryParameters, authenticated: true);
+		}
+	}
+
+	public partial class CommitsResult
+	{
+		public string Sha { get; set; }
+		public Commit Commit { get; set; }
+		public Owner Author { get; set; }
 	}
 
 	public partial class BranchStatus
 	{
         [JsonProperty("branch")]
 		public Branch Branch { get; set; }
+	}
+
+	public partial class Commit
+	{
+		[JsonProperty("message")]
+		public string Message { get; set; }
+
+		public Owner Author { get; set; }
 	}
 }

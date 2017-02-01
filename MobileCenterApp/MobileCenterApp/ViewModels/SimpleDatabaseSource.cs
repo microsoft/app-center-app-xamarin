@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using SimpleDatabase;
 
 namespace MobileCenterApp
 {
-	public class SimpleDatabaseSource<T> : IList where T : new()
+	public class SimpleDatabaseSource<T> : IList, INotifyCollectionChanged where T : new()
 	{
 		public object this[int index]
 		{
@@ -25,10 +26,21 @@ namespace MobileCenterApp
 		}
 
 		GroupInfo groupInfo;
+
+		public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+		public void ResfreshData()
+		{
+			CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs (NotifyCollectionChangedAction.Reset));
+		}
+
 		public GroupInfo GroupInfo
 		{
 			get { return groupInfo ?? (groupInfo =Database.GetGroupInfo<T>()); }
-			set { groupInfo = value; }
+			set { 
+				groupInfo = value;
+				ResfreshData();
+			}
 		}
 
 		public int Count

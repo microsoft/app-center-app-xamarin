@@ -124,7 +124,7 @@ namespace MobileCenterApp
 			var branchStatus = await Api.BuildGetBranches(app.Owner.Name, app.Name);
 
 			var branches  = new List<Branch>();
-			var commits = new List<Commit>();
+			var commits = new List<CommitClass>();
 			var builds = new List<Build>();
 			branchStatus.ToList().ForEach(x =>
 			{
@@ -158,6 +158,36 @@ namespace MobileCenterApp
 			var config = await Api.BuildGetRepositoryConfiguration(app.Owner.Name, app.Name,true).ConfigureAwait(false);
 			Database.Main.InsertOrReplace(config.ToRepoConfig(app.Id));
 			Database.Main.ClearMemory();
+		}
+
+		Task syncBuildsTask;
+		public Task SyncBuilds(Branch branch)
+		{
+			if (syncBuildsTask?.IsCompleted ?? true)
+				syncBuildsTask = syncBranches(branch);
+			return syncBuildsTask;
+		}
+
+		async Task syncBranches(Branch branch)
+		{
+			var app = branch.App;
+			var builds = await Api.BuildGetBranchBuilds(branch.Name, app.Owner.Name, app.Name).ConfigureAwait(false);
+			var myBuilds = builds.Select(x => x.ToBuild(app.Id)).ToList();
+			await Database.Main.ExecuteAsync("delete from Build where AppId = ? and SourceBranch = ?", app.Id, branch.Name);
+
+			Database.Main.InsertOrReplaceAll(myBuilds);
+			//Hopefully we can remove this nonsense later.
+			var missingShas = myBuilds.Where(x => x.LastCommit == null || string.IsNullOrWhiteSpace(x.LastCommit.Message)).Select(x=> x.SourceVersion).ToList();
+			if (missingShas.Any())
+			{
+				var shaString = string.Join(",", missingShas);
+				var commits = await Api.GetCommits(shaString, app.Owner.Name, app.Name,"full");
+				if (commits.Any())
+				{
+					Database.Main.InsertOrReplaceAll(commits.Select(x => x.ToCommit(app.Id)));
+				}
+			}
+
 		}
 	}
 }

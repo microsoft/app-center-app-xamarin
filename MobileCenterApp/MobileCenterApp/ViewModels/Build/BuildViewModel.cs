@@ -33,7 +33,7 @@ namespace MobileCenterApp
 
 		public AppClass CurrentApp { get; set; }
 
-		public override async void OnAppearing()
+		public override void OnAppearing()
 		{
 			base.OnAppearing();
 			NotificationManager.Shared.AppsChanged += Shared_AppsChanged;

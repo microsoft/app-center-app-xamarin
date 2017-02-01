@@ -60,13 +60,14 @@ namespace MobileCenterApp
 			};
 		}
 
-		public static Commit ToCommit(this MobileCenterApi.Commit c, string appId)
+		public static CommitClass ToCommit(this MobileCenterApi.Commit c, string appId)
 		{
-			return new Commit
+			return new CommitClass
 			{
 				AppId = appId,
 				Sha = c.Sha,
 				Url = c.Url,
+				Message = c.Message,
 			};
 		}
 
@@ -97,6 +98,17 @@ namespace MobileCenterApp
 				RepoUrl = rc.RepoUrl,
 				State = rc.State,
 				Type = rc.Type,
+			};
+		}
+
+		public static CommitClass ToCommit(this MobileCenterApi.CommitsResult c, string appId)
+		{
+			return new CommitClass
+			{
+				AppId = appId,
+				Sha = c.Sha,
+				Url = c.Commit.Url,
+				Message = c.Commit.Message,
 			};
 		}
 	}

@@ -79,7 +79,7 @@
       <DependentUpon>DistributePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Models\Branch.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Commit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\CommitClass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Build.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Build\BranchDetailsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\Build\BranchDetailsPage.xaml.cs">

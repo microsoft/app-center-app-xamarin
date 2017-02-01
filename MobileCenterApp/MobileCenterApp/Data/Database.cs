@@ -18,7 +18,7 @@ namespace MobileCenterApp
 				typeof(AppClass),
 				typeof(Owner),
 				typeof(Branch),
-				typeof(Commit),
+				typeof(CommitClass),
 				typeof(Build),
 				typeof(RepoConfig)
 			);

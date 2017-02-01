@@ -34,18 +34,16 @@ namespace MobileCenterApp
 
 		public string OwnerId { get; set; }
 
-		Owner owner;
 		[Ignore]
 		public Owner Owner 
 		{
 			get {
-				if (owner == null || owner.Id != OwnerId)
-					owner = Database.Main.GetObject<Owner>(OwnerId);
-				return owner;
+				 return Database.Main.GetObject<Owner>(OwnerId);
 			}
 			set {
-				ProcPropertyChanged(ref owner, value);
-				OwnerId = owner?.Id;
+				if(value?.Id != OwnerId)
+					ProcPropertyChanged (nameof(Owner));
+				OwnerId = value?.Id;
 			}
 		}
 
