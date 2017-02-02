@@ -28,37 +28,13 @@ namespace MobileCenterApp
 			}
 		}
 
-		public override async void OnAppearing()
+		public override async Task Refresh()
 		{
-			base.OnAppearing();
-			await RefreshData();
+			Items.ResfreshData();
+			await SyncManager.Shared.SyncBuilds(CurrentBranch);
+			SetGroupInfo();
 		}
 
-		public async Task RefreshData()
-		{
-			Items?.ResfreshData();
-			IsLoading = true;
-			try
-			{
-				await SyncManager.Shared.SyncBuilds(CurrentBranch);
-				SetGroupInfo();
-			}
-			catch (Exception ex)
-			{
-				if (ex.Data.Contains("HttpContent"))
-				{
-					Console.WriteLine(ex.Data["HttpContent"]);
-				}
-				else
-					Console.WriteLine(ex);
-			}
-			finally
-			{
-				IsLoading = false;
-			}
-			Items?.ResfreshData();
-
-		}
 
 		void SetGroupInfo()
 		{

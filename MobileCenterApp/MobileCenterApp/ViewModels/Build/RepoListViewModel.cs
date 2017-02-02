@@ -33,27 +33,9 @@ namespace MobileCenterApp
 			await Refresh();
 		}
 
-		public async Task Refresh()
+		public override async Task Refresh()
 		{
-			IsLoading = true;
-			try
-			{
-				Repositories = await SyncManager.Shared.Api.BuildGetRepositories("github", CurrentApp
-																  .Owner.Name, CurrentApp.Name, "lite");
-			}
-			catch (Exception ex)
-			{
-				if (ex.Data.Contains("HttpContent"))
-				{
-					Console.WriteLine(ex.Data["HttpContent"]);
-				}
-				else
-					Console.WriteLine(ex);
-			}
-			finally
-			{
-				IsLoading = false;
-			}
+			Repositories = await SyncManager.Shared.Api.BuildGetRepositories("github", CurrentApp.Owner.Name, CurrentApp.Name, "lite");
 		}
 
 		public async Task SelectRepo(MobileCenterApi.SourceRepository repo)

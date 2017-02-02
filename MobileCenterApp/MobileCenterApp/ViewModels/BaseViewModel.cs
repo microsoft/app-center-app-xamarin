@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+
 namespace MobileCenterApp
 {
 	public class BaseViewModel : BaseModel
@@ -19,9 +21,30 @@ namespace MobileCenterApp
 			set { ProcPropertyChanged(ref isLoading, value); }
 		}
 
-		public virtual void OnAppearing()
+		public virtual async void OnAppearing()
 		{
 			LoggingPageView();
+			var refresh = Refresh();
+			if (refresh.IsCompleted)
+				return;
+			IsLoading = true;
+			try
+			{
+				await refresh;
+			}
+			catch (Exception ex)
+			{
+				if (ex.Data.Contains("HttpContent"))
+				{
+					Console.WriteLine(ex.Data["HttpContent"]);
+				}
+				else
+					Console.WriteLine(ex);
+			}
+			finally
+			{
+				IsLoading = false;
+			}
 		}
 
 		protected virtual void LoggingPageView()
@@ -31,6 +54,11 @@ namespace MobileCenterApp
 		public virtual void OnDisappearing()
 		{
 
+		}
+
+		public virtual Task Refresh()
+		{
+			return Task.FromResult(true);
 		}
 	}
 }

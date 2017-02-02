@@ -38,13 +38,11 @@ namespace MobileCenterApp
 			base.OnAppearing();
 			NotificationManager.Shared.AppsChanged += Shared_AppsChanged;
 			NotificationManager.Shared.BranchesChanged += Shared_BranchesChanged;
-			SetupData();
 		}
 
-		async void SetupData()
+		public override async Task Refresh()
 		{
 			SetCurrentApp();
-			IsLoading = true;
 			var syncRepoTask = SyncManager.Shared.SyncRepoConfig(CurrentApp);
 			//Lets check if there are any repo configs for this app;
 			var hasRepoConfigs = HasRepoConfigs();
@@ -69,14 +67,14 @@ namespace MobileCenterApp
 			{
 				await SetupBranches();
 			}
-			else {
+			else
+			{
 				var shouldAddRepo = await App.Current.MainPage.DisplayAlert("No Repo", "Would you like to associate a repo now?", "Ok", "Maybe later");
 				if (shouldAddRepo)
-					await NavigationService.PushModalAsync(new RepoListViewModel { CurrentApp = CurrentApp});
+					await NavigationService.PushModalAsync(new RepoListViewModel { CurrentApp = CurrentApp });
 			}
-
-			IsLoading = false;
 		}
+
 
 		bool HasRepoConfigs()
 		{
