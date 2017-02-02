@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MobileCenterApp
@@ -10,8 +11,8 @@ namespace MobileCenterApp
 			Title = "Logs";
 		}
 
-		string[] logs;
-		public string[] Logs
+		List<LogSection> logs;
+		public List<LogSection> Logs
 		{
 			get { return logs; }
 			set { ProcPropertyChanged(ref logs, value); }
@@ -26,12 +27,14 @@ namespace MobileCenterApp
 
 		public override async Task Refresh()
 		{
-			if (logs?.Length > 0 || CurrentBuild == null)
+			if (logs?.Count > 0 || CurrentBuild == null)
 				return;
-			
-			var app = Database.Main.GetObject<AppClass>(CurrentBuild.AppId);
-			var l = await SyncManager.Shared.Api.BuildGetBuildLogs(CurrentBuild.BuildId, app.Owner.Name, app.Name);
-			Logs = l.Logs;
+
+			//var app = Database.Main.GetObject<AppClass>(CurrentBuild.AppId);
+			//var l = await SyncManager.Shared.Api.BuildGetBuildLogs(CurrentBuild.BuildId, app.Owner.Name, app.Name);
+			//Logs = l.Logs;
+			var data = await SyncManager.Shared.DownloadLog(CurrentBuild);
+			Logs = data;
 		}
 	}
 }

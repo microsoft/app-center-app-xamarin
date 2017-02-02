@@ -98,6 +98,8 @@
       <DependentUpon>BuildLogPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Build\BuildLogViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\LogSection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\LogLine.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />

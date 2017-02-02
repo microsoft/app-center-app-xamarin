@@ -1,14 +1,35 @@
-﻿@model string[]
+﻿@model List<LogSection>
+@helper ShowTree(List<LogSection> sections)
+{
+    <ul>
+        @foreach (var s in sections)
+        {
+            <li>
+                @s.Message
+                @if (s.Lines.Any())
+                {
+                	  foreach(var line in s.Lines){
+                	  <ul>
+						@line
+						</ul>
+                	  }
+                }
+                @if (s.Sections.Any())
+                {
+                    @ShowTree(s.Sections)
+                }
+            </li>
+        }
+    </ul>
+}
 <html>
     <body>
-    @if ((Model?.Length ?? 0) == 0) {
+    @if ((Model?.Count ?? 0) == 0) {
         <p>Empty Log</p>
     } else {
-        <ul>
-            @foreach (var line in Model) {
-                <li>@line</li>
-            }
-        </ul>
+     @ShowTree(Model);
+
     }
     </body>
 </html>
+

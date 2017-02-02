@@ -24,8 +24,136 @@ public partial class LogRazorTemplate : LogRazorTemplateBase
 #line hidden
 
 #line 1 "LogRazorTemplate.cshtml"
-public string[] Model { get; set; }
+public List<LogSection> Model { get; set; }
 
+#line default
+#line hidden
+
+
+#line 2 "LogRazorTemplate.cshtml"
+public static Action<System.IO.TextWriter> ShowTree(List<LogSection> sections)
+{
+#line default
+#line hidden
+return new Action<System.IO.TextWriter>(__razor_helper_writer => {
+
+#line 3 "LogRazorTemplate.cshtml"
+ 
+
+
+#line default
+#line hidden
+WriteLiteralTo(__razor_helper_writer, "    <ul>\n");
+
+
+#line 5 "LogRazorTemplate.cshtml"
+        
+
+#line default
+#line hidden
+
+#line 5 "LogRazorTemplate.cshtml"
+         foreach (var s in sections)
+        {
+
+
+#line default
+#line hidden
+WriteLiteralTo(__razor_helper_writer, "            <li>\n");
+
+WriteLiteralTo(__razor_helper_writer, "                ");
+
+
+#line 8 "LogRazorTemplate.cshtml"
+WriteTo(__razor_helper_writer, s.Message);
+
+
+#line default
+#line hidden
+WriteLiteralTo(__razor_helper_writer, "\n");
+
+
+#line 9 "LogRazorTemplate.cshtml"
+                
+
+#line default
+#line hidden
+
+#line 9 "LogRazorTemplate.cshtml"
+                 if (s.Lines.Any())
+                {
+                	  foreach(var line in s.Lines){
+
+
+#line default
+#line hidden
+WriteLiteralTo(__razor_helper_writer, "                \t  <ul>\n");
+
+WriteLiteralTo(__razor_helper_writer, "\t\t\t\t\t\t");
+
+
+#line 13 "LogRazorTemplate.cshtml"
+WriteTo(__razor_helper_writer, line);
+
+
+#line default
+#line hidden
+WriteLiteralTo(__razor_helper_writer, "\n\t\t\t\t\t\t</ul>\n");
+
+
+#line 15 "LogRazorTemplate.cshtml"
+                	  }
+                }
+
+
+#line default
+#line hidden
+WriteLiteralTo(__razor_helper_writer, "                ");
+
+
+#line 17 "LogRazorTemplate.cshtml"
+                 if (s.Sections.Any())
+                {
+                    
+
+#line default
+#line hidden
+
+#line 19 "LogRazorTemplate.cshtml"
+WriteTo(__razor_helper_writer, ShowTree(s.Sections));
+
+
+#line default
+#line hidden
+
+#line 19 "LogRazorTemplate.cshtml"
+                                         
+                }
+
+
+#line default
+#line hidden
+WriteLiteralTo(__razor_helper_writer, "            </li>\n");
+
+
+#line 22 "LogRazorTemplate.cshtml"
+        }
+
+
+#line default
+#line hidden
+WriteLiteralTo(__razor_helper_writer, "    </ul>\n");
+
+
+#line 24 "LogRazorTemplate.cshtml"
+
+
+#line default
+#line hidden
+});
+
+#line 24 "LogRazorTemplate.cshtml"
+}
 #line default
 #line hidden
 
@@ -35,14 +163,14 @@ public override void Execute()
 WriteLiteral("<html>\n    <body>\n");
 
 
-#line 4 "LogRazorTemplate.cshtml"
+#line 27 "LogRazorTemplate.cshtml"
     
 
 #line default
 #line hidden
 
-#line 4 "LogRazorTemplate.cshtml"
-     if ((Model?.Length ?? 0) == 0) {
+#line 27 "LogRazorTemplate.cshtml"
+     if ((Model?.Count ?? 0) == 0) {
 
 
 #line default
@@ -50,55 +178,29 @@ WriteLiteral("<html>\n    <body>\n");
 WriteLiteral("        <p>Empty Log</p>\n");
 
 
-#line 6 "LogRazorTemplate.cshtml"
+#line 29 "LogRazorTemplate.cshtml"
     } else {
-
-
-#line default
-#line hidden
-WriteLiteral("        <ul>\n");
-
-
-#line 8 "LogRazorTemplate.cshtml"
-            
+     
 
 #line default
 #line hidden
 
-#line 8 "LogRazorTemplate.cshtml"
-             foreach (var line in Model) {
+#line 30 "LogRazorTemplate.cshtml"
+Write(ShowTree(Model));
 
 
 #line default
 #line hidden
-WriteLiteral("                <li>");
 
+#line 30 "LogRazorTemplate.cshtml"
+                     ;
 
-#line 9 "LogRazorTemplate.cshtml"
-               Write(line);
-
-
-#line default
-#line hidden
-WriteLiteral("</li>\n");
-
-
-#line 10 "LogRazorTemplate.cshtml"
-            }
-
-
-#line default
-#line hidden
-WriteLiteral("        </ul>\n");
-
-
-#line 12 "LogRazorTemplate.cshtml"
     }
 
 
 #line default
 #line hidden
-WriteLiteral("    </body>\n</html>");
+WriteLiteral("    </body>\n</html>\n\n");
 
 }
 }

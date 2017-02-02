@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MobileCenterApp.Data;
+using System.IO;
+using SimpleAuth;
 namespace MobileCenterApp
 {
 	public class SyncManager
@@ -121,7 +124,7 @@ namespace MobileCenterApp
 			Task syncBranchTask;
 			syncbranchesTask.TryGetValue(app.Id, out syncBranchTask);
 			if (syncBranchTask?.IsCompleted ?? true)
-				syncBranchTask = syncBranch(app);
+				syncbranchesTask[app.Id] = syncBranchTask = syncBranch(app);
 			return syncBranchTask;
 		}
 
@@ -158,7 +161,7 @@ namespace MobileCenterApp
 			Task syncRepoConfigTask;
 			syncRepoConfigTasks.TryGetValue(app.Id, out syncRepoConfigTask);
 			if (syncRepoConfigTask?.IsCompleted ?? true)
-				syncRepoConfigTask = syncRepoConfig(app);
+				syncRepoConfigTasks[app.Id]= syncRepoConfigTask = syncRepoConfig(app);
 			return syncRepoConfigTask;
 		}
 
@@ -177,7 +180,7 @@ namespace MobileCenterApp
 			Task syncBuildsTask;
 			syncBuildsTasks.TryGetValue(branch.Id, out syncBuildsTask);
 			if (syncBuildsTask?.IsCompleted ?? true)
-				syncBuildsTask = syncBranches(branch);
+				syncBuildsTasks[branch.Id] = syncBuildsTask = syncBranches(branch);
 			return syncBuildsTask;
 		}
 
@@ -202,5 +205,36 @@ namespace MobileCenterApp
 			}
 			syncBuildsTasks.Remove(branch.Id);
 		}
+
+		Dictionary<string, Task<List<LogSection>>> downloadLogsTask = new Dictionary<string, Task<List<LogSection>>>();
+		public Task<List<LogSection>> DownloadLog(Build build)
+		{
+			Task<List<LogSection>> syncBuildsTask;
+			downloadLogsTask.TryGetValue(build.Id, out syncBuildsTask);
+			if (syncBuildsTask?.IsCompleted ?? true)
+				downloadLogsTask[build.Id] = syncBuildsTask = downloadLog(build);
+			return syncBuildsTask;
+		}
+		async Task<List<LogSection>> downloadLog(Build build)
+		{
+			var tempPath = Path.Combine(Locations.TempDir, $"{build.Id}.log");
+			if (File.Exists(tempPath))
+			{
+				return await Task.Run(() =>
+				{
+					var json = File.ReadAllText(tempPath);
+					return json.ToObject<List<LogSection>>();
+				});
+			}
+
+			var app = Database.Main.GetObject<AppClass>(build.AppId);
+			var logData = await Api.BuildGetBuildLogs(build.BuildId, app.Owner.Name, app.Name).ConfigureAwait(false);
+			var logs = logData.ToLogSections();
+			//Write our temp data
+			File.WriteAllText(tempPath, logs.ToJson());
+			return logs;
+
+		}
+
 	}
 }

@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace MobileCenterApp
 {
 	public static class ModelConversionExtensions
@@ -110,6 +114,68 @@ namespace MobileCenterApp
 				Url = c.Commit.Url,
 				Message = c.Commit.Message,
 			};
+		}
+
+		public static List<LogSection> ToLogSections(this MobileCenterApi.LogResponse response)
+		{
+			int i = 0;
+			var logs = ParseLogSection(ref i, response.Logs);
+			return logs;
+		}
+
+		static List<LogSection> ParseLogSection(ref int i, string[] lines, int depth = 0)
+		{
+			var startingDepth = depth;
+			var sections = new List<LogSection>();
+			LogSection currentSection = null;
+			while (i < lines.Length)
+			{
+				var line = lines[i];
+
+				var parts = line.Split(new[] { ' ' }, 2);
+				string date = parts[0];
+				string message = parts[1];
+
+				if (!message.StartsWith("##[section]"))
+				{
+					if (currentSection == null)
+						return sections;
+					currentSection.Lines.Add(message);
+					i++;
+					continue;
+				}
+				var isStart = message.Contains("Start:") || message.Contains("Starting:");
+				if (isStart)
+				{
+					depth++;
+					if (currentSection != null)
+					{
+						currentSection.Sections.AddRange(ParseLogSection(ref i, lines, depth));
+					}
+					else
+					{
+						message = message.Substring(message.IndexOf(':') + 1).Trim();
+						sections.Add(currentSection = new LogSection
+						{
+							Message = message,
+						});
+						i++;
+					}
+				}
+				else
+				{
+					depth--;
+					if (depth < startingDepth)
+						return sections;
+
+					i++;
+					currentSection = null;
+				}
+
+			}
+
+			return sections;
+
 		}
 	}
 }
