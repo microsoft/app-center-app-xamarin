@@ -41,6 +41,7 @@ namespace MobileCenterApp
 			try
 			{
 				await SyncManager.Shared.SyncBuilds(CurrentBranch);
+				SetGroupInfo();
 			}
 			catch (Exception ex)
 			{
