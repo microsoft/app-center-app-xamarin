@@ -7,6 +7,7 @@ namespace MobileCenterApp
 	{
 		public BranchDetailsViewModel()
 		{
+			Title = "Branch Details";
 		}
 
 		SimpleDatabaseSource<Build> items = new SimpleDatabaseSource<Build> { Database = Database.Main, GroupInfo = new SimpleDatabase.GroupInfo { } };

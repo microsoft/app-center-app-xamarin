@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <local:BasePage xmlns:local="clr-namespace:MobileCenterApp;" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MobileCenterApp.RepoListPage">
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Name="Cancel" Command="{Binding CancelCommand}">
+		</ToolbarItem>
+	</ContentPage.ToolbarItems>
 	<StackLayout>
 		<ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}"/>
-		<ListView IsGroupingEnabled="true" GroupDisplayBinding="{Binding Display}" GroupShortNameBinding="{Binding Display}" ItemsSource="{Binding Items}" ItemSelected="Handle_ItemSelected">
+		<ListView ItemsSource="{Binding Repositories}" ItemSelected="Handle_ItemSelected">
 				<ListView.ItemTemplate>
 					<DataTemplate>
-						<TextCell Text="{Binding Name}" Detail="{Binding BuildStatus}" />
+						<TextCell Text="{Binding Name}" Detail="{Binding Description}" />
 					</DataTemplate>
 				</ListView.ItemTemplate>
 			</ListView>
