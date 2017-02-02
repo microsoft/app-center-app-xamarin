@@ -23,6 +23,7 @@ namespace MobileCenterApp
 		public const string DistributePageIcon = "app-distribute.svg";
 		public const string CrashesPageIcon = "app-crashes.svg";
 		public const string AnalyticsPageIcon = "app-analytics.svg";
+		public const string BuildConfigureIcon = "settings.svg";
 	}
 }
 

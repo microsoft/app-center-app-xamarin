@@ -44,6 +44,7 @@
     <EmbeddedResource Include="SVG\app-distribute.svg" />
     <EmbeddedResource Include="SVG\app-identity.svg" />
     <EmbeddedResource Include="SVG\app-overview.svg" />
+    <EmbeddedResource Include="SVG\settings.svg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>
