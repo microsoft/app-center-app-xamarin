@@ -24,7 +24,10 @@ namespace MobileCenterApp
 			set
 			{
 				if (ProcPropertyChanged(ref currentBranch, value))
+				{
 					SetGroupInfo();
+					Title = CurrentBranch?.Name ?? "Branch Details";
+				}
 			}
 		}
 
@@ -49,6 +52,10 @@ namespace MobileCenterApp
 		public async Task BuildSelected(Build build)
 		{
 			await NavigationService.PushAsync(new BuildLogViewModel { CurrentBuild = build });
+		}
+		protected override void LoggingPageView()
+		{
+			LogManager.Shared.PageView("Branch Details");
 		}
 	}
 }

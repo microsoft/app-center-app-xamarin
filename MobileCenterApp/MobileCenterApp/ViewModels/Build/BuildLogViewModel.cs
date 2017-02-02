@@ -8,7 +8,7 @@ namespace MobileCenterApp
 	{
 		public BuildLogViewModel()
 		{
-			Title = "Logs";
+			Title = "Build Log";
 		}
 
 		List<LogSection> logs;
@@ -18,7 +18,16 @@ namespace MobileCenterApp
 			set { ProcPropertyChanged(ref logs, value); }
 		}
 
-		public Build CurrentBuild { get; set; }
+		Build currentBuild;
+		public Build CurrentBuild { 
+			get { return currentBuild;}
+			set {
+				if (ProcPropertyChanged(ref currentBuild, value))
+				{
+					Title = $"{currentBuild.BuildId} : Logs";
+				}
+			}
+		}
 
 		public override async void OnAppearing()
 		{
@@ -35,6 +44,10 @@ namespace MobileCenterApp
 			//Logs = l.Logs;
 			var data = await SyncManager.Shared.DownloadLog(CurrentBuild);
 			Logs = data;
+		}
+		protected override void LoggingPageView()
+		{
+			LogManager.Shared.PageView("Build Logs");
 		}
 	}
 }
