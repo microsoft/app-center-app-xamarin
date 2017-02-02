@@ -111,9 +111,11 @@ namespace MobileCenterApp
 			return false;
 		}
 
-		Task syncBranchTask;
+		Dictionary<string, Task> syncbranchesTask = new Dictionary<string, Task>();
 		public Task SyncBranch(AppClass app)
 		{
+			Task syncBranchTask;
+			syncbranchesTask.TryGetValue(app.Id, out syncBranchTask);
 			if (syncBranchTask?.IsCompleted ?? true)
 				syncBranchTask = syncBranch(app);
 			return syncBranchTask;
@@ -141,13 +143,16 @@ namespace MobileCenterApp
 			var distinctBuilds = builds.DistinctBy(x => x.Id).ToList();
 			Database.Main.InsertOrReplaceAll(distinctBuilds);
 			Database.Main.ClearMemory();
-			NotificationManager.Shared.ProcAppsChanged(app.Id);
+			NotificationManager.Shared.ProcBranchesChanged(app.Id);
+			syncbranchesTask.Remove(app.Id);
 		}
 
 
-		Task syncRepoConfigTask;
+		Dictionary<string, Task> syncRepoConfigTasks = new Dictionary<string, Task>();
 		public Task SyncRepoConfig(AppClass app)
 		{
+			Task syncRepoConfigTask;
+			syncRepoConfigTasks.TryGetValue(app.Id, out syncRepoConfigTask);
 			if (syncRepoConfigTask?.IsCompleted ?? true)
 				syncRepoConfigTask = syncRepoConfig(app);
 			return syncRepoConfigTask;
@@ -158,11 +163,15 @@ namespace MobileCenterApp
 			var config = await Api.BuildGetRepositoryConfiguration(app.Owner.Name, app.Name,true).ConfigureAwait(false);
 			Database.Main.InsertOrReplace(config.ToRepoConfig(app.Id));
 			Database.Main.ClearMemory();
+			syncRepoConfigTasks.Remove(app.Id);
 		}
 
-		Task syncBuildsTask;
+
+		Dictionary<string, Task> syncBuildsTasks = new Dictionary<string, Task>();
 		public Task SyncBuilds(Branch branch)
 		{
+			Task syncBuildsTask;
+			syncBuildsTasks.TryGetValue(branch.Id, out syncBuildsTask);
 			if (syncBuildsTask?.IsCompleted ?? true)
 				syncBuildsTask = syncBranches(branch);
 			return syncBuildsTask;
@@ -187,7 +196,7 @@ namespace MobileCenterApp
 					Database.Main.InsertOrReplaceAll(commits.Select(x => x.ToCommit(app.Id)));
 				}
 			}
-
+			syncBuildsTasks.Remove(branch.Id);
 		}
 	}
 }
