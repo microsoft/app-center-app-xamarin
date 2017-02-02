@@ -75,7 +75,7 @@ namespace MobileCenterApp
 		{
 			return new Build
 			{
-				Id = b.Id,
+				BuildId = b.Id,
 				AppId = appId,
 				BuildNumber = b.BuildNumber,
 				FinishTime = b.FinishTime,

@@ -90,6 +90,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Pages\Build\RepoListPage.xaml.cs">
       <DependentUpon>RepoListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\RazorWebView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Build\LogRazorTemplate.cs">
+      <DependentUpon>LogRazorTemplate.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Build\BuildLogPage.xaml.cs">
+      <DependentUpon>BuildLogPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Build\BuildLogViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />
@@ -153,5 +161,14 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Build\RepoListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Build\BuildLogPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Pages\Build\LogRazorTemplate.cshtml">
+      <Generator>RazorTemplatePreprocessor</Generator>
+      <LastGenOutput>LogRazorTemplate.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 </Project>

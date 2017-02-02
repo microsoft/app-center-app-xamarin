@@ -6,7 +6,13 @@ namespace MobileCenterApp
 	public class Build
 	{
 		[PrimaryKey]
-		public int Id { get; set; }
+		public string Id { 
+			get { return $"{AppIdBranchId} - {BuildId}"; }
+			set { }
+		}
+
+		[Indexed]
+		public int BuildId { get; set; }
 
 		public string BuildNumber { get; set; }
 

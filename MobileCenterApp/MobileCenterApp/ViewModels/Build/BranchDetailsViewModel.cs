@@ -68,5 +68,10 @@ namespace MobileCenterApp
 			groupInfo.Params = CurrentBranch?.Name;
 			Items.GroupInfo = groupInfo;
 		}
+
+		public async Task BuildSelected(Build build)
+		{
+			await NavigationService.PushAsync(new BuildLogViewModel { CurrentBuild = build });
+		}
 	}
 }

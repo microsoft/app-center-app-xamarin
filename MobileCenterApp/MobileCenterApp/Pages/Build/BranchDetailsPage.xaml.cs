@@ -13,10 +13,10 @@ namespace MobileCenterApp
 		}
 		async void Handle_ItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
 		{
-			//var item = e.SelectedItem as Branch;
-			//if (item == null)
-			//	return;
-			//(BindingContext as BuildViewModel)?.BranchSelected(item);
+			var item = e.SelectedItem as Build;
+			if (item == null)
+				return;
+			await (BindingContext as BranchDetailsViewModel)?.BuildSelected(item);
 		}
 	}
 }

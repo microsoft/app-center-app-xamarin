@@ -1,0 +1,14 @@
+﻿@model string[]
+<html>
+    <body>
+    @if ((Model?.Length ?? 0) == 0) {
+        <p>Empty Log</p>
+    } else {
+        <ul>
+            @foreach (var line in Model) {
+                <li>@line</li>
+            }
+        </ul>
+    }
+    </body>
+</html>

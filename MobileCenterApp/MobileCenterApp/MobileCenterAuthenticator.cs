@@ -389,4 +389,13 @@ namespace MobileCenterApi
 		[JsonProperty("site_admin")]
 		public bool SiteAdmin { get; set; }
 	}
+
+	public partial class LogResponse
+	{
+		[JsonProperty("count")]
+		public int Count { get; set; }
+
+		[JsonProperty("value")]
+		public string[] Logs { get; set; }
+	}
 }
