@@ -7,7 +7,11 @@ namespace MobileCenterApp
 	public class SyncManager
 	{
 		public static SyncManager Shared { get; set; } = new SyncManager();
-		public MobileCenterApi.MobileCenterAPIServiceApiKeyApi Api { get; set; } = new MobileCenterApi.MobileCenterAPIServiceApiKeyApi("MobileCenter", "Ttw8AMUjYeEkr==");
+		public MobileCenterApi.MobileCenterAPIServiceApiKeyApi Api { get; set; } = new MobileCenterApi.MobileCenterAPIServiceApiKeyApi("MobileCenter", "Ttw8AMUjYeEkr=="
+#if __MOBILE__
+		                                                                                                                               ,new ModernHttpClient.NativeMessageHandler()
+#endif
+																																	  );
 		public SyncManager()
 		{
 			#if DEBUG
