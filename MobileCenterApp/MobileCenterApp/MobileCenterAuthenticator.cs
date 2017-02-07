@@ -398,4 +398,9 @@ namespace MobileCenterApi
 		[JsonProperty("value")]
 		public string[] Logs { get; set; }
 	}
+	public partial class ReasonStackFrame
+	{
+        [Newtonsoft.Json.JsonProperty("line")]
+		public int? Line { get; set; }
+	}
 }

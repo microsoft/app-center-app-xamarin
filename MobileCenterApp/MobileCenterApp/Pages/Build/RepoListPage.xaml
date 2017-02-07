@@ -7,11 +7,11 @@
 	<StackLayout>
 		<ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}"/>
 		<ListView ItemsSource="{Binding Repositories}" ItemSelected="Handle_ItemSelected">
-				<ListView.ItemTemplate>
-					<DataTemplate>
-						<TextCell Text="{Binding Name}" Detail="{Binding Description}" />
-					</DataTemplate>
-				</ListView.ItemTemplate>
-			</ListView>
+			<ListView.ItemTemplate>
+				<DataTemplate>
+					<TextCell Text="{Binding Name}" Detail="{Binding Description}" />
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
 	</StackLayout>
 </local:BasePage>

@@ -1180,8 +1180,8 @@ namespace MobileCenterApi {
         [Newtonsoft.Json.JsonProperty("file")]
         public string File {get; set;}
         
-        [Newtonsoft.Json.JsonProperty("line")]
-        public int Line {get; set;}
+        //[Newtonsoft.Json.JsonProperty("line")]
+        //public int Line {get; set;}
         
         [Newtonsoft.Json.JsonProperty("app_code")]
         public bool AppCode {get; set;}
@@ -3210,8 +3210,14 @@ namespace MobileCenterApi {
         
         [Path("/v0.1/apps/{owner_name}/{app_name}/crash_groups")]
         public virtual Task<CrashGroup[]> GetCrashGroups(string owner_name, string app_name, string last_occurrence_from = null, string last_occurrence_to = null, string app_version = null, string group_type = null, string group_status = null, string group_text_search = null) {
-            var queryParameters = new Dictionary<string,string>{ { "owner_name" , owner_name },{ "app_name" , app_name },{ "last_occurrence_from" , last_occurrence_from },{ "last_occurrence_to" , last_occurrence_to },{ "app_version" , app_version },{ "group_type" , group_type },{ "group_status" , group_status },{ "group_text_search" , group_text_search } };
-            return Get<CrashGroup[]>( queryParameters: queryParameters, authenticated: true );
+            var queryParameters = new Dictionary<string,string>{ { "owner_name" , owner_name },{ "app_name" , app_name },{ "app_version" , app_version },{ "group_status" , group_status },{ "group_text_search" , group_text_search } };
+			if (!string.IsNullOrWhiteSpace(last_occurrence_from))
+				queryParameters.Add("last_occurrence_from", last_occurrence_from);
+			if (!string.IsNullOrWhiteSpace(last_occurrence_to))
+				queryParameters.Add("last_occurrence_to", last_occurrence_to);
+			if (!string.IsNullOrWhiteSpace(group_type))
+				queryParameters.Add("group_type", group_type);
+			return Get<CrashGroup[]>( queryParameters: queryParameters, authenticated: true );
         }
         
         [Path("/v0.1/apps/{owner_name}/{app_name}/crash_group_counts")]
