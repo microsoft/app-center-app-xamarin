@@ -3,6 +3,7 @@ using System.IO;
 using NGraphics;
 using Android.Widget;
 using Android.Graphics;
+using System.Diagnostics;
 
 namespace MobileCenterApp
 {
