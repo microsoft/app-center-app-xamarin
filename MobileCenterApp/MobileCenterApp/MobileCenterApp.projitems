@@ -49,7 +49,6 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ViewModelToPageConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\User.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\ModelConversionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\Build\BuildPage.xaml.cs">
       <DependentUpon>BuildPage.xaml</DependentUpon>
     </Compile>
@@ -100,6 +99,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Build\BuildLogViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\LogSection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\LogLine.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ModelConversionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />
