@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -44,17 +45,17 @@ namespace MobileCenterApp
 			try
 			{
 				var resp =await SyncManager.Shared.Api.PostBuildCreateRepositoryConfiguration(new MobileCenterApi.RepoInfo { RepoUrl = repo.CloneUrl }, CurrentApp.Owner.Name, CurrentApp.Name);
-				Console.WriteLine(resp.Message);
+				Debug.WriteLine(resp.Message);
 				await NavigationService.PopModalAsync();
 			}
 			catch (Exception ex)
 			{
 				if (ex.Data.Contains("HttpContent"))
 				{
-					Console.WriteLine(ex.Data["HttpContent"]);
+					Debug.WriteLine(ex.Data["HttpContent"]);
 				}
 				else
-					Console.WriteLine(ex);
+					Debug.WriteLine(ex);
 				await App.Current.MainPage.DisplayAlert("Error", "There was an error adding the repo", "Ok");
 
 			}

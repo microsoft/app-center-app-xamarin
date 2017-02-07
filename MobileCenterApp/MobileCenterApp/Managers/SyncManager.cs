@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using MobileCenterApp.Data;
@@ -90,9 +91,9 @@ namespace MobileCenterApp
 			{
 				if (ex.Data.Contains("HttpContent"))
 				{
-					Console.WriteLine(ex.Data["HttpContent"]);
+					Debug.WriteLine(ex.Data["HttpContent"]);
 				}
-				Console.WriteLine(ex);
+				Debug.WriteLine(ex);
 			}
 			return false;
 		}
@@ -110,10 +111,10 @@ namespace MobileCenterApp
 			{
 				if (ex.Data.Contains("HttpContent"))
 				{
-					Console.WriteLine(ex.Data["HttpContent"]);
+					Debug.WriteLine(ex.Data["HttpContent"]);
 				}
 				else
-					Console.WriteLine(ex);
+					Debug.WriteLine(ex);
 			}
 			return false;
 		}

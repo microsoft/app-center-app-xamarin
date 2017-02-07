@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using SimpleDatabase;
 
 namespace MobileCenterApp
@@ -12,7 +13,7 @@ namespace MobileCenterApp
 		{
 			get
 			{
-				Console.WriteLine($"Loading {index}");
+				Debug.WriteLine($"Loading {index}");
 				return new GroupedList<T>(Database,GroupInfo, index)
 				{
 					Display = Database?.SectionHeader<T>(GroupInfo,index) ?? "",
@@ -197,7 +198,7 @@ namespace MobileCenterApp
 		{
 			get
 			{
-				Console.WriteLine($"Loading {Section}:{index}");
+				Debug.WriteLine($"Loading {Section}:{index}");
 				return Database.ObjectForRow<T>(GroupInfo, Section, index);
 			}
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace MobileCenterApp
@@ -36,10 +37,10 @@ namespace MobileCenterApp
 			{
 				if (ex.Data.Contains("HttpContent"))
 				{
-					Console.WriteLine(ex.Data["HttpContent"]);
+					Debug.WriteLine(ex.Data["HttpContent"]);
 				}
 				else
-					Console.WriteLine(ex);
+					Debug.WriteLine(ex);
 			}
 			finally
 			{

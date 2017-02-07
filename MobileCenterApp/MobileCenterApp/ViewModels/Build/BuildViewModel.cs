@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace MobileCenterApp
@@ -57,10 +58,10 @@ namespace MobileCenterApp
 			{
 				if (ex.Data.Contains("HttpContent"))
 				{
-					Console.WriteLine(ex.Data["HttpContent"]);
+					Debug.WriteLine(ex.Data["HttpContent"]);
 				}
 				else
-					Console.WriteLine(ex);
+					Debug.WriteLine(ex);
 			}
 			//Lets check again after the sync!
 			if (hasRepoConfigs || HasRepoConfigs())
@@ -94,7 +95,7 @@ namespace MobileCenterApp
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine(ex);
+				Debug.WriteLine(ex);
 			}
 		}
 

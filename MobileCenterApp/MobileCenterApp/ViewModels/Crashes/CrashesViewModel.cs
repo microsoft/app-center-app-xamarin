@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace MobileCenterApp
@@ -15,7 +16,7 @@ namespace MobileCenterApp
 		{
 			var app = Database.Main.GetObject<AppClass>(Settings.CurrentApp);
 			var crashes = await SyncManager.Shared.Api.GetCrashGroups(app.Owner.Name, app.Name);
-			Console.WriteLine(crashes);
+			Debug.WriteLine(crashes);
 		}
 	}
 }

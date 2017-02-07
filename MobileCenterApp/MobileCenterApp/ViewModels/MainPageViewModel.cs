@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -48,7 +49,7 @@ namespace MobileCenterApp
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine(ex);
+				Debug.WriteLine(ex);
 			}
 		});
 
@@ -88,7 +89,7 @@ namespace MobileCenterApp
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine(ex);
+				Debug.WriteLine(ex);
 			}
 		}
 

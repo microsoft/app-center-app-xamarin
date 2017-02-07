@@ -51,8 +51,8 @@ namespace MobileCenterApp
 				image.AccessibilityIdentifier = fileName;
 				return image;
 			} catch (Exception ex) {
-				Console.WriteLine (ex);
-				Console.WriteLine ("Failed parsing: {0}", svg);
+				Debug.WriteLine (ex);
+				Debug.WriteLine ("Failed parsing: {0}", svg);
 				throw;
 			}
 		}

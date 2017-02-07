@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -63,12 +64,12 @@ namespace MobileCenterApi
 			try
 			{
 				if (Verbose)
-					Console.WriteLine(data);
+					Debug.WriteLine(data);
 				return base.Deserialize<T>(data);
 			}
 			catch (System.Exception ex)
 			{
-				Console.WriteLine(data);
+				Debug.WriteLine(data);
 				throw ex;
 			}
 		}
@@ -77,12 +78,12 @@ namespace MobileCenterApi
 			try
 			{
 				if (Verbose)
-					Console.WriteLine(data);
+					Debug.WriteLine(data);
 				return base.Deserialize<T>(data, inObject);
 			}
 			catch (System.Exception ex)
 			{
-				Console.WriteLine(data);
+				Debug.WriteLine(data);
 				throw ex;
 			}
 		}

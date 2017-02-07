@@ -28,8 +28,8 @@ namespace MobileCenterApp
 				var file = File.OpenText (fileName);
 				return file.LoadImageFromSvgStream (size);
 			} catch (Exception ex) {
-				Console.WriteLine (ex);
-				Console.WriteLine ("Failed parsing: {0}", svg);
+				Debug.WriteLine (ex);
+				Debug.WriteLine ("Failed parsing: {0}", svg);
 				throw;
 			}
 		}
