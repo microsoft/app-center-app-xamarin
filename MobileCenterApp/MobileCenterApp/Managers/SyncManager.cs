@@ -216,6 +216,7 @@ namespace MobileCenterApp
 				downloadLogsTask[build.Id] = syncBuildsTask = downloadLog(build);
 			return syncBuildsTask;
 		}
+
 		async Task<List<LogSection>> downloadLog(Build build)
 		{
 			var tempPath = Path.Combine(Locations.TempDir, $"{build.Id}.log");
@@ -237,5 +238,21 @@ namespace MobileCenterApp
 
 		}
 
+
+		Dictionary<string, Task> distributionReleaseTaskTask = new Dictionary<string, Task>();
+		public Task SyncReleases(AppClass app)
+		{
+			Task syncReleasesTask;
+			distributionReleaseTaskTask.TryGetValue(app.Id, out syncReleasesTask);
+			if (syncReleasesTask?.IsCompleted ?? true)
+				distributionReleaseTaskTask[app.Id] = syncReleasesTask = syncReleases(app);
+			return syncReleasesTask;
+		}
+
+		async Task syncReleases(AppClass app)
+		{
+			var releases = await Api.GetV01AppsReleases(app.Owner.Name, app.Name, true).ConfigureAwait(false);
+			Database.Main.InsertOrReplaceAll(releases.Select(x => x.ToRelease(app)));
+		}
 	}
 }

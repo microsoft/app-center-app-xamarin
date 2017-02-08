@@ -177,5 +177,27 @@ namespace MobileCenterApp
 			return sections;
 
 		}
+
+		public static Release ToRelease(this MobileCenterApi.ReleaseDetails releaseDetails, AppClass app)
+		{
+			return new Release
+			{
+				AppIconUrl = releaseDetails.AppIconUrl,
+				AppId = app.Id,
+				AppName = releaseDetails.AppName,
+				DownloadUrl = releaseDetails.DownloadUrl,
+				Fingerprint = releaseDetails.Fingerprint,
+				Id = releaseDetails.Id,
+				InstallUrl = releaseDetails.InstallUrl,
+				MinOs = releaseDetails.MinOs,
+				ProvisioningProfileName = releaseDetails.ProvisioningProfileName,
+				ReleaseNotes = releaseDetails.ReleaseNotes,
+				ShortVersion = releaseDetails.ShortVersion,
+				Size = releaseDetails.Size,
+				Status = releaseDetails.Status,
+				UploadedAt = releaseDetails.UploadedAt,
+				Version = releaseDetails.Version,
+			};
+		}
 	}
 }

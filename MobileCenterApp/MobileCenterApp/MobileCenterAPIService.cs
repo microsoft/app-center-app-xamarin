@@ -2988,7 +2988,7 @@ namespace MobileCenterApi {
         
         [Path("/v0.1/apps/{owner_name}/{app_name}/releases")]
         public virtual Task<ReleaseDetails[]> GetV01AppsReleases(string owner_name, string app_name, bool? published_only = null, string filter = null) {
-            var queryParameters = new Dictionary<string,string>{ { "owner_name" , owner_name },{ "app_name" , app_name },{ "published_only" , published_only?.ToString() },{ "$filter" , filter } };
+			var queryParameters = new Dictionary<string,string>{ { "owner_name" , owner_name },{ "app_name" , app_name },{ "published_only" , published_only?.ToString()?.ToLower() } };
             return Get<ReleaseDetails[]>( queryParameters: queryParameters, authenticated: true );
         }
         

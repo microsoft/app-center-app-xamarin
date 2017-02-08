@@ -100,6 +100,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\LogSection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\LogLine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ModelConversionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Release.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Distribute\ReleaseDetailsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />

@@ -20,10 +20,9 @@ namespace MobileCenterApp
 				typeof(Branch),
 				typeof(CommitClass),
 				typeof(Build),
-				typeof(RepoConfig)
+				typeof(RepoConfig),
+				typeof(Release)
 			);
-
-			this.MakeClassInstant<AppClass>();
 		}
 
 		public T GetObject<T, T1>(object id) where T1 : T, new() where T : new()
