@@ -14,7 +14,7 @@ namespace MobileCenterApp
 			Title = "Apps";
 		}
 
-		SimpleDatabaseSource<AppClass> items;
+		SimpleDatabaseSource<AppClass> items = new SimpleDatabaseSource<AppClass>(Database.Main);
 		public SimpleDatabaseSource<AppClass> Items { 
 			get { return items; }
 			set { ProcPropertyChanged(ref items, value); }
@@ -49,12 +49,12 @@ namespace MobileCenterApp
 
 		void Shared_AppsChanged(object sender, EventArgs e)
 		{
-			Items = new SimpleDatabaseSource<AppClass> { Database = Database.Main };
+			Items.ResfreshData();
 		}
 
 		public override async Task Refresh()
 		{
-			Items = new SimpleDatabaseSource<AppClass> { Database = Database.Main };
+			Items.ResfreshData();
 			await SyncManager.Shared.SyncApps();
 		}
 

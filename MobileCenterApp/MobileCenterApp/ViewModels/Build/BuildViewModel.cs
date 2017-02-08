@@ -29,7 +29,7 @@ namespace MobileCenterApp
 			var groupInfo = Database.Main.GetGroupInfo<Branch>().Clone();
 			groupInfo.Filter = "AppId = ?";
 			groupInfo.Params = CurrentApp?.Id;
-			Items = new SimpleDatabaseSource<Branch> { Database = Database.Main, GroupInfo = groupInfo };
+			Items = new SimpleDatabaseSource<Branch> (Database.Main){ GroupInfo = groupInfo };
 		}
 
 		public AppClass CurrentApp { get; set; }

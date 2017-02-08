@@ -9,6 +9,10 @@ namespace MobileCenterApp
 {
 	public class SimpleDatabaseSource<T> : IList, INotifyCollectionChanged where T : new()
 	{
+		public SimpleDatabaseSource(SimpleDatabaseConnection connection)
+		{
+			Database = connection;
+		}
 		public object this[int index]
 		{
 			get
