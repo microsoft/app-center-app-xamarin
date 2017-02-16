@@ -7,6 +7,11 @@ namespace MobileCenterApp
 {
 	public static class ModelConversionExtensions
 	{
+		public static T ToEnum<T>(this string str) where T : struct, IConvertible
+		{
+			return (T)Enum.Parse(typeof(T), str,true);
+		}
+
 		public static AppClass ToAppClass(this MobileCenterApi.Models.AppResponse app)
 		{
 			return new AppClass
@@ -20,9 +25,9 @@ namespace MobileCenterApp
 				IndexCharacter = BaseModel.GetIndexChar(app.DisplayName),
 				IconUrl = app.IconUrl,
 				Name = app.Name,
-				Os = app.Os,
+				Os = app.Os.ToString(),
 				OwnerId = app.Owner.Id,
-				Platform = app.Platform,
+				Platform = app.Platform.ToString(),
 			};
 		}
 
@@ -33,8 +38,8 @@ namespace MobileCenterApp
 				Description = app.Description?.Trim(),
 				DisplayName = app.DisplayName?.Trim(),
 				Name = app.Name?.Trim(),
-				Os = app.Os?.Trim(),
-				Platform = app.Platform?.Trim(),
+				Os = app.Os.ToEnum<MobileCenterApi.Models.AppRequestOs>(),
+				Platform = app.Platform.ToEnum<MobileCenterApi.Models.AppRequestPlatform>(),
 			};
 		}
 
@@ -47,7 +52,7 @@ namespace MobileCenterApp
 				Email = o.Email,
 				Id = o.Id,
 				Name = o.Name,
-				Type = o.Type,
+				Type = o.Type.ToString(),
 			};
 		}
 
@@ -100,7 +105,7 @@ namespace MobileCenterApp
 				AppId = appId,
 				Id = rc.Id,
 				RepoUrl = rc.RepoUrl,
-				State = rc.State,
+				State = rc.State.ToString(),
 				Type = rc.Type,
 			};
 		}
@@ -194,7 +199,7 @@ namespace MobileCenterApp
 				ReleaseNotes = releaseDetails.ReleaseNotes,
 				ShortVersion = releaseDetails.ShortVersion,
 				Size = releaseDetails.Size,
-				Status = releaseDetails.Status,
+				Status = releaseDetails.Status.ToString(),
 				UploadedAt = releaseDetails.UploadedAt,
 				Version = releaseDetails.Version,
 			};

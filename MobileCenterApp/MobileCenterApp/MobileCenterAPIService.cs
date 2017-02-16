@@ -4,18 +4,17 @@
 
 namespace MobileCenterApi
 {
-	using SimpleAuth;
-	using System.Net.Http;
-	using System.Threading.Tasks;
-	using System.Linq;
-	using System.Collections.Generic;
-	using Models;
-	using System;
+    using SimpleAuth;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using System.Linq;
+    using System.Collections.Generic;
+    using Models;
 
-	/// <summary>
-	/// Mobile Center Frontdoor Graph API Service
-	/// </summary> 
-	public partial class MobileCenterAPIServiceApiKeyApi : BasicAuthApi
+    /// <summary>
+    /// Mobile Center Frontdoor Graph API Service
+    /// </summary>
+    public partial class MobileCenterAPIServiceApiKeyApi : SimpleAuth.BasicAuthApi
     {
         //public MobileCenterAPIServiceApiKeyApi (string apiKey, HttpMessageHandler handler = null ) : base (apiKey, "X-API-Token", AuthLocation.Header, handler )
         //{
@@ -319,7 +318,7 @@ namespace MobileCenterApi
                 {
                     queryParameters.Add("app_name", string.Format("{0}", appName));
                 }
-                return api.Get<UserProfileResponse[]> (path: path, queryParameters: queryParameters, authenticated: true );
+                return api.Get<UserProfileResponse[]> ( path: path, queryParameters: queryParameters, authenticated: true );
             }
 
             /// <summary>
@@ -335,49 +334,49 @@ namespace MobileCenterApi
             /// The email of the user to Invites
             /// </param>
             public Task InviteAppUser(string ownerName, string appName, string userEmail)
-			{
-				if (ownerName == null)
-				{
-					throw new System.Exception("Parameter 'ownerName' cannot be null");
-				}
-				if (appName == null)
-				{
-					throw new System.Exception("Parameter 'appName' cannot be null");
-				}
-				if (userEmail == null)
-				{
-					throw new System.Exception("Parameter 'userEmail' cannot be null");
-				}
-				var path = "/v0.1/apps/{owner_name}/{app_name}/invitations/{user_email}";
-				var queryParameters = new Dictionary<string, string>();
-				if (ownerName != null)
-				{
-					queryParameters.Add("owner_name", string.Format("{0}", ownerName));
-				}
-				if (appName != null)
-				{
-					queryParameters.Add("app_name", string.Format("{0}", appName));
-				}
-				if (userEmail != null)
-				{
-					queryParameters.Add("user_email", string.Format("{0}", userEmail));
-				}
-				return api.Post(body: null, path: path, queryParameters: queryParameters, authenticated: true);
-			}
+            {
+                if (ownerName == null)
+                {
+                    throw new System.Exception("Parameter 'ownerName' cannot be null");
+                }
+                if (appName == null)
+                {
+                    throw new System.Exception("Parameter 'appName' cannot be null");
+                }
+                if (userEmail == null)
+                {
+                    throw new System.Exception("Parameter 'userEmail' cannot be null");
+                }
+                var path = "/v0.1/apps/{owner_name}/{app_name}/invitations/{user_email}";
+                var queryParameters = new Dictionary<string,string>();
+                if (ownerName != null)
+                {
+                    queryParameters.Add("owner_name", string.Format("{0}", ownerName));
+                }
+                if (appName != null)
+                {
+                    queryParameters.Add("app_name", string.Format("{0}", appName));
+                }
+                if (userEmail != null)
+                {
+                    queryParameters.Add("user_email", string.Format("{0}", userEmail));
+                }
+                return api.Post ( body: null, path: path, queryParameters: queryParameters, authenticated: true );
+            }
 
-			/// <summary>
-			/// Removes a user's invitation to an app
-			/// </summary>
-			/// <param name='ownerName'>
-			/// The name of the owner
-			/// </param>
-			/// <param name='appName'>
-			/// The name of the application
-			/// </param>
-			/// <param name='userEmail'>
-			/// The email of the user to Invites
-			/// </param>
-			public Task DeleteAppInvitation(string ownerName, string appName, string userEmail)
+            /// <summary>
+            /// Removes a user's invitation to an app
+            /// </summary>
+            /// <param name='ownerName'>
+            /// The name of the owner
+            /// </param>
+            /// <param name='appName'>
+            /// The name of the application
+            /// </param>
+            /// <param name='userEmail'>
+            /// The email of the user to Invites
+            /// </param>
+            public Task DeleteAppInvitation(string ownerName, string appName, string userEmail)
             {
                 if (ownerName == null)
                 {
@@ -924,7 +923,7 @@ namespace MobileCenterApi
             /// <summary>
             /// Returns a list of apps
             /// </summary>
-            public Task<AppResponse[]> GetApps()
+            public Task<AppResponse[]> GetApps1()
             {
                 var path = "/v0.1/apps";
                 return api.Get<AppResponse[]> ( path: path, authenticated: true );
@@ -1537,7 +1536,7 @@ namespace MobileCenterApi
             /// <param name='errorType'>
             /// Possible values include: 'something', 'else'
             /// </param>
-            public Task<Crash[]> GetCrashes(string crashGroupId, string ownerName, string appName, bool? includeReport = false, bool? includeLog = false, System.DateTime? dateFrom = default(System.DateTime?), System.DateTime? dateTo = default(System.DateTime?), string appVersion = default(string), string errorType = default(string))
+            public Task<Crash[]> GetCrashes(string crashGroupId, string ownerName, string appName, bool? includeReport = false, bool? includeLog = false, System.DateTime? dateFrom = default(System.DateTime?), System.DateTime? dateTo = default(System.DateTime?), string appVersion = default(string), ErrorType? errorType = default(ErrorType?))
             {
                 if (crashGroupId == null)
                 {
@@ -1579,7 +1578,7 @@ namespace MobileCenterApi
                 }
                 if (errorType != null)
                 {
-                    queryParameters.Add("error_type", string.Format("{0}", errorType));
+                    queryParameters.Add("error_type", string.Format("{0}", errorType?.ToString()));
                 }
                 if (ownerName != null)
                 {
@@ -1717,7 +1716,7 @@ namespace MobileCenterApi
             /// A freetext search that matches in error, error types, error stack_traces
             /// and error user
             /// </param>
-            public Task<CrashGroup[]> GetCrashGroups(string ownerName, string appName, System.DateTime? lastOccurrenceFrom = default(System.DateTime?), System.DateTime? lastOccurrenceTo = default(System.DateTime?), string appVersion = default(string), string groupType = default(string), string groupStatus = default(string), string groupTextSearch = default(string))
+            public Task<CrashGroup[]> GetCrashGroups(string ownerName, string appName, System.DateTime? lastOccurrenceFrom = default(System.DateTime?), System.DateTime? lastOccurrenceTo = default(System.DateTime?), string appVersion = default(string), GroupType? groupType = default(GroupType?), GroupStatus? groupStatus = default(GroupStatus?), string groupTextSearch = default(string))
             {
                 if (ownerName == null)
                 {
@@ -1743,11 +1742,11 @@ namespace MobileCenterApi
                 }
                 if (groupType != null)
                 {
-                    queryParameters.Add("group_type", string.Format("{0}", groupType));
+                    queryParameters.Add("group_type", string.Format("{0}", groupType?.ToString()));
                 }
                 if (groupStatus != null)
                 {
-                    queryParameters.Add("group_status", string.Format("{0}", groupStatus));
+                    queryParameters.Add("group_status", string.Format("{0}", groupStatus?.ToString()));
                 }
                 if (groupTextSearch != null)
                 {
@@ -1846,7 +1845,7 @@ namespace MobileCenterApi
             /// <param name='form'>
             /// The selected form of the object. Possible values include: 'lite', 'full'
             /// </param>
-            public Task<SourceRepository[]> GetRepositories(string sourceHost, string ownerName, string appName, string form = default(string))
+            public Task<SourceRepository[]> GetRepositories(string sourceHost, string ownerName, string appName, Form? form = default(Form?))
             {
                 if (ownerName == null)
                 {
@@ -1864,7 +1863,7 @@ namespace MobileCenterApi
                 }
                 if (form != null)
                 {
-                    queryParameters.Add("form", string.Format("{0}", form));
+                    queryParameters.Add("form", string.Format("{0}", form?.ToString()));
                 }
                 if (ownerName != null)
                 {
@@ -2006,7 +2005,7 @@ namespace MobileCenterApi
             /// <param name='form'>
             /// The selected form of the object. Possible values include: 'lite', 'full'
             /// </param>
-            public Task<Branch[]> GetCommits(string shaCollection, string ownerName, string appName, string form = default(string))
+            public Task<Branch[]> GetCommits(string shaCollection, string ownerName, string appName, Form? form = default(Form?))
             {
                 if (shaCollection == null)
                 {
@@ -2028,7 +2027,7 @@ namespace MobileCenterApi
                 }
                 if (form != null)
                 {
-                    queryParameters.Add("form", string.Format("{0}", form));
+                    queryParameters.Add("form", string.Format("{0}", form?.ToString()));
                 }
                 if (ownerName != null)
                 {
@@ -2096,15 +2095,11 @@ namespace MobileCenterApi
             /// <param name='appName'>
             /// The name of the application
             /// </param>
-            public Task GetBuildDownload(int buildId, string downloadType, string ownerName, string appName)
+            public Task GetBuildDownload(int buildId, DownloadType downloadType, string ownerName, string appName)
             {
                 if (buildId <= 0)
                 {
                     throw new System.Exception("Validation Failed: ExclusiveMinimum, 'buildId', 0");
-                }
-                if (downloadType == null)
-                {
-                    throw new System.Exception("Parameter 'downloadType' cannot be null");
                 }
                 if (ownerName == null)
                 {
@@ -2117,10 +2112,7 @@ namespace MobileCenterApi
                 var path = "/v0.1/apps/{owner_name}/{app_name}/builds/{build_id}/downloads/{download_type}";
                 var queryParameters = new Dictionary<string,string>();
                 queryParameters.Add("build_id", string.Format("{0}", buildId.ToString()));
-                if (downloadType != null)
-                {
-                    queryParameters.Add("download_type", string.Format("{0}", downloadType));
-                }
+                queryParameters.Add("download_type", string.Format("{0}", downloadType.ToString()));
                 if (ownerName != null)
                 {
                     queryParameters.Add("owner_name", string.Format("{0}", ownerName));
@@ -2195,21 +2187,21 @@ namespace MobileCenterApi
                 if (properties == null)
                 {
                     throw new System.Exception("Parameter 'properties' cannot be null");
-				}
-				if (ownerName == null)
-				{
-					throw new System.Exception("Parameter 'ownerName' cannot be null");
-				}
-				if (appName == null)
-				{
-					throw new System.Exception("Parameter 'appName' cannot be null");
-				}
-				var path = "/v0.1/apps/{owner_name}/{app_name}/builds/{build_id}";
-				var queryParameters = new Dictionary<string, string>();
-				queryParameters.Add("build_id", string.Format("{0}", buildId.ToString()));
-				if (ownerName != null)
-				{
-					queryParameters.Add("owner_name", string.Format("{0}", ownerName));
+                }
+                if (ownerName == null)
+                {
+                    throw new System.Exception("Parameter 'ownerName' cannot be null");
+                }
+                if (appName == null)
+                {
+                    throw new System.Exception("Parameter 'appName' cannot be null");
+                }
+                var path = "/v0.1/apps/{owner_name}/{app_name}/builds/{build_id}";
+                var queryParameters = new Dictionary<string,string>();
+                queryParameters.Add("build_id", string.Format("{0}", buildId.ToString()));
+                if (ownerName != null)
+                {
+                    queryParameters.Add("owner_name", string.Format("{0}", ownerName));
                 }
                 if (appName != null)
                 {
@@ -2238,19 +2230,11 @@ namespace MobileCenterApi
             /// <param name='appName'>
             /// The name of the application
             /// </param>
-            public Task<ToolsetProjects> GetProjectInformation(string branch, string os, string platform, string ownerName, string appName)
+            public Task<ToolsetProjects> GetProjectInformation(string branch, Os os, Platform platform, string ownerName, string appName)
             {
                 if (branch == null)
                 {
                     throw new System.Exception("Parameter 'branch' cannot be null");
-                }
-                if (os == null)
-                {
-                    throw new System.Exception("Parameter 'os' cannot be null");
-                }
-                if (platform == null)
-                {
-                    throw new System.Exception("Parameter 'platform' cannot be null");
                 }
                 if (ownerName == null)
                 {
@@ -2266,14 +2250,8 @@ namespace MobileCenterApi
                 {
                     queryParameters.Add("branch", string.Format("{0}", branch));
                 }
-                if (os != null)
-                {
-                    queryParameters.Add("os", string.Format("{0}", os));
-                }
-                if (platform != null)
-                {
-                    queryParameters.Add("platform", string.Format("{0}", platform));
-                }
+                queryParameters.Add("os", string.Format("{0}", os.ToString()));
+                queryParameters.Add("platform", string.Format("{0}", platform.ToString()));
                 if (ownerName != null)
                 {
                     queryParameters.Add("owner_name", string.Format("{0}", ownerName));
@@ -4540,15 +4518,11 @@ namespace MobileCenterApi
             /// <param name='appName'>
             /// The name of the application
             /// </param>
-            public Task<object> GetDeploymentOperations(string subscriptionId, string type, string ownerName, string appName)
+            public Task<object> GetDeploymentOperations(string subscriptionId, Type type, string ownerName, string appName)
             {
                 if (subscriptionId == null)
                 {
                     throw new System.Exception("Parameter 'subscriptionId' cannot be null");
-                }
-                if (type == null)
-                {
-                    throw new System.Exception("Parameter 'type' cannot be null");
                 }
                 if (ownerName == null)
                 {
@@ -4564,10 +4538,7 @@ namespace MobileCenterApi
                 {
                     queryParameters.Add("subscription_id", string.Format("{0}", subscriptionId));
                 }
-                if (type != null)
-                {
-                    queryParameters.Add("type", string.Format("{0}", type));
-                }
+                queryParameters.Add("type", string.Format("{0}", type.ToString()));
                 if (ownerName != null)
                 {
                     queryParameters.Add("owner_name", string.Format("{0}", ownerName));
@@ -4590,15 +4561,11 @@ namespace MobileCenterApi
             /// <param name='appName'>
             /// The name of the application
             /// </param>
-            public Task<object> SubmitDeployment(string subscriptionId, string type, string ownerName, string appName)
+            public Task<object> SubmitDeployment(string subscriptionId, Type type, string ownerName, string appName)
             {
                 if (subscriptionId == null)
                 {
                     throw new System.Exception("Parameter 'subscriptionId' cannot be null");
-                }
-                if (type == null)
-                {
-                    throw new System.Exception("Parameter 'type' cannot be null");
                 }
                 if (ownerName == null)
                 {
@@ -4614,10 +4581,7 @@ namespace MobileCenterApi
                 {
                     queryParameters.Add("subscription_id", string.Format("{0}", subscriptionId));
                 }
-                if (type != null)
-                {
-                    queryParameters.Add("type", string.Format("{0}", type));
-                }
+                queryParameters.Add("type", string.Format("{0}", type.ToString()));
                 if (ownerName != null)
                 {
                     queryParameters.Add("owner_name", string.Format("{0}", ownerName));
@@ -4640,15 +4604,11 @@ namespace MobileCenterApi
             /// <param name='appName'>
             /// The name of the application
             /// </param>
-            public Task<object> GetDeployment(string subscriptionId, string type, string ownerName, string appName)
+            public Task<object> GetDeployment(string subscriptionId, Type type, string ownerName, string appName)
             {
                 if (subscriptionId == null)
                 {
                     throw new System.Exception("Parameter 'subscriptionId' cannot be null");
-                }
-                if (type == null)
-                {
-                    throw new System.Exception("Parameter 'type' cannot be null");
                 }
                 if (ownerName == null)
                 {
@@ -4664,10 +4624,7 @@ namespace MobileCenterApi
                 {
                     queryParameters.Add("subscription_id", string.Format("{0}", subscriptionId));
                 }
-                if (type != null)
-                {
-                    queryParameters.Add("type", string.Format("{0}", type));
-                }
+                queryParameters.Add("type", string.Format("{0}", type.ToString()));
                 if (ownerName != null)
                 {
                     queryParameters.Add("owner_name", string.Format("{0}", ownerName));
@@ -4838,8 +4795,7 @@ namespace MobileCenterApi
             /// OBSOLETE. Will be removed in next version. An OData style filter. Currently
             /// only support the 'eq' comparision type. E.g. ?$filter=status eq 'Available'
             /// </param>
-			[Obsolete]
-			public Task<ReleaseDetails[]> GetV01AppsReleases(string ownerName, string appName, bool? publishedOnly = default(bool?), string filter = default(string))
+            public Task<ReleaseDetails[]> GetV01AppsReleases(string ownerName, string appName, bool? publishedOnly = default(bool?), string filter = default(string))
             {
                 if (ownerName == null)
                 {
@@ -6453,7 +6409,7 @@ namespace MobileCenterApi
             /// <param name='orderby'>
             /// controls the sorting order and sorting based on which column
             /// </param>
-            public Task<Events> EventsMethod(System.DateTime start, string ownerName, string appName, System.DateTime? end = default(System.DateTime?), string[] versions = default(string[]), string[] eventName = default(string[]), long? top = 30, long? skip = 0, string inlinecount = default(string), string orderby = "count desc")
+            public Task<Events> EventsMethod(System.DateTime start, string ownerName, string appName, System.DateTime? end = default(System.DateTime?), string[] versions = default(string[]), string[] eventName = default(string[]), long? top = 30, long? skip = 0, Inlinecount? inlinecount = default(Inlinecount?), string orderby = "count desc")
             {
                 if (top > 2000)
                 {
@@ -6500,7 +6456,7 @@ namespace MobileCenterApi
                 }
                 if (inlinecount != null)
                 {
-                    queryParameters.Add("$inlinecount", string.Format("{0}", inlinecount));
+                    queryParameters.Add("$inlinecount", string.Format("{0}", inlinecount?.ToString()));
                 }
                 if (orderby != null)
                 {
@@ -7062,9 +7018,6 @@ namespace MobileCenterApi
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -7104,9 +7057,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -7176,9 +7126,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -7208,9 +7155,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -7267,9 +7211,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -7304,9 +7245,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -7341,9 +7279,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -7362,7 +7297,7 @@ namespace MobileCenterApi.Models
         /// <param name="code">Possible values include: 'BadRequest',
         /// 'Conflict', 'NotAcceptable', 'NotFound', 'InternalServerError',
         /// 'Unauthorized'</param>
-        public ErrorDetails(string code, string message)
+        public ErrorDetails(ErrorDetailsCode code, string message)
         {
             Code = code;
             Message = message;
@@ -7373,7 +7308,7 @@ namespace MobileCenterApi.Models
         /// 'NotAcceptable', 'NotFound', 'InternalServerError', 'Unauthorized'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
-        public string Code { get; set; }
+        public ErrorDetailsCode Code { get; set; }
 
         /// <summary>
         /// </summary>
@@ -7382,10 +7317,6 @@ namespace MobileCenterApi.Models
 
         public virtual void Validate()
         {
-            if (Code == null)
-            {
-                throw new System.Exception("Property 'Code' is required/");
-            }
             if (Message == null)
             {
                 throw new System.Exception("Property 'Message' is required/");
@@ -7393,9 +7324,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -7434,9 +7362,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -7482,9 +7407,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -7509,7 +7431,7 @@ namespace MobileCenterApi.Models
         /// 'Xamarin'</param>
         /// <param name="description">A short text describing the app</param>
         /// <param name="name">The name of the app used in URLs</param>
-        public AppRequest(string displayName, string os, string platform, string description = default(string), string name = default(string))
+        public AppRequest(string displayName, AppRequestOs os, AppRequestPlatform platform, string description = default(string), string name = default(string))
         {
             Description = description;
             DisplayName = displayName;
@@ -7542,14 +7464,14 @@ namespace MobileCenterApi.Models
         /// include: 'iOS', 'Android'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "os")]
-        public string Os { get; set; }
+        public AppRequestOs Os { get; set; }
 
         /// <summary>
         /// Gets or sets the platform of the app. Possible values include:
         /// 'Objective-C-Swift', 'Java', 'React-Native', 'Xamarin'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "platform")]
-        public string Platform { get; set; }
+        public AppRequestPlatform Platform { get; set; }
 
         public virtual void Validate()
         {
@@ -7557,20 +7479,9 @@ namespace MobileCenterApi.Models
             {
                 throw new System.Exception("Property 'DisplayName' is required/");
             }
-            if (Os == null)
-            {
-                throw new System.Exception("Property 'Os' is required/");
-            }
-            if (Platform == null)
-            {
-                throw new System.Exception("Property 'Platform' is required/");
-            }
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -7607,9 +7518,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -7675,9 +7583,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -7724,9 +7629,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -7765,9 +7667,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -7799,9 +7698,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -7852,9 +7748,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -7881,7 +7774,7 @@ namespace MobileCenterApi.Models
         /// <param name="type">The owner type. Can either be 'org' or 'user'.
         /// Possible values include: 'org', 'user'</param>
         /// <param name="avatarUrl">The avatar URL of the owner</param>
-        public Owner(string id, string email, string displayName, string name, string type, string avatarUrl = default(string))
+        public Owner(string id, string email, string displayName, string name, OwnerType type, string avatarUrl = default(string))
         {
             Id = id;
             AvatarUrl = avatarUrl;
@@ -7926,7 +7819,7 @@ namespace MobileCenterApi.Models
         /// Possible values include: 'org', 'user'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
-        public string Type { get; set; }
+        public OwnerType Type { get; set; }
 
         public virtual void Validate()
         {
@@ -7946,16 +7839,9 @@ namespace MobileCenterApi.Models
             {
                 throw new System.Exception("Property 'Name' is required/");
             }
-            if (Type == null)
-            {
-                throw new System.Exception("Property 'Type' is required/");
-            }
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -7987,7 +7873,7 @@ namespace MobileCenterApi.Models
         /// to the app's icon</param>
         /// <param name="azureSubscriptionId">The unique ID (UUID) of the Azure
         /// subscription associate with the app</param>
-        public AppResponse(string id, string appSecret, string displayName, string name, string os, string platform, Owner owner, string description = default(string), string iconUrl = default(string), string azureSubscriptionId = default(string))
+        public AppResponse(string id, string appSecret, string displayName, string name, AppResponseOs os, AppResponsePlatform platform, Owner owner, string description = default(string), string iconUrl = default(string), string azureSubscriptionId = default(string))
         {
             Id = id;
             AppSecret = appSecret;
@@ -8038,14 +7924,14 @@ namespace MobileCenterApi.Models
         /// include: 'iOS', 'Android'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "os")]
-        public string Os { get; set; }
+        public AppResponseOs Os { get; set; }
 
         /// <summary>
         /// Gets or sets the platform of the app. Possible values include:
         /// 'Objective-C-Swift', 'Java', 'React-Native', 'Xamarin'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "platform")]
-        public string Platform { get; set; }
+        public AppResponsePlatform Platform { get; set; }
 
         /// <summary>
         /// Gets or sets the string representation of the URL pointing to the
@@ -8084,14 +7970,6 @@ namespace MobileCenterApi.Models
             {
                 throw new System.Exception("Property 'Name' is required/");
             }
-            if (Os == null)
-            {
-                throw new System.Exception("Property 'Os' is required/");
-            }
-            if (Platform == null)
-            {
-                throw new System.Exception("Property 'Platform' is required/");
-            }
             if (Owner == null)
             {
                 throw new System.Exception("Property 'Owner' is required/");
@@ -8103,9 +7981,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -8171,9 +8046,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -8267,9 +8139,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -8317,9 +8186,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -8343,7 +8209,7 @@ namespace MobileCenterApi.Models
         /// already exists</param>
         /// <param name="inviteType">The invitation type. Possible values
         /// include: 'developer', 'tester'</param>
-        public AppInvitationDetailResponse(string id, string email, bool isExistingUser, UserProfileResponse invitedBy, string inviteType, AppResponse app)
+        public AppInvitationDetailResponse(string id, string email, bool isExistingUser, UserProfileResponse invitedBy, AppInvitationDetailResponseInviteType inviteType, AppResponse app)
         {
             Id = id;
             Email = email;
@@ -8381,7 +8247,7 @@ namespace MobileCenterApi.Models
         /// 'developer', 'tester'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "invite_type")]
-        public string InviteType { get; set; }
+        public AppInvitationDetailResponseInviteType InviteType { get; set; }
 
         /// <summary>
         /// </summary>
@@ -8402,10 +8268,6 @@ namespace MobileCenterApi.Models
             {
                 throw new System.Exception("Property 'InvitedBy' is required/");
             }
-            if (InviteType == null)
-            {
-                throw new System.Exception("Property 'InviteType' is required/");
-            }
             if (App == null)
             {
                 throw new System.Exception("Property 'App' is required/");
@@ -8421,9 +8283,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -8473,9 +8332,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -8570,9 +8426,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -8655,9 +8508,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -8694,9 +8544,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -8728,9 +8575,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -8771,9 +8615,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -8829,9 +8670,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -8910,9 +8748,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -8980,9 +8815,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -9000,7 +8832,7 @@ namespace MobileCenterApi.Models
         /// </summary>
         /// <param name="adminRole">The new admin_role. Possible values
         /// include: 'superAdmin', 'admin', 'devOps', 'notAdmin'</param>
-        public GrantAdminRoleRequest(string adminRole)
+        public GrantAdminRoleRequest(GrantAdminRoleRequestAdminRole adminRole)
         {
             AdminRole = adminRole;
         }
@@ -9010,20 +8842,13 @@ namespace MobileCenterApi.Models
         /// 'superAdmin', 'admin', 'devOps', 'notAdmin'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "admin_role")]
-        public string AdminRole { get; set; }
+        public GrantAdminRoleRequestAdminRole AdminRole { get; set; }
 
         public virtual void Validate()
         {
-            if (AdminRole == null)
-            {
-                throw new System.Exception("Property 'AdminRole' is required/");
-            }
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -9094,9 +8919,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -9144,9 +8966,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -9179,9 +8998,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -9221,9 +9037,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -9268,9 +9081,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -9338,9 +9148,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -9389,9 +9196,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -9448,9 +9252,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -9506,9 +9307,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -9590,9 +9388,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -9726,9 +9521,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -9772,9 +9564,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -9812,9 +9601,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -9861,9 +9647,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -9907,9 +9690,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -10023,9 +9803,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -10080,9 +9857,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -10182,9 +9956,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -10265,9 +10036,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -10337,9 +10105,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -10360,7 +10125,7 @@ namespace MobileCenterApi.Models
         /// </summary>
         /// <param name="trigger">Possible values include: 'continous',
         /// 'continuous', 'manual'</param>
-        public BranchConfiguration(int id, string trigger = default(string), bool? testsEnabled = default(bool?), bool? signed = default(bool?), BranchConfigurationToolsets toolsets = default(BranchConfigurationToolsets))
+        public BranchConfiguration(int id, BranchConfigurationTrigger? trigger = default(BranchConfigurationTrigger?), bool? testsEnabled = default(bool?), bool? signed = default(bool?), BranchConfigurationToolsets toolsets = default(BranchConfigurationToolsets))
         {
             Id = id;
             Trigger = trigger;
@@ -10379,7 +10144,7 @@ namespace MobileCenterApi.Models
         /// 'manual'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "trigger")]
-        public string Trigger { get; set; }
+        public BranchConfigurationTrigger? Trigger { get; set; }
 
         /// <summary>
         /// </summary>
@@ -10405,9 +10170,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -10428,7 +10190,7 @@ namespace MobileCenterApi.Models
         /// include: 'unauthorized', 'inactive', 'active'</param>
         /// <param name="repoUrl">URL of the repository</param>
         /// <param name="id">Repository identifier</param>
-        public RepoConfig(string type, string state, string repoUrl = default(string), string id = default(string))
+        public RepoConfig(string type, RepoConfigState state, string repoUrl = default(string), string id = default(string))
         {
             Type = type;
             State = state;
@@ -10447,7 +10209,7 @@ namespace MobileCenterApi.Models
         /// 'unauthorized', 'inactive', 'active'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "state")]
-        public string State { get; set; }
+        public RepoConfigState State { get; set; }
 
         /// <summary>
         /// Gets or sets URL of the repository
@@ -10467,16 +10229,9 @@ namespace MobileCenterApi.Models
             {
                 throw new System.Exception("Property 'Type' is required/");
             }
-            if (State == null)
-            {
-                throw new System.Exception("Property 'State' is required/");
-            }
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -10513,9 +10268,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -10556,9 +10308,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -10596,9 +10345,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -10616,7 +10362,7 @@ namespace MobileCenterApi.Models
         /// </summary>
         /// <param name="status">The build status; used to cancel builds.
         /// Possible values include: 'cancelling'</param>
-        public BuildPatch(string status = default(string))
+        public BuildPatch(BuildPatchStatus? status = default(BuildPatchStatus?))
         {
             Status = status;
         }
@@ -10626,13 +10372,10 @@ namespace MobileCenterApi.Models
         /// values include: 'cancelling'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "status")]
-        public string Status { get; set; }
+        public BuildPatchStatus? Status { get; set; }
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -10667,9 +10410,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -10724,9 +10464,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -10776,9 +10513,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -10859,9 +10593,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -10919,7 +10650,7 @@ namespace MobileCenterApi.Models
         /// `itms-services://?action=download-manifest&amp;url=`</param>
         /// <param name="distributionGroups">a list of distribution groups that
         /// are associated with this release.</param>
-        public ReleaseDetails(string id = default(string), string status = default(string), string appName = default(string), string version = default(string), string shortVersion = default(string), string releaseNotes = default(string), string provisioningProfileName = default(string), double? size = default(double?), string minOs = default(string), string fingerprint = default(string), string uploadedAt = default(string), string downloadUrl = default(string), string appIconUrl = default(string), string installUrl = default(string), DistributionGroup[] distributionGroups = default(DistributionGroup[]))
+        public ReleaseDetails(string id = default(string), ReleaseDetailsStatus? status = default(ReleaseDetailsStatus?), string appName = default(string), string version = default(string), string shortVersion = default(string), string releaseNotes = default(string), string provisioningProfileName = default(string), double? size = default(double?), string minOs = default(string), string fingerprint = default(string), string uploadedAt = default(string), string downloadUrl = default(string), string appIconUrl = default(string), string installUrl = default(string), DistributionGroup[] distributionGroups = default(DistributionGroup[]))
         {
             Id = id;
             Status = status;
@@ -10957,7 +10688,7 @@ namespace MobileCenterApi.Models
         /// . Possible values include: 'available', 'unavailable'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "status")]
-        public string Status { get; set; }
+        public ReleaseDetailsStatus? Status { get; set; }
 
         /// <summary>
         /// Gets or sets the app's name (extracted from the uploaded release).
@@ -11048,9 +10779,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -11105,9 +10833,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -11129,7 +10854,7 @@ namespace MobileCenterApi.Models
         /// </summary>
         /// <param name="status">The desired operation for the upload. Possible
         /// values include: 'committed', 'aborted'</param>
-        public ReleaseUploadEndRequest(string status)
+        public ReleaseUploadEndRequest(ReleaseUploadEndRequestStatus status)
         {
             Status = status;
         }
@@ -11139,20 +10864,13 @@ namespace MobileCenterApi.Models
         /// include: 'committed', 'aborted'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "status")]
-        public string Status { get; set; }
+        public ReleaseUploadEndRequestStatus Status { get; set; }
 
         public virtual void Validate()
         {
-            if (Status == null)
-            {
-                throw new System.Exception("Property 'Status' is required/");
-            }
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -11187,9 +10905,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -11252,9 +10967,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -11309,9 +11021,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -11333,7 +11042,7 @@ namespace MobileCenterApi.Models
         /// </summary>
         /// <param name="status">The desired operation for the upload. Possible
         /// values include: 'committed', 'aborted'</param>
-        public PackageUploadEndRequest(string status)
+        public PackageUploadEndRequest(PackageUploadEndRequestStatus status)
         {
             Status = status;
         }
@@ -11343,20 +11052,13 @@ namespace MobileCenterApi.Models
         /// include: 'committed', 'aborted'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "status")]
-        public string Status { get; set; }
+        public PackageUploadEndRequestStatus Status { get; set; }
 
         public virtual void Validate()
         {
-            if (Status == null)
-            {
-                throw new System.Exception("Property 'Status' is required/");
-            }
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -11391,9 +11093,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -11456,9 +11155,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -11539,9 +11235,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -11599,7 +11292,7 @@ namespace MobileCenterApi.Models
         /// `itms-services://?action=download-manifest&amp;url=`</param>
         /// <param name="distributionGroups">a list of distribution groups that
         /// are associated with this package.</param>
-        public PackageDetails(string packageId = default(string), string status = default(string), string appName = default(string), string version = default(string), string shortVersion = default(string), string releaseNotes = default(string), string provisioningProfileName = default(string), double? size = default(double?), string minOs = default(string), string fingerprint = default(string), string uploadedAt = default(string), string downloadUrl = default(string), string appIconUrl = default(string), string installUrl = default(string), DistributionGroup[] distributionGroups = default(DistributionGroup[]))
+        public PackageDetails(string packageId = default(string), PackageDetailsStatus? status = default(PackageDetailsStatus?), string appName = default(string), string version = default(string), string shortVersion = default(string), string releaseNotes = default(string), string provisioningProfileName = default(string), double? size = default(double?), string minOs = default(string), string fingerprint = default(string), string uploadedAt = default(string), string downloadUrl = default(string), string appIconUrl = default(string), string installUrl = default(string), DistributionGroup[] distributionGroups = default(DistributionGroup[]))
         {
             PackageId = packageId;
             Status = status;
@@ -11637,7 +11330,7 @@ namespace MobileCenterApi.Models
         /// . Possible values include: 'available', 'unavailable'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "status")]
-        public string Status { get; set; }
+        public PackageDetailsStatus? Status { get; set; }
 
         /// <summary>
         /// Gets or sets the app's name (extracted from the uploaded package).
@@ -11728,9 +11421,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -11760,7 +11450,7 @@ namespace MobileCenterApi.Models
         /// file</param>
         /// <param name="status">Whether the symbol is ignored. Possible values
         /// include: 'available', 'ignored'</param>
-        public Symbol(string symbolId, string type, string appId, string platform, string url, string origin, string[] alternateSymbolIds, string status)
+        public Symbol(string symbolId, SymbolType type, string appId, string platform, string url, SymbolOrigin origin, string[] alternateSymbolIds, SymbolStatus status)
         {
             SymbolId = symbolId;
             Type = type;
@@ -11783,7 +11473,7 @@ namespace MobileCenterApi.Models
         /// Possible values include: 'Apple', 'JavaScript'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
-        public string Type { get; set; }
+        public SymbolType Type { get; set; }
 
         /// <summary>
         /// Gets or sets the application that this symbol belongs to
@@ -11809,7 +11499,7 @@ namespace MobileCenterApi.Models
         /// include: 'System', 'User'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "origin")]
-        public string Origin { get; set; }
+        public SymbolOrigin Origin { get; set; }
 
         /// <summary>
         /// Gets or sets the other symbols in the same file
@@ -11822,17 +11512,13 @@ namespace MobileCenterApi.Models
         /// include: 'available', 'ignored'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "status")]
-        public string Status { get; set; }
+        public SymbolStatus Status { get; set; }
 
         public virtual void Validate()
         {
             if (SymbolId == null)
             {
                 throw new System.Exception("Property 'SymbolId' is required/");
-            }
-            if (Type == null)
-            {
-                throw new System.Exception("Property 'Type' is required/");
             }
             if (AppId == null)
             {
@@ -11846,24 +11532,13 @@ namespace MobileCenterApi.Models
             {
                 throw new System.Exception("Property 'Url' is required/");
             }
-            if (Origin == null)
-            {
-                throw new System.Exception("Property 'Origin' is required/");
-            }
             if (AlternateSymbolIds == null)
             {
                 throw new System.Exception("Property 'AlternateSymbolIds' is required/");
             }
-            if (Status == null)
-            {
-                throw new System.Exception("Property 'Status' is required/");
-            }
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -11892,7 +11567,7 @@ namespace MobileCenterApi.Models
         /// <param name="symbols">The symbol ids</param>
         /// <param name="origin">The origin of the symbol upload. Possible
         /// values include: 'User', 'System'</param>
-        public SymbolUpload(string symbolUploadId, string appId, string status, Symbol[] symbols = default(Symbol[]), string origin = default(string))
+        public SymbolUpload(string symbolUploadId, string appId, SymbolUploadStatus status, Symbol[] symbols = default(Symbol[]), SymbolUploadOrigin? origin = default(SymbolUploadOrigin?))
         {
             SymbolUploadId = symbolUploadId;
             AppId = appId;
@@ -11926,7 +11601,7 @@ namespace MobileCenterApi.Models
         /// 'indexed', 'failed'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "status")]
-        public string Status { get; set; }
+        public SymbolUploadStatus Status { get; set; }
 
         /// <summary>
         /// Gets or sets the symbol ids
@@ -11939,7 +11614,7 @@ namespace MobileCenterApi.Models
         /// include: 'User', 'System'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "origin")]
-        public string Origin { get; set; }
+        public SymbolUploadOrigin? Origin { get; set; }
 
         /// <summary>
         /// The type of the symbol for the current symbol upload
@@ -11957,10 +11632,6 @@ namespace MobileCenterApi.Models
             {
                 throw new System.Exception("Property 'AppId' is required/");
             }
-            if (Status == null)
-            {
-                throw new System.Exception("Property 'Status' is required/");
-            }
             if (this.Symbols != null)
             {
                 foreach (var element in this.Symbols)
@@ -11974,9 +11645,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -12026,9 +11694,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -12092,9 +11757,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -12116,7 +11778,7 @@ namespace MobileCenterApi.Models
         /// </summary>
         /// <param name="status">The desired operation for the symbol upload.
         /// Possible values include: 'committed', 'aborted'</param>
-        public SymbolUploadEndRequest(string status)
+        public SymbolUploadEndRequest(SymbolUploadEndRequestStatus status)
         {
             Status = status;
         }
@@ -12126,20 +11788,13 @@ namespace MobileCenterApi.Models
         /// values include: 'committed', 'aborted'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "status")]
-        public string Status { get; set; }
+        public SymbolUploadEndRequestStatus Status { get; set; }
 
         public virtual void Validate()
         {
-            if (Status == null)
-            {
-                throw new System.Exception("Property 'Status' is required/");
-            }
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -12210,9 +11865,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -12246,7 +11898,7 @@ namespace MobileCenterApi.Models
         /// 'Objective-Cpp', 'Cpp', 'C', 'Swift', 'Java', 'Unknown'</param>
         /// <param name="relevant">frame should be shown always</param>
         /// <param name="methodParams">parameters of the frames method</param>
-        public StackFrame(bool appCode, string codeRaw, string codeFormatted, string address = default(string), string className = default(string), string method = default(string), bool? classMethod = default(bool?), string file = default(string), int? line = default(int?), string frameworkName = default(string), string language = default(string), bool? relevant = default(bool?), string methodParams = default(string))
+        public StackFrame(bool appCode, string codeRaw, string codeFormatted, string address = default(string), string className = default(string), string method = default(string), bool? classMethod = default(bool?), string file = default(string), int? line = default(int?), string frameworkName = default(string), StackFrameLanguage? language = default(StackFrameLanguage?), bool? relevant = default(bool?), string methodParams = default(string))
         {
             Address = address;
             ClassName = className;
@@ -12329,7 +11981,7 @@ namespace MobileCenterApi.Models
         /// 'Cpp', 'C', 'Swift', 'Java', 'Unknown'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "language")]
-        public string Language { get; set; }
+        public StackFrameLanguage? Language { get; set; }
 
         /// <summary>
         /// Gets or sets frame should be shown always
@@ -12356,9 +12008,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -12385,7 +12034,7 @@ namespace MobileCenterApi.Models
         /// <param name="platform">SDK/Platform this thread is beeing generated
         /// from. Possible values include: 'ios', 'android', 'xamarin',
         /// 'react-native', 'other'</param>
-        public Exception(StackFrame[] frames, string reason = default(string), string type = default(string), bool? relevant = default(bool?), Exception[] innerExceptions = default(Exception[]), string platform = default(string))
+        public Exception(StackFrame[] frames, string reason = default(string), string type = default(string), bool? relevant = default(bool?), Exception[] innerExceptions = default(Exception[]), ExceptionPlatform? platform = default(ExceptionPlatform?))
         {
             Reason = reason;
             Type = type;
@@ -12431,7 +12080,7 @@ namespace MobileCenterApi.Models
         /// 'react-native', 'other'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "platform")]
-        public string Platform { get; set; }
+        public ExceptionPlatform? Platform { get; set; }
 
         public virtual void Validate()
         {
@@ -12462,9 +12111,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -12492,7 +12138,7 @@ namespace MobileCenterApi.Models
         /// <param name="platform">SDK/Platform this thread is beeing generated
         /// from. Possible values include: 'ios', 'android', 'xamarin',
         /// 'react-native', 'other'</param>
-        public Thread(string title, StackFrame[] frames, Exception exception = default(Exception), bool? relevant = default(bool?), string platform = default(string))
+        public Thread(string title, StackFrame[] frames, Exception exception = default(Exception), bool? relevant = default(bool?), ThreadPlatform? platform = default(ThreadPlatform?))
         {
             Title = title;
             Frames = frames;
@@ -12533,7 +12179,7 @@ namespace MobileCenterApi.Models
         /// 'react-native', 'other'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "platform")]
-        public string Platform { get; set; }
+        public ThreadPlatform? Platform { get; set; }
 
         public virtual void Validate()
         {
@@ -12562,9 +12208,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -12630,9 +12273,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -12663,7 +12303,7 @@ namespace MobileCenterApi.Models
         /// values include: 'JavaScript', 'CSharp', 'Objective-C',
         /// 'Objective-Cpp', 'Cpp', 'C', 'Swift', 'Java', 'Unknown'</param>
         /// <param name="methodParams">parameters of the frames method</param>
-        public ReasonStackFrame(string className = default(string), string method = default(string), bool? classMethod = default(bool?), string file = default(string), int? line = default(int?), bool? appCode = default(bool?), string frameworkName = default(string), string codeFormatted = default(string), string language = default(string), string methodParams = default(string))
+        public ReasonStackFrame(string className = default(string), string method = default(string), bool? classMethod = default(bool?), string file = default(string), int? line = default(int?), bool? appCode = default(bool?), string frameworkName = default(string), string codeFormatted = default(string), ReasonStackFrameLanguage? language = default(ReasonStackFrameLanguage?), string methodParams = default(string))
         {
             ClassName = className;
             Method = method;
@@ -12731,7 +12371,7 @@ namespace MobileCenterApi.Models
         /// 'Cpp', 'C', 'Swift', 'Java', 'Unknown'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "language")]
-        public string Language { get; set; }
+        public ReasonStackFrameLanguage? Language { get; set; }
 
         /// <summary>
         /// Gets or sets parameters of the frames method
@@ -12741,9 +12381,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -12762,7 +12399,7 @@ namespace MobileCenterApi.Models
         /// <param name="status">Possible values include: 'open', 'closed',
         /// 'ignored'</param>
         /// <param name="fatal">Crash or handled exception</param>
-        public CrashGroup(string crashGroupId, string displayId, string appVersion, string build, string status, int count, System.DateTime firstOccurrence, System.DateTime lastOccurrence, string errorReason, bool fatal, int? impactedUsers = default(int?), string exception = default(string), ReasonStackFrame reasonFrame = default(ReasonStackFrame))
+        public CrashGroup(string crashGroupId, string displayId, string appVersion, string build, CrashGroupStatus status, int count, System.DateTime firstOccurrence, System.DateTime lastOccurrence, string errorReason, bool fatal, int? impactedUsers = default(int?), string exception = default(string), ReasonStackFrame reasonFrame = default(ReasonStackFrame))
         {
             CrashGroupId = crashGroupId;
             DisplayId = displayId;
@@ -12803,7 +12440,7 @@ namespace MobileCenterApi.Models
         /// Gets or sets possible values include: 'open', 'closed', 'ignored'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "status")]
-        public string Status { get; set; }
+        public CrashGroupStatus Status { get; set; }
 
         /// <summary>
         /// </summary>
@@ -12864,10 +12501,6 @@ namespace MobileCenterApi.Models
             {
                 throw new System.Exception("Property 'Build' is required/");
             }
-            if (Status == null)
-            {
-                throw new System.Exception("Property 'Status' is required/");
-            }
             if (ErrorReason == null)
             {
                 throw new System.Exception("Property 'ErrorReason' is required/");
@@ -12875,9 +12508,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -12905,9 +12535,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -12935,9 +12562,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13046,9 +12670,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13086,9 +12707,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13126,9 +12744,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13179,9 +12794,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13231,9 +12843,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13270,9 +12879,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13312,9 +12918,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13345,9 +12948,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13387,9 +12987,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13441,9 +13038,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13490,9 +13084,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13530,9 +13121,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13580,9 +13168,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13622,9 +13207,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13689,9 +13271,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13737,9 +13316,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13773,9 +13349,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13821,9 +13394,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13857,9 +13427,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13905,9 +13472,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13941,9 +13505,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -13981,9 +13542,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -14022,9 +13580,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -14062,9 +13617,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -14095,17 +13647,14 @@ namespace MobileCenterApi.Models
         [Newtonsoft.Json.JsonProperty(PropertyName = "average_percentage")]
         public long? AveragePercentage { get; set; }
 
-		/// <summary>
-		/// Gets or sets the crash-free percentage per day.
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "daily_percentages")]
+        /// <summary>
+        /// Gets or sets the crash-free percentage per day.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "daily_percentages")]
         public DateTimePercentages[] DailyPercentages { get; set; }
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -14122,425 +13671,395 @@ namespace MobileCenterApi.Models
         /// Initializes a new instance of the CrashOverall class.
         /// </summary>
         public CrashOverall(long? crashCount = default(long?), long? deviceCount = default(long?))
-		{
-			CrashCount = crashCount;
-			DeviceCount = deviceCount;
-		}
+        {
+            CrashCount = crashCount;
+            DeviceCount = deviceCount;
+        }
 
-		/// <summary>
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "crash_count")]
-		public long? CrashCount { get; set; }
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "crash_count")]
+        public long? CrashCount { get; set; }
 
-		/// <summary>
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "device_count")]
-		public long? DeviceCount { get; set; }
-
-	}
-}
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace MobileCenterApi.Models
-{
-	using System.Linq;
-
-	public partial class CrashesOverallItem
-	{
-		/// <summary>
-		/// Initializes a new instance of the CrashesOverallItem class.
-		/// </summary>
-		public CrashesOverallItem() { }
-
-		/// <summary>
-		/// Initializes a new instance of the CrashesOverallItem class.
-		/// </summary>
-		public CrashesOverallItem(string crashGroupId = default(string), string appVersion = default(string), CrashOverall overall = default(CrashOverall))
-		{
-			CrashGroupId = crashGroupId;
-			AppVersion = appVersion;
-			Overall = overall;
-		}
-
-		/// <summary>
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "crash_group_id")]
-		public string CrashGroupId { get; set; }
-
-		/// <summary>
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "app_version")]
-		public string AppVersion { get; set; }
-
-		/// <summary>
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "overall")]
-		public CrashOverall Overall { get; set; }
-
-	}
-}
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace MobileCenterApi.Models
-{
-	using System.Linq;
-
-	public partial class CrashGroupModel
-	{
-		/// <summary>
-		/// Initializes a new instance of the CrashGroupModel class.
-		/// </summary>
-		public CrashGroupModel() { }
-
-		/// <summary>
-		/// Initializes a new instance of the CrashGroupModel class.
-		/// </summary>
-		/// <param name="modelName">model's name</param>
-		/// <param name="crashCount">count of model</param>
-		public CrashGroupModel(string modelName = default(string), long? crashCount = default(long?))
-		{
-			ModelName = modelName;
-			CrashCount = crashCount;
-		}
-
-		/// <summary>
-		/// Gets or sets model's name
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "model_name")]
-		public string ModelName { get; set; }
-
-		/// <summary>
-		/// Gets or sets count of model
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "crash_count")]
-		public long? CrashCount { get; set; }
-
-	}
-}
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace MobileCenterApi.Models
-{
-	using System.Linq;
-
-	public partial class CrashGroupModels
-	{
-		/// <summary>
-		/// Initializes a new instance of the CrashGroupModels class.
-		/// </summary>
-		public CrashGroupModels() { }
-
-		/// <summary>
-		/// Initializes a new instance of the CrashGroupModels class.
-		/// </summary>
-		public CrashGroupModels(long? crashCount = default(long?), CrashGroupModel[] modelsProperty = default(CrashGroupModel[]))
-		{
-			CrashCount = crashCount;
-			ModelsProperty = modelsProperty;
-		}
-
-		/// <summary>
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "crash_count")]
-		public long? CrashCount { get; set; }
-
-		/// <summary>
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "models")]
-		public CrashGroupModel[] ModelsProperty { get; set; }
-
-	}
-}
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace MobileCenterApi.Models
-{
-	using System.Linq;
-
-	public partial class CrashGroupOperatingSystem
-	{
-		/// <summary>
-		/// Initializes a new instance of the CrashGroupOperatingSystem class.
-		/// </summary>
-		public CrashGroupOperatingSystem() { }
-
-		/// <summary>
-		/// Initializes a new instance of the CrashGroupOperatingSystem class.
-		/// </summary>
-		/// <param name="operatingSystemName">OS name</param>
-		/// <param name="crashCount">count of OS</param>
-		public CrashGroupOperatingSystem(string operatingSystemName = default(string), long? crashCount = default(long?))
-		{
-			OperatingSystemName = operatingSystemName;
-			CrashCount = crashCount;
-		}
-
-		/// <summary>
-		/// Gets or sets OS name
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "operating_system_name")]
-		public string OperatingSystemName { get; set; }
-
-		/// <summary>
-		/// Gets or sets count of OS
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "crash_count")]
-		public long? CrashCount { get; set; }
-
-	}
-}
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace MobileCenterApi.Models
-{
-	using System.Linq;
-
-	public partial class CrashGroupOperatingSystems
-	{
-		/// <summary>
-		/// Initializes a new instance of the CrashGroupOperatingSystems class.
-		/// </summary>
-		public CrashGroupOperatingSystems() { }
-
-		/// <summary>
-		/// Initializes a new instance of the CrashGroupOperatingSystems class.
-		/// </summary>
-		public CrashGroupOperatingSystems(long? crashCount = default(long?), CrashGroupOperatingSystem[] operatingSystems = default(CrashGroupOperatingSystem[]))
-		{
-			CrashCount = crashCount;
-			OperatingSystems = operatingSystems;
-		}
-
-		/// <summary>
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "crash_count")]
-		public long? CrashCount { get; set; }
-
-		/// <summary>
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "operating_systems")]
-		public CrashGroupOperatingSystem[] OperatingSystems { get; set; }
-
-	}
-}
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace MobileCenterApi.Models
-{
-	using System.Linq;
-
-	public partial class CrashGroupAndVersion
-	{
-		/// <summary>
-		/// Initializes a new instance of the CrashGroupAndVersion class.
-		/// </summary>
-		public CrashGroupAndVersion() { }
-
-		/// <summary>
-		/// Initializes a new instance of the CrashGroupAndVersion class.
-		/// </summary>
-		public CrashGroupAndVersion(string crashGroupId = default(string), string appVersion = default(string))
-		{
-			CrashGroupId = crashGroupId;
-			AppVersion = appVersion;
-		}
-
-		/// <summary>
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "crash_group_id")]
-		public string CrashGroupId { get; set; }
-
-		/// <summary>
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "app_version")]
-		public string AppVersion { get; set; }
-
-	}
-}
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace MobileCenterApi.Models
-{
-	using System.Linq;
-
-	public partial class CrashGroupContainer
-	{
-		/// <summary>
-		/// Initializes a new instance of the CrashGroupContainer class.
-		/// </summary>
-		public CrashGroupContainer() { }
-
-		/// <summary>
-		/// Initializes a new instance of the CrashGroupContainer class.
-		/// </summary>
-		public CrashGroupContainer(CrashGroupAndVersion[] crashGroups)
-		{
-			CrashGroups = crashGroups;
-		}
-
-		/// <summary>
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "crash_groups")]
-		public CrashGroupAndVersion[] CrashGroups { get; set; }
-
-		public virtual void Validate()
-		{
-			if (CrashGroups == null)
-			{
-				throw new System.Exception("Property 'CrashGroups' is required/");
-			}
-			if (this.CrashGroups != null)
-			{
-				if (this.CrashGroups.Length < 1)
-				{
-					throw new System.Exception("Validation Failed: MinItems, 'CrashGroups', 1");
-				}
-			}
-		}
-	}
-}
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace MobileCenterApi.Models
-{
-	using System.Linq;
-
-	public partial class EventModel
-	{
-		/// <summary>
-		/// Initializes a new instance of the EventModel class.
-		/// </summary>
-		public EventModel() { }
-
-		/// <summary>
-		/// Initializes a new instance of the EventModel class.
-		/// </summary>
-		/// <param name="previousDeviceCount">the device count of previous time
-		/// range of the event</param>
-		/// <param name="previousCount">the event count of previous time range
-		/// of the event</param>
-		public EventModel(string id = default(string), string name = default(string), long? deviceCount = default(long?), long? previousDeviceCount = default(long?), long? count = default(long?), long? previousCount = default(long?), long? countPerDevice = default(long?), long? countPerSession = default(long?))
-		{
-			Id = id;
-			Name = name;
-			DeviceCount = deviceCount;
-			PreviousDeviceCount = previousDeviceCount;
-			Count = count;
-			PreviousCount = previousCount;
-			CountPerDevice = countPerDevice;
-			CountPerSession = countPerSession;
-		}
-
-		/// <summary>
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "id")]
-		public string Id { get; set; }
-
-		/// <summary>
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "name")]
-		public string Name { get; set; }
-
-		/// <summary>
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "deviceCount")]
-		public long? DeviceCount { get; set; }
-
-		/// <summary>
-		/// Gets or sets the device count of previous time range of the event
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "previous_device_count")]
-		public long? PreviousDeviceCount { get; set; }
-
-		/// <summary>
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "count")]
-		public long? Count { get; set; }
-
-		/// <summary>
-		/// Gets or sets the event count of previous time range of the event
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "previous_count")]
-		public long? PreviousCount { get; set; }
-
-		/// <summary>
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "count_per_device")]
-		public long? CountPerDevice { get; set; }
-
-		/// <summary>
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "count_per_session")]
-		public long? CountPerSession { get; set; }
-
-	}
-}
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace MobileCenterApi.Models
-{
-	using System.Linq;
-
-	public partial class Events
-	{
-		/// <summary>
-		/// Initializes a new instance of the Events class.
-		/// </summary>
-		public Events() { }
-
-		/// <summary>
-		/// Initializes a new instance of the Events class.
-		/// </summary>
-		/// <param name="total">the total count of events</param>
-		/// <param name="totalDevices">the active device over this
-		/// period</param>
-		public Events(EventModel[] eventsProperty = default(EventModel[]), long? total = default(long?), long? totalDevices = default(long?))
-		{
-			EventsProperty = eventsProperty;
-			Total = total;
-			TotalDevices = totalDevices;
-		}
-
-		/// <summary>
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "events")]
-		public EventModel[] EventsProperty { get; set; }
-
-		/// <summary>
-		/// Gets or sets the total count of events
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "total")]
-		public long? Total { get; set; }
-
-		/// <summary>
-		/// Gets or sets the active device over this period
-		/// </summary>
-		[Newtonsoft.Json.JsonProperty(PropertyName = "total_devices")]
-		public long? TotalDevices { get; set; }
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "device_count")]
+        public long? DeviceCount { get; set; }
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
+
+namespace MobileCenterApi.Models
+{
+    using System.Linq;
+
+    public partial class CrashesOverallItem
+    {
+        /// <summary>
+        /// Initializes a new instance of the CrashesOverallItem class.
+        /// </summary>
+        public CrashesOverallItem() { }
+
+        /// <summary>
+        /// Initializes a new instance of the CrashesOverallItem class.
+        /// </summary>
+        public CrashesOverallItem(string crashGroupId = default(string), string appVersion = default(string), CrashOverall overall = default(CrashOverall))
+        {
+            CrashGroupId = crashGroupId;
+            AppVersion = appVersion;
+            Overall = overall;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "crash_group_id")]
+        public string CrashGroupId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "app_version")]
+        public string AppVersion { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "overall")]
+        public CrashOverall Overall { get; set; }
+
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+    using System.Linq;
+
+    public partial class CrashGroupModel
+    {
+        /// <summary>
+        /// Initializes a new instance of the CrashGroupModel class.
+        /// </summary>
+        public CrashGroupModel() { }
+
+        /// <summary>
+        /// Initializes a new instance of the CrashGroupModel class.
+        /// </summary>
+        /// <param name="modelName">model's name</param>
+        /// <param name="crashCount">count of model</param>
+        public CrashGroupModel(string modelName = default(string), long? crashCount = default(long?))
+        {
+            ModelName = modelName;
+            CrashCount = crashCount;
+        }
+
+        /// <summary>
+        /// Gets or sets model's name
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "model_name")]
+        public string ModelName { get; set; }
+
+        /// <summary>
+        /// Gets or sets count of model
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "crash_count")]
+        public long? CrashCount { get; set; }
+
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+    using System.Linq;
+
+    public partial class CrashGroupModels
+    {
+        /// <summary>
+        /// Initializes a new instance of the CrashGroupModels class.
+        /// </summary>
+        public CrashGroupModels() { }
+
+        /// <summary>
+        /// Initializes a new instance of the CrashGroupModels class.
+        /// </summary>
+        public CrashGroupModels(long? crashCount = default(long?), CrashGroupModel[] modelsProperty = default(CrashGroupModel[]))
+        {
+            CrashCount = crashCount;
+            ModelsProperty = modelsProperty;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "crash_count")]
+        public long? CrashCount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "models")]
+        public CrashGroupModel[] ModelsProperty { get; set; }
+
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+    using System.Linq;
+
+    public partial class CrashGroupOperatingSystem
+    {
+        /// <summary>
+        /// Initializes a new instance of the CrashGroupOperatingSystem class.
+        /// </summary>
+        public CrashGroupOperatingSystem() { }
+
+        /// <summary>
+        /// Initializes a new instance of the CrashGroupOperatingSystem class.
+        /// </summary>
+        /// <param name="operatingSystemName">OS name</param>
+        /// <param name="crashCount">count of OS</param>
+        public CrashGroupOperatingSystem(string operatingSystemName = default(string), long? crashCount = default(long?))
+        {
+            OperatingSystemName = operatingSystemName;
+            CrashCount = crashCount;
+        }
+
+        /// <summary>
+        /// Gets or sets OS name
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "operating_system_name")]
+        public string OperatingSystemName { get; set; }
+
+        /// <summary>
+        /// Gets or sets count of OS
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "crash_count")]
+        public long? CrashCount { get; set; }
+
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+    using System.Linq;
+
+    public partial class CrashGroupOperatingSystems
+    {
+        /// <summary>
+        /// Initializes a new instance of the CrashGroupOperatingSystems class.
+        /// </summary>
+        public CrashGroupOperatingSystems() { }
+
+        /// <summary>
+        /// Initializes a new instance of the CrashGroupOperatingSystems class.
+        /// </summary>
+        public CrashGroupOperatingSystems(long? crashCount = default(long?), CrashGroupOperatingSystem[] operatingSystems = default(CrashGroupOperatingSystem[]))
+        {
+            CrashCount = crashCount;
+            OperatingSystems = operatingSystems;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "crash_count")]
+        public long? CrashCount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "operating_systems")]
+        public CrashGroupOperatingSystem[] OperatingSystems { get; set; }
+
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+    using System.Linq;
+
+    public partial class CrashGroupAndVersion
+    {
+        /// <summary>
+        /// Initializes a new instance of the CrashGroupAndVersion class.
+        /// </summary>
+        public CrashGroupAndVersion() { }
+
+        /// <summary>
+        /// Initializes a new instance of the CrashGroupAndVersion class.
+        /// </summary>
+        public CrashGroupAndVersion(string crashGroupId = default(string), string appVersion = default(string))
+        {
+            CrashGroupId = crashGroupId;
+            AppVersion = appVersion;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "crash_group_id")]
+        public string CrashGroupId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "app_version")]
+        public string AppVersion { get; set; }
+
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+    using System.Linq;
+
+    public partial class CrashGroupContainer
+    {
+        /// <summary>
+        /// Initializes a new instance of the CrashGroupContainer class.
+        /// </summary>
+        public CrashGroupContainer() { }
+
+        /// <summary>
+        /// Initializes a new instance of the CrashGroupContainer class.
+        /// </summary>
+        public CrashGroupContainer(CrashGroupAndVersion[] crashGroups)
+        {
+            CrashGroups = crashGroups;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "crash_groups")]
+        public CrashGroupAndVersion[] CrashGroups { get; set; }
+
+        public virtual void Validate()
+        {
+            if (CrashGroups == null)
+            {
+                throw new System.Exception("Property 'CrashGroups' is required/");
+            }
+            if (this.CrashGroups != null)
+            {
+                if (this.CrashGroups.Length < 1)
+                {
+                    throw new System.Exception("Validation Failed: MinItems, 'CrashGroups', 1");
+                }
+            }
+        }
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+    using System.Linq;
+
+    public partial class EventModel
+    {
+        /// <summary>
+        /// Initializes a new instance of the EventModel class.
+        /// </summary>
+        public EventModel() { }
+
+        /// <summary>
+        /// Initializes a new instance of the EventModel class.
+        /// </summary>
+        /// <param name="previousDeviceCount">the device count of previous time
+        /// range of the event</param>
+        /// <param name="previousCount">the event count of previous time range
+        /// of the event</param>
+        public EventModel(string id = default(string), string name = default(string), long? deviceCount = default(long?), long? previousDeviceCount = default(long?), long? count = default(long?), long? previousCount = default(long?), long? countPerDevice = default(long?), long? countPerSession = default(long?))
+        {
+            Id = id;
+            Name = name;
+            DeviceCount = deviceCount;
+            PreviousDeviceCount = previousDeviceCount;
+            Count = count;
+            PreviousCount = previousCount;
+            CountPerDevice = countPerDevice;
+            CountPerSession = countPerSession;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "deviceCount")]
+        public long? DeviceCount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the device count of previous time range of the event
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "previous_device_count")]
+        public long? PreviousDeviceCount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "count")]
+        public long? Count { get; set; }
+
+        /// <summary>
+        /// Gets or sets the event count of previous time range of the event
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "previous_count")]
+        public long? PreviousCount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "count_per_device")]
+        public long? CountPerDevice { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "count_per_session")]
+        public long? CountPerSession { get; set; }
+
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+    using System.Linq;
+
+    public partial class Events
+    {
+        /// <summary>
+        /// Initializes a new instance of the Events class.
+        /// </summary>
+        public Events() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Events class.
+        /// </summary>
+        /// <param name="total">the total count of events</param>
+        /// <param name="totalDevices">the active device over this
+        /// period</param>
+        public Events(EventModel[] eventsProperty = default(EventModel[]), long? total = default(long?), long? totalDevices = default(long?))
+        {
+            EventsProperty = eventsProperty;
+            Total = total;
+            TotalDevices = totalDevices;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "events")]
+        public EventModel[] EventsProperty { get; set; }
+
+        /// <summary>
+        /// Gets or sets the total count of events
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "total")]
+        public long? Total { get; set; }
+
+        /// <summary>
+        /// Gets or sets the active device over this period
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "total_devices")]
+        public long? TotalDevices { get; set; }
+
+    }
+}
 
 namespace MobileCenterApi.Models
 {
@@ -14580,9 +14099,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -14628,9 +14144,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -14670,9 +14183,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -14712,9 +14222,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -15001,9 +14508,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -15062,9 +14566,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -15136,9 +14637,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -15169,9 +14667,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -15223,9 +14718,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -15266,9 +14758,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -15302,9 +14791,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -15347,9 +14833,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -15392,9 +14875,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -15431,9 +14911,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -15470,9 +14947,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -15503,9 +14977,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -15551,9 +15022,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -15587,9 +15055,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -15695,9 +15160,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -15774,9 +15236,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -15879,9 +15338,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -16021,9 +15477,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -16093,9 +15546,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -16168,9 +15618,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -16213,9 +15660,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -16248,9 +15692,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -16326,9 +15767,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -16428,9 +15866,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -16474,9 +15909,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -16536,9 +15968,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -16598,9 +16027,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -16648,9 +16074,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -16708,9 +16131,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -16756,9 +16176,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -16901,9 +16318,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -16959,9 +16373,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -16991,7 +16402,7 @@ namespace MobileCenterApi.Models
         /// <param name="relativePath">Relative path of the file</param>
         /// <param name="byteRange">Range of bytes required to verify ownership
         /// of the file</param>
-        public TestCloudFileHashDeprecated(string fileType, string checksum, string relativePath, string byteRange = default(string))
+        public TestCloudFileHashDeprecated(TestCloudFileHashDeprecatedFileType fileType, string checksum, string relativePath, string byteRange = default(string))
         {
             FileType = fileType;
             Checksum = checksum;
@@ -17004,7 +16415,7 @@ namespace MobileCenterApi.Models
         /// 'dsym-file', 'app-file', 'test-file'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "file_type")]
-        public string FileType { get; set; }
+        public TestCloudFileHashDeprecatedFileType FileType { get; set; }
 
         /// <summary>
         /// Gets or sets SHA256 hash of the file
@@ -17027,10 +16438,6 @@ namespace MobileCenterApi.Models
 
         public virtual void Validate()
         {
-            if (FileType == null)
-            {
-                throw new System.Exception("Property 'FileType' is required/");
-            }
             if (Checksum == null)
             {
                 throw new System.Exception("Property 'Checksum' is required/");
@@ -17042,9 +16449,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -17070,7 +16474,7 @@ namespace MobileCenterApi.Models
         /// 'dsym-file', 'app-file', 'test-file'</param>
         /// <param name="checksum">SHA256 hash of the file</param>
         /// <param name="relativePath">Relative path of the file</param>
-        public TestCloudFileHash(string fileType, string checksum, string relativePath)
+        public TestCloudFileHash(TestCloudFileHashFileType fileType, string checksum, string relativePath)
         {
             FileType = fileType;
             Checksum = checksum;
@@ -17082,7 +16486,7 @@ namespace MobileCenterApi.Models
         /// 'dsym-file', 'app-file', 'test-file'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "fileType")]
-        public string FileType { get; set; }
+        public TestCloudFileHashFileType FileType { get; set; }
 
         /// <summary>
         /// Gets or sets SHA256 hash of the file
@@ -17098,10 +16502,6 @@ namespace MobileCenterApi.Models
 
         public virtual void Validate()
         {
-            if (FileType == null)
-            {
-                throw new System.Exception("Property 'FileType' is required/");
-            }
             if (Checksum == null)
             {
                 throw new System.Exception("Property 'Checksum' is required/");
@@ -17113,9 +16513,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -17168,9 +16565,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -17197,7 +16591,7 @@ namespace MobileCenterApi.Models
         /// <param name="checksum">SHA256 hash of the file</param>
         /// <param name="uploadStatus">Status of the upload</param>
         /// <param name="relativePath">Relative path of the file</param>
-        public TestCloudFileHashResponse(string fileType, string checksum, TestCloudHashUploadStatus uploadStatus, string relativePath = default(string))
+        public TestCloudFileHashResponse(TestCloudFileHashResponseFileType fileType, string checksum, TestCloudHashUploadStatus uploadStatus, string relativePath = default(string))
         {
             FileType = fileType;
             Checksum = checksum;
@@ -17210,7 +16604,7 @@ namespace MobileCenterApi.Models
         /// 'dsym-file', 'app-file', 'test-file'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "fileType")]
-        public string FileType { get; set; }
+        public TestCloudFileHashResponseFileType FileType { get; set; }
 
         /// <summary>
         /// Gets or sets SHA256 hash of the file
@@ -17232,10 +16626,6 @@ namespace MobileCenterApi.Models
 
         public virtual void Validate()
         {
-            if (FileType == null)
-            {
-                throw new System.Exception("Property 'FileType' is required/");
-            }
             if (Checksum == null)
             {
                 throw new System.Exception("Property 'Checksum' is required/");
@@ -17251,9 +16641,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -17336,9 +16723,6 @@ namespace MobileCenterApi.Models
         }
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -17386,9 +16770,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -17443,9 +16824,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -17479,9 +16857,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -17499,7 +16874,7 @@ namespace MobileCenterApi.Models
         /// </summary>
         /// <param name="type">Possible values include: 'String', 'Boolean',
         /// 'Number', 'Date', 'Version', 'Custom'</param>
-        public TableColumn(string name = default(string), bool? isIndexed = default(bool?), string type = default(string), bool? canDelete = default(bool?), bool? canUpdateIndex = default(bool?))
+        public TableColumn(string name = default(string), bool? isIndexed = default(bool?), TableColumnType? type = default(TableColumnType?), bool? canDelete = default(bool?), bool? canUpdateIndex = default(bool?))
         {
             Name = name;
             IsIndexed = isIndexed;
@@ -17523,7 +16898,7 @@ namespace MobileCenterApi.Models
         /// 'Number', 'Date', 'Version', 'Custom'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "Type")]
-        public string Type { get; set; }
+        public TableColumnType? Type { get; set; }
 
         /// <summary>
         /// </summary>
@@ -17537,9 +16912,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -17585,9 +16957,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -17615,9 +16984,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -17651,9 +17017,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -17681,9 +17044,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -17717,9 +17077,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -17753,9 +17110,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -17791,9 +17145,6 @@ namespace MobileCenterApi.Models
 
     }
 }
-// Code generated by SimpleSwaggerGenerator
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
 
 namespace MobileCenterApi.Models
 {
@@ -17825,5 +17176,723 @@ namespace MobileCenterApi.Models
         [Newtonsoft.Json.JsonProperty(PropertyName = "Location")]
         public string Location { get; set; }
 
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for ErrorDetailsCode.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum ErrorDetailsCode
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "BadRequest")]
+        BadRequest,
+        [System.Runtime.Serialization.EnumMember(Value = "Conflict")]
+        Conflict,
+        [System.Runtime.Serialization.EnumMember(Value = "NotAcceptable")]
+        NotAcceptable,
+        [System.Runtime.Serialization.EnumMember(Value = "NotFound")]
+        NotFound,
+        [System.Runtime.Serialization.EnumMember(Value = "InternalServerError")]
+        InternalServerError,
+        [System.Runtime.Serialization.EnumMember(Value = "Unauthorized")]
+        Unauthorized
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for AppRequestOs.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum AppRequestOs
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "iOS")]
+        IOS,
+        [System.Runtime.Serialization.EnumMember(Value = "Android")]
+        Android
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for AppRequestPlatform.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum AppRequestPlatform
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "Objective-C-Swift")]
+        ObjectiveCSwift,
+        [System.Runtime.Serialization.EnumMember(Value = "Java")]
+        Java,
+        [System.Runtime.Serialization.EnumMember(Value = "React-Native")]
+        ReactNative,
+        [System.Runtime.Serialization.EnumMember(Value = "Xamarin")]
+        Xamarin
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for AppResponseOs.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum AppResponseOs
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "iOS")]
+        IOS,
+        [System.Runtime.Serialization.EnumMember(Value = "Android")]
+        Android
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for AppResponsePlatform.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum AppResponsePlatform
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "Objective-C-Swift")]
+        ObjectiveCSwift,
+        [System.Runtime.Serialization.EnumMember(Value = "Java")]
+        Java,
+        [System.Runtime.Serialization.EnumMember(Value = "React-Native")]
+        ReactNative,
+        [System.Runtime.Serialization.EnumMember(Value = "Xamarin")]
+        Xamarin
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for OwnerType.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum OwnerType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "org")]
+        Org,
+        [System.Runtime.Serialization.EnumMember(Value = "user")]
+        User
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for AppInvitationDetailResponseInviteType.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum AppInvitationDetailResponseInviteType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "developer")]
+        Developer,
+        [System.Runtime.Serialization.EnumMember(Value = "tester")]
+        Tester
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for GrantAdminRoleRequestAdminRole.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum GrantAdminRoleRequestAdminRole
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "superAdmin")]
+        SuperAdmin,
+        [System.Runtime.Serialization.EnumMember(Value = "admin")]
+        Admin,
+        [System.Runtime.Serialization.EnumMember(Value = "devOps")]
+        DevOps,
+        [System.Runtime.Serialization.EnumMember(Value = "notAdmin")]
+        NotAdmin
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for BranchConfigurationTrigger.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum BranchConfigurationTrigger
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "continous")]
+        Continous,
+        [System.Runtime.Serialization.EnumMember(Value = "continuous")]
+        Continuous,
+        [System.Runtime.Serialization.EnumMember(Value = "manual")]
+        Manual
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for RepoConfigState.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum RepoConfigState
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "unauthorized")]
+        Unauthorized,
+        [System.Runtime.Serialization.EnumMember(Value = "inactive")]
+        Inactive,
+        [System.Runtime.Serialization.EnumMember(Value = "active")]
+        Active
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for BuildPatchStatus.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum BuildPatchStatus
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "cancelling")]
+        Cancelling
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for ReleaseDetailsStatus.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum ReleaseDetailsStatus
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "available")]
+        Available,
+        [System.Runtime.Serialization.EnumMember(Value = "unavailable")]
+        Unavailable
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for ReleaseUploadEndRequestStatus.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum ReleaseUploadEndRequestStatus
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "committed")]
+        Committed,
+        [System.Runtime.Serialization.EnumMember(Value = "aborted")]
+        Aborted
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for PackageUploadEndRequestStatus.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum PackageUploadEndRequestStatus
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "committed")]
+        Committed,
+        [System.Runtime.Serialization.EnumMember(Value = "aborted")]
+        Aborted
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for PackageDetailsStatus.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum PackageDetailsStatus
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "available")]
+        Available,
+        [System.Runtime.Serialization.EnumMember(Value = "unavailable")]
+        Unavailable
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for SymbolType.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum SymbolType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "Apple")]
+        Apple,
+        [System.Runtime.Serialization.EnumMember(Value = "JavaScript")]
+        JavaScript
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for SymbolOrigin.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum SymbolOrigin
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "System")]
+        System,
+        [System.Runtime.Serialization.EnumMember(Value = "User")]
+        User
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for SymbolStatus.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum SymbolStatus
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "available")]
+        Available,
+        [System.Runtime.Serialization.EnumMember(Value = "ignored")]
+        Ignored
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for SymbolUploadStatus.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum SymbolUploadStatus
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "created")]
+        Created,
+        [System.Runtime.Serialization.EnumMember(Value = "committed")]
+        Committed,
+        [System.Runtime.Serialization.EnumMember(Value = "aborted")]
+        Aborted,
+        [System.Runtime.Serialization.EnumMember(Value = "processing")]
+        Processing,
+        [System.Runtime.Serialization.EnumMember(Value = "indexed")]
+        Indexed,
+        [System.Runtime.Serialization.EnumMember(Value = "failed")]
+        Failed
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for SymbolUploadOrigin.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum SymbolUploadOrigin
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "User")]
+        User,
+        [System.Runtime.Serialization.EnumMember(Value = "System")]
+        System
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for SymbolUploadEndRequestStatus.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum SymbolUploadEndRequestStatus
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "committed")]
+        Committed,
+        [System.Runtime.Serialization.EnumMember(Value = "aborted")]
+        Aborted
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for StackFrameLanguage.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum StackFrameLanguage
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "JavaScript")]
+        JavaScript,
+        [System.Runtime.Serialization.EnumMember(Value = "CSharp")]
+        CSharp,
+        [System.Runtime.Serialization.EnumMember(Value = "Objective-C")]
+        ObjectiveC,
+        [System.Runtime.Serialization.EnumMember(Value = "Objective-Cpp")]
+        ObjectiveCpp,
+        [System.Runtime.Serialization.EnumMember(Value = "Cpp")]
+        Cpp,
+        [System.Runtime.Serialization.EnumMember(Value = "C")]
+        C,
+        [System.Runtime.Serialization.EnumMember(Value = "Swift")]
+        Swift,
+        [System.Runtime.Serialization.EnumMember(Value = "Java")]
+        Java,
+        [System.Runtime.Serialization.EnumMember(Value = "Unknown")]
+        Unknown
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for ExceptionPlatform.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum ExceptionPlatform
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "ios")]
+        Ios,
+        [System.Runtime.Serialization.EnumMember(Value = "android")]
+        Android,
+        [System.Runtime.Serialization.EnumMember(Value = "xamarin")]
+        Xamarin,
+        [System.Runtime.Serialization.EnumMember(Value = "react-native")]
+        ReactNative,
+        [System.Runtime.Serialization.EnumMember(Value = "other")]
+        Other
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for ThreadPlatform.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum ThreadPlatform
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "ios")]
+        Ios,
+        [System.Runtime.Serialization.EnumMember(Value = "android")]
+        Android,
+        [System.Runtime.Serialization.EnumMember(Value = "xamarin")]
+        Xamarin,
+        [System.Runtime.Serialization.EnumMember(Value = "react-native")]
+        ReactNative,
+        [System.Runtime.Serialization.EnumMember(Value = "other")]
+        Other
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for ReasonStackFrameLanguage.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum ReasonStackFrameLanguage
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "JavaScript")]
+        JavaScript,
+        [System.Runtime.Serialization.EnumMember(Value = "CSharp")]
+        CSharp,
+        [System.Runtime.Serialization.EnumMember(Value = "Objective-C")]
+        ObjectiveC,
+        [System.Runtime.Serialization.EnumMember(Value = "Objective-Cpp")]
+        ObjectiveCpp,
+        [System.Runtime.Serialization.EnumMember(Value = "Cpp")]
+        Cpp,
+        [System.Runtime.Serialization.EnumMember(Value = "C")]
+        C,
+        [System.Runtime.Serialization.EnumMember(Value = "Swift")]
+        Swift,
+        [System.Runtime.Serialization.EnumMember(Value = "Java")]
+        Java,
+        [System.Runtime.Serialization.EnumMember(Value = "Unknown")]
+        Unknown
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for CrashGroupStatus.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum CrashGroupStatus
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "open")]
+        Open,
+        [System.Runtime.Serialization.EnumMember(Value = "closed")]
+        Closed,
+        [System.Runtime.Serialization.EnumMember(Value = "ignored")]
+        Ignored
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for TestCloudFileHashDeprecatedFileType.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum TestCloudFileHashDeprecatedFileType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "dsym-file")]
+        DsymFile,
+        [System.Runtime.Serialization.EnumMember(Value = "app-file")]
+        AppFile,
+        [System.Runtime.Serialization.EnumMember(Value = "test-file")]
+        TestFile
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for TestCloudFileHashFileType.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum TestCloudFileHashFileType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "dsym-file")]
+        DsymFile,
+        [System.Runtime.Serialization.EnumMember(Value = "app-file")]
+        AppFile,
+        [System.Runtime.Serialization.EnumMember(Value = "test-file")]
+        TestFile
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for TestCloudFileHashResponseFileType.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum TestCloudFileHashResponseFileType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "dsym-file")]
+        DsymFile,
+        [System.Runtime.Serialization.EnumMember(Value = "app-file")]
+        AppFile,
+        [System.Runtime.Serialization.EnumMember(Value = "test-file")]
+        TestFile
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for TableColumnType.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum TableColumnType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "String")]
+        String,
+        [System.Runtime.Serialization.EnumMember(Value = "Boolean")]
+        Boolean,
+        [System.Runtime.Serialization.EnumMember(Value = "Number")]
+        Number,
+        [System.Runtime.Serialization.EnumMember(Value = "Date")]
+        Date,
+        [System.Runtime.Serialization.EnumMember(Value = "Version")]
+        Version,
+        [System.Runtime.Serialization.EnumMember(Value = "Custom")]
+        Custom
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for Form.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum Form
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "lite")]
+        Lite,
+        [System.Runtime.Serialization.EnumMember(Value = "full")]
+        Full
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for ErrorType.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum ErrorType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "something")]
+        Something,
+        [System.Runtime.Serialization.EnumMember(Value = "else")]
+        Else
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for GroupType.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum GroupType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "GroupType1")]
+        GroupType1,
+        [System.Runtime.Serialization.EnumMember(Value = "GroupType2")]
+        GroupType2
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for GroupStatus.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum GroupStatus
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "open")]
+        Open,
+        [System.Runtime.Serialization.EnumMember(Value = "closed")]
+        Closed,
+        [System.Runtime.Serialization.EnumMember(Value = "ignored")]
+        Ignored
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for Inlinecount.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum Inlinecount
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "allpages")]
+        Allpages,
+        [System.Runtime.Serialization.EnumMember(Value = "none")]
+        None
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for Type.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum Type
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "appsvc")]
+        Appsvc,
+        [System.Runtime.Serialization.EnumMember(Value = "push")]
+        Push
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for DownloadType.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum DownloadType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "build")]
+        Build,
+        [System.Runtime.Serialization.EnumMember(Value = "symbols")]
+        Symbols,
+        [System.Runtime.Serialization.EnumMember(Value = "logs")]
+        Logs
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for Os.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum Os
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "iOS")]
+        IOS,
+        [System.Runtime.Serialization.EnumMember(Value = "Android")]
+        Android
+    }
+}
+
+namespace MobileCenterApi.Models
+{
+
+    /// <summary>
+    /// Defines values for Platform.
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum Platform
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "Objective-C-Swift")]
+        ObjectiveCSwift,
+        [System.Runtime.Serialization.EnumMember(Value = "React-Native")]
+        ReactNative,
+        [System.Runtime.Serialization.EnumMember(Value = "Xamarin")]
+        Xamarin,
+        [System.Runtime.Serialization.EnumMember(Value = "Java")]
+        Java
     }
 }

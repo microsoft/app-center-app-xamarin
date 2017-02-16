@@ -36,7 +36,7 @@ namespace MobileCenterApp
 
 		public override async Task Refresh()
 		{
-			Repositories = await SyncManager.Shared.Api.Build.GetRepositories("github", CurrentApp.Owner.Name, CurrentApp.Name, "lite");
+			Repositories = await SyncManager.Shared.Api.Build.GetRepositories("github", CurrentApp.Owner.Name, CurrentApp.Name, MobileCenterApi.Models.Form.Lite);
 		}
 
 		public async Task SelectRepo(MobileCenterApi.Models.SourceRepository repo)

@@ -74,7 +74,7 @@
     <ConsolePause>False</ConsolePause>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <BuildIpa>True</BuildIpa>
-    <CodesignProvision>Automatic:AdHoc</CodesignProvision>
+    <CodesignProvision>5148054d-8ee9-499a-a06b-1848ed058136</CodesignProvision>
     <CodesignKey>iPhone Distribution</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
@@ -216,6 +216,7 @@
     <Reference Include="SimpleDatabase">
       <HintPath>..\..\packages\Clancey.SimpleDatabase.1.0.2\lib\netstandard1.1\SimpleDatabase.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Renderers\" />

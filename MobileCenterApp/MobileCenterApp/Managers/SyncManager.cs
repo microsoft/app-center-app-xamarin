@@ -34,7 +34,7 @@ namespace MobileCenterApp
 		{
 			if (Settings.IsOfflineMode)
 				return;
-			var apps = await Api.Account.GetApps();
+			var apps = await Api.Account.GetApps1();
 			List<Owner> owners = new List<Owner>();
 			List<AppClass> myApps = new List<AppClass>();
 
