@@ -131,10 +131,6 @@
       <HintPath>..\..\packages\clancey.OnePassword.1.0.3\lib\Xamarin.iOS10\OnePasswordExtension.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SimpleAuth, Version=1.0.12.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Clancey.SimpleAuth.1.0.30\lib\Xamarin.iOS10\SimpleAuth.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="SimpleAuth.OnePassword.iOS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Clancey.SimpleAuth.OnePassword.1.0.4\lib\Xamarin.iOS10\SimpleAuth.OnePassword.iOS.dll</HintPath>
       <Private>True</Private>
@@ -191,12 +187,6 @@
     <Reference Include="ModernHttpClient">
       <HintPath>..\..\packages\modernhttpclient.2.4.2\lib\Xamarin.iOS10\ModernHttpClient.dll</HintPath>
     </Reference>
-    <Reference Include="Plugin.Settings.Abstractions">
-      <HintPath>..\..\packages\Xam.Plugins.Settings.2.5.2.1\lib\Xamarin.iOS10\Plugin.Settings.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Plugin.Settings">
-      <HintPath>..\..\packages\Xam.Plugins.Settings.2.5.2.1\lib\Xamarin.iOS10\Plugin.Settings.dll</HintPath>
-    </Reference>
     <Reference Include="SQLitePCLRaw.core">
       <HintPath>..\..\packages\SQLitePCLRaw.core.1.1.2\lib\Xamarin.iOS10\SQLitePCLRaw.core.dll</HintPath>
     </Reference>
@@ -217,6 +207,15 @@
       <HintPath>..\..\packages\Clancey.SimpleDatabase.1.0.2\lib\netstandard1.1\SimpleDatabase.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="SimpleAuth">
+      <HintPath>..\..\packages\Clancey.SimpleAuth.1.0.31\lib\Xamarin.iOS10\SimpleAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Settings.Abstractions">
+      <HintPath>..\..\packages\Xam.Plugins.Settings.2.5.4\lib\Xamarin.iOS10\Plugin.Settings.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Settings">
+      <HintPath>..\..\packages\Xam.Plugins.Settings.2.5.4\lib\Xamarin.iOS10\Plugin.Settings.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Renderers\" />
