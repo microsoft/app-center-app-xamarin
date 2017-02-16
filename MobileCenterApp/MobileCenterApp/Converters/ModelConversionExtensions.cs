@@ -7,7 +7,7 @@ namespace MobileCenterApp
 {
 	public static class ModelConversionExtensions
 	{
-		public static AppClass ToAppClass(this MobileCenterApi.AppResponse app)
+		public static AppClass ToAppClass(this MobileCenterApi.Models.AppResponse app)
 		{
 			return new AppClass
 			{
@@ -26,9 +26,9 @@ namespace MobileCenterApp
 			};
 		}
 
-		public static MobileCenterApi.AppRequest ToAppRequest(this AppClass app)
+		public static MobileCenterApi.Models.AppRequest ToAppRequest(this AppClass app)
 		{
-			return new MobileCenterApi.AppRequest
+			return new MobileCenterApi.Models.AppRequest
 			{
 				Description = app.Description?.Trim(),
 				DisplayName = app.DisplayName?.Trim(),
@@ -38,7 +38,7 @@ namespace MobileCenterApp
 			};
 		}
 
-		public static Owner ToAppOwner(this MobileCenterApi.Owner o)
+		public static Owner ToAppOwner(this MobileCenterApi.Models.Owner o)
 		{
 			return new Owner
 			{
@@ -51,7 +51,7 @@ namespace MobileCenterApp
 			};
 		}
 
-		public static Branch ToBranch(this MobileCenterApi.BranchStatus b, string appId)
+		public static Branch ToBranch(this MobileCenterApi.Models.BranchStatus b, string appId)
 		{
 			return new Branch
 			{
@@ -64,7 +64,7 @@ namespace MobileCenterApp
 			};
 		}
 
-		public static CommitClass ToCommit(this MobileCenterApi.Commit c, string appId)
+		public static CommitClass ToCommit(this MobileCenterApi.Models.Commit c, string appId)
 		{
 			return new CommitClass
 			{
@@ -75,7 +75,7 @@ namespace MobileCenterApp
 			};
 		}
 
-		public static Build ToBuild(this MobileCenterApi.Build b, string appId)
+		public static Build ToBuild(this MobileCenterApi.Models.Build b, string appId)
 		{
 			return new Build
 			{
@@ -93,7 +93,7 @@ namespace MobileCenterApp
 			};
 		}
 
-		public static RepoConfig ToRepoConfig(this MobileCenterApi.RepoConfig rc, string appId)
+		public static RepoConfig ToRepoConfig(this MobileCenterApi.Models.RepoConfig rc, string appId)
 		{
 			return new RepoConfig
 			{
@@ -105,7 +105,7 @@ namespace MobileCenterApp
 			};
 		}
 
-		public static CommitClass ToCommit(this MobileCenterApi.CommitsResult c, string appId)
+		public static CommitClass ToCommit(this MobileCenterApi.Models.CommitsResult c, string appId)
 		{
 			return new CommitClass
 			{
@@ -116,7 +116,7 @@ namespace MobileCenterApp
 			};
 		}
 
-		public static List<LogSection> ToLogSections(this MobileCenterApi.LogResponse response)
+		public static List<LogSection> ToLogSections(this MobileCenterApi.Models.LogResponse response)
 		{
 			int i = 0;
 			var logs = ParseLogSection(ref i, response.Logs);
@@ -178,7 +178,7 @@ namespace MobileCenterApp
 
 		}
 
-		public static Release ToRelease(this MobileCenterApi.ReleaseDetails releaseDetails, AppClass app)
+		public static Release ToRelease(this MobileCenterApi.Models.ReleaseDetails releaseDetails, AppClass app)
 		{
 			return new Release
 			{

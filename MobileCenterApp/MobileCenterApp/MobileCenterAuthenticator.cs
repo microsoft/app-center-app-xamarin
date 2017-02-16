@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SimpleAuth;
+using MobileCenterApi.Models;
+
 namespace MobileCenterApi
 {
 	public class MobileCenterAuthenticator : BasicAuthAuthenticator
@@ -43,6 +45,7 @@ namespace MobileCenterApi
 				base(apiKey, encryptionKey, "v0.1/api_tokens", handler)
 		{
 			BaseAddress = new System.Uri("https://api.mobile.azure.com"); ;
+			Initialize();
 		}
 
 		public override Task PrepareClient(HttpClient client)
@@ -94,6 +97,9 @@ namespace MobileCenterApi
 			return Get<CommitsResult[]>(queryParameters: queryParameters, authenticated: true);
 		}
 	}
+}
+namespace MobileCenterApi.Models
+{
 
 	public partial class CommitsResult
 	{
@@ -399,9 +405,5 @@ namespace MobileCenterApi
 		[JsonProperty("value")]
 		public string[] Logs { get; set; }
 	}
-	public partial class ReasonStackFrame
-	{
-        [Newtonsoft.Json.JsonProperty("line")]
-		public int? Line { get; set; }
-	}
+
 }

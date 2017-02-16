@@ -21,8 +21,8 @@ namespace MobileCenterApp
 
 		public AppClass CurrentApp { get; set; }
 
-		MobileCenterApi.SourceRepository[] repositories;
-		public MobileCenterApi.SourceRepository[] Repositories
+		MobileCenterApi.Models.SourceRepository[] repositories;
+		public MobileCenterApi.Models.SourceRepository[] Repositories
 		{
 			get { return repositories; }
 			set { ProcPropertyChanged(ref repositories, value); }
@@ -36,15 +36,15 @@ namespace MobileCenterApp
 
 		public override async Task Refresh()
 		{
-			Repositories = await SyncManager.Shared.Api.BuildGetRepositories("github", CurrentApp.Owner.Name, CurrentApp.Name, "lite");
+			Repositories = await SyncManager.Shared.Api.Build.GetRepositories("github", CurrentApp.Owner.Name, CurrentApp.Name, "lite");
 		}
 
-		public async Task SelectRepo(MobileCenterApi.SourceRepository repo)
+		public async Task SelectRepo(MobileCenterApi.Models.SourceRepository repo)
 		{
 			IsLoading = true;
 			try
 			{
-				var resp =await SyncManager.Shared.Api.PostBuildCreateRepositoryConfiguration(new MobileCenterApi.RepoInfo { RepoUrl = repo.CloneUrl }, CurrentApp.Owner.Name, CurrentApp.Name);
+				var resp =await SyncManager.Shared.Api.Build.CreateRepositoryConfiguration(new MobileCenterApi.Models.RepoInfo { RepoUrl = repo.CloneUrl }, CurrentApp.Owner.Name, CurrentApp.Name);
 				Debug.WriteLine(resp.Message);
 				await NavigationService.PopModalAsync();
 			}

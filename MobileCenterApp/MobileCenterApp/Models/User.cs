@@ -20,6 +20,6 @@ namespace MobileCenterApp
 		public string AvatarUrl { get; set; }
 
 
-		public bool CanChangePassword { get; set; }
+		public bool? CanChangePassword { get; set; }
 	}
 }

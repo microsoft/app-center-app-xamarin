@@ -24,7 +24,7 @@ namespace MobileCenterApp
 
 		public string ProvisioningProfileName { get; set; }
 
-		public double Size { get; set; }
+		public double? Size { get; set; }
 
 		public string MinOs { get; set; }
 

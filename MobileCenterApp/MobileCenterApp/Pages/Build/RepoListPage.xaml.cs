@@ -13,7 +13,7 @@ namespace MobileCenterApp
 		}
 		async void Handle_ItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
 		{
-			var item = e.SelectedItem as MobileCenterApi.SourceRepository;
+			var item = e.SelectedItem as MobileCenterApi.Models.SourceRepository;
 			if (item == null)
 				return;
 			await (BindingContext as RepoListViewModel)?.SelectRepo(item);

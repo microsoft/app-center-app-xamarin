@@ -34,7 +34,7 @@ namespace MobileCenterApp
 		{
 			if (Settings.IsOfflineMode)
 				return;
-			var apps = await Api.GetApps();
+			var apps = await Api.Account.GetApps();
 			List<Owner> owners = new List<Owner>();
 			List<AppClass> myApps = new List<AppClass>();
 
@@ -58,7 +58,7 @@ namespace MobileCenterApp
 			if (userTask?.IsCompleted ?? true)
 				userTask = Task.Run(async () =>
 				{
-					var profile = await Api.GetUserProfile();
+					var profile = await Api.Account.GetUserProfile();
 					var user = new User
 					{
 						AvatarUrl = profile.AvatarUrl,
@@ -78,7 +78,7 @@ namespace MobileCenterApp
 		{
 			try
 			{
-				var resp = await Api.PostCreateApp(app.ToAppRequest());
+				var resp = await Api.Account.CreateApp(app.ToAppRequest());
 				var newApp = resp.ToAppClass();
 				var owner = resp.Owner.ToAppOwner();
 				Database.Main.InsertOrReplace(newApp);
@@ -101,7 +101,7 @@ namespace MobileCenterApp
 		{
 			try
 			{
-				await Api.DeleteApp(app.Name,app.Owner.Name);
+				await Api.Account.DeleteApp(app.Name,app.Owner.Name);
 				Database.Main.Delete(app);
 				Database.Main.ClearMemory<AppClass>();
 				NotificationManager.Shared.ProcAppsChanged();
@@ -131,7 +131,7 @@ namespace MobileCenterApp
 
 		async Task syncBranch(AppClass app)
 		{
-			var branchStatus = await Api.BuildGetBranches(app.Owner.Name, app.Name);
+			var branchStatus = await Api.Build.GetBranches(app.Owner.Name, app.Name);
 
 			var branches  = new List<Branch>();
 			var commits = new List<CommitClass>();
@@ -168,7 +168,7 @@ namespace MobileCenterApp
 
 		async Task syncRepoConfig(AppClass app)
 		{
-			var configs = await Api.BuildGetRepositoryConfiguration(app.Owner.Name, app.Name,true).ConfigureAwait(false);
+			var configs = await Api.Build.GetRepositoryConfiguration(app.Owner.Name, app.Name,true).ConfigureAwait(false);
 			Database.Main.InsertOrReplaceAll(configs.Select(x=> x.ToRepoConfig(app.Id)));
 			Database.Main.ClearMemory();
 			syncRepoConfigTasks.Remove(app.Id);
@@ -188,7 +188,7 @@ namespace MobileCenterApp
 		async Task syncBranches(Branch branch)
 		{
 			var app = branch.App;
-			var builds = await Api.BuildGetBranchBuilds(branch.Name, app.Owner.Name, app.Name).ConfigureAwait(false);
+			var builds = await Api.Build.GetBranchBuilds(branch.Name, app.Owner.Name, app.Name).ConfigureAwait(false);
 			var myBuilds = builds.Select(x => x.ToBuild(app.Id)).ToList();
 			await Database.Main.ExecuteAsync("delete from Build where AppId = ? and SourceBranch = ?", app.Id, branch.Name);
 
@@ -230,7 +230,7 @@ namespace MobileCenterApp
 			}
 
 			var app = Database.Main.GetObject<AppClass>(build.AppId);
-			var logData = await Api.BuildGetBuildLogs(build.BuildId, app.Owner.Name, app.Name).ConfigureAwait(false);
+			var logData = await Api.Build.GetBuildLogs(build.BuildId, app.Owner.Name, app.Name).ConfigureAwait(false);
 			var logs = logData.ToLogSections();
 			//Write our temp data
 			File.WriteAllText(tempPath, logs.ToJson());
@@ -251,7 +251,7 @@ namespace MobileCenterApp
 
 		async Task syncReleases(AppClass app)
 		{
-			var releases = await Api.GetV01AppsReleases(app.Owner.Name, app.Name, true).ConfigureAwait(false);
+			var releases = await Api.Distribute.GetV01AppsReleases(app.Owner.Name, app.Name).ConfigureAwait(false);
 			Database.Main.InsertOrReplaceAll(releases.Select(x => x.ToRelease(app)));
 		}
 	}
