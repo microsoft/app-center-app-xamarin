@@ -17,11 +17,19 @@ namespace MobileCenterApp
 		{
 			get
 			{
-				Debug.WriteLine($"Loading {index}");
-				return new GroupedList<T>(Database,GroupInfo, index)
+				try
 				{
-					Display = Database?.SectionHeader<T>(GroupInfo,index) ?? "",
-				};
+					Debug.WriteLine($"Loading {index}");
+					return new GroupedList<T>(Database, GroupInfo, index)
+					{
+						Display = Database?.SectionHeader<T>(GroupInfo, index) ?? "",
+					};
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine(ex);
+					return null;
+				}
 			}
 
 			set
@@ -202,8 +210,16 @@ namespace MobileCenterApp
 		{
 			get
 			{
-				Debug.WriteLine($"Loading {Section}:{index}");
-				return Database.ObjectForRow<T>(GroupInfo, Section, index);
+				try
+				{
+					Debug.WriteLine($"Loading {Section}:{index}");
+					return Database.ObjectForRow<T>(GroupInfo, Section, index);
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine(ex);
+					return null;
+				}
 			}
 
 			set
