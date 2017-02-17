@@ -10,7 +10,7 @@ namespace MobileCenterApp
 			Title = "Branch Details";
 		}
 
-		SimpleDatabaseSource<Build> items = new SimpleDatabaseSource<Build> (Database.Main);
+		SimpleDatabaseSource<Build> items = new SimpleDatabaseSource<Build>(Database.Main) { IsGrouped = false};
 		public SimpleDatabaseSource<Build> Items
 		{
 			get { return items; }
