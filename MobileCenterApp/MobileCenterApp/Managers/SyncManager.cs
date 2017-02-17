@@ -13,15 +13,17 @@ namespace MobileCenterApp
 		public static SyncManager Shared { get; set; } = new SyncManager();
 		public MobileCenterApi.MobileCenterAPIServiceApiKeyApi Api { get; set; } = new MobileCenterApi.MobileCenterAPIServiceApiKeyApi("MobileCenter", "Ttw8AMUjYeEkr=="
 #if __MOBILE__
-		                                                                                                                               ,new ModernHttpClient.NativeMessageHandler()
+																																	   , new ModernHttpClient.NativeMessageHandler()
 #endif
 																																	  );
 		public SyncManager()
 		{
-			#if DEBUG
+#if DEBUG
 			Api.Verbose = true;
-			#endif
+#endif
 		}
+
+		#region Account
 		Task syncAppsTask;
 		public Task SyncApps()
 		{
@@ -95,11 +97,12 @@ namespace MobileCenterApp
 			}
 			return false;
 		}
+
 		public async Task<bool> DeleteApp(AppClass app)
 		{
 			try
 			{
-				await Api.Account.DeleteApp(app.Name,app.Owner.Name);
+				await Api.Account.DeleteApp(app.Name, app.Owner.Name);
 				Database.Main.Delete(app);
 				NotificationManager.Shared.ProcAppsChanged();
 				return true;
@@ -115,7 +118,9 @@ namespace MobileCenterApp
 			}
 			return false;
 		}
+		#endregion //Account
 
+		#region Build
 		Dictionary<string, Task> syncbranchesTask = new Dictionary<string, Task>();
 		public Task SyncBranch(AppClass app)
 		{
@@ -130,13 +135,13 @@ namespace MobileCenterApp
 		{
 			var branchStatus = await Api.Build.GetBranches(app.Owner.Name, app.Name);
 
-			var branches  = new List<Branch>();
+			var branches = new List<Branch>();
 			var commits = new List<CommitClass>();
 			var builds = new List<Build>();
 			branchStatus.ToList().ForEach(x =>
 			{
 				branches.Add(x.ToBranch(app.Id));
-				if(x?.Branch?.Commit != null)
+				if (x?.Branch?.Commit != null)
 					commits.Add(x.Branch.Commit.ToCommit(app.Id));
 				if (x?.LastBuild != null)
 					builds.Add(x.LastBuild.ToBuild(app.Id));
@@ -159,14 +164,14 @@ namespace MobileCenterApp
 			Task syncRepoConfigTask;
 			syncRepoConfigTasks.TryGetValue(app.Id, out syncRepoConfigTask);
 			if (syncRepoConfigTask?.IsCompleted ?? true)
-				syncRepoConfigTasks[app.Id]= syncRepoConfigTask = syncRepoConfig(app);
+				syncRepoConfigTasks[app.Id] = syncRepoConfigTask = syncRepoConfig(app);
 			return syncRepoConfigTask;
 		}
 
 		async Task syncRepoConfig(AppClass app)
 		{
-			var configs = await Api.Build.GetRepositoryConfiguration(app.Owner.Name, app.Name,true).ConfigureAwait(false);
-			Database.Main.InsertOrReplaceAll(configs.Select(x=> x.ToRepoConfig(app.Id)));
+			var configs = await Api.Build.GetRepositoryConfiguration(app.Owner.Name, app.Name, true).ConfigureAwait(false);
+			Database.Main.InsertOrReplaceAll(configs.Select(x => x.ToRepoConfig(app.Id)));
 			syncRepoConfigTasks.Remove(app.Id);
 		}
 
@@ -190,11 +195,11 @@ namespace MobileCenterApp
 
 			Database.Main.InsertOrReplaceAll(myBuilds);
 			//Hopefully we can remove this nonsense later.
-			var missingShas = myBuilds.Where(x => x.LastCommit == null || string.IsNullOrWhiteSpace(x.LastCommit.Message)).Select(x=> x.SourceVersion).ToList();
+			var missingShas = myBuilds.Where(x => x.LastCommit == null || string.IsNullOrWhiteSpace(x.LastCommit.Message)).Select(x => x.SourceVersion).ToList();
 			if (missingShas.Any())
 			{
 				var shaString = string.Join(",", missingShas);
-				var commits = await Api.GetCommits(shaString, app.Owner.Name, app.Name,"full");
+				var commits = await Api.GetCommits(shaString, app.Owner.Name, app.Name, "full");
 				if (commits.Any())
 				{
 					Database.Main.InsertOrReplaceAll(commits.Select(x => x.ToCommit(app.Id)));
@@ -230,10 +235,13 @@ namespace MobileCenterApp
 			var logs = logData.ToLogSections();
 			//Write our temp data
 			File.WriteAllText(tempPath, logs.ToJson());
+			downloadLogsTask.Remove(build.Id);
 			return logs;
 
 		}
+		#endregion //Build
 
+		#region Distribution
 
 		Dictionary<string, Task> distributionReleaseTaskTask = new Dictionary<string, Task>();
 		public Task SyncReleases(AppClass app)
@@ -250,6 +258,7 @@ namespace MobileCenterApp
 			var releases = await Api.Distribute.GetV01AppsReleases(app.Owner.Name, app.Name).ConfigureAwait(false);
 			//This one does ignore. Just incase we fixed the missing fields
 			Database.Main.InsertOrIgnoreAll(releases.Select(x => x.ToRelease(app)));
+			distributionReleaseTaskTask.Remove(app.Id);
 		}
 
 
@@ -269,7 +278,10 @@ namespace MobileCenterApp
 			var app = Database.Main.GetObject<AppClass>(release.AppId);
 			var r = await Api.Distribute.GetReleaseOrLatestRelease(release.Id, app.Owner.Name, app.Name).ConfigureAwait(false);
 			Database.Main.InsertOrReplace(r.ToRelease(app));
+			distributionReleaseDetailsTasks.Remove(release.ReleaseId);
 		}
+
+		#endregion //Distibtion
 
 	}
 }
