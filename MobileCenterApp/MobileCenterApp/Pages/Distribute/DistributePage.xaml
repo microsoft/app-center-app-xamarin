@@ -6,6 +6,9 @@
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<ViewCell>
+						<ViewCell.ContextActions>
+							<MenuItem Clicked="OnInstall" CommandParameter="{Binding .}" Text="Install" IsDestructive="False" />
+						</ViewCell.ContextActions>
 						<StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
 							<Image WidthRequest="44" HeightRequest="44" Source="{Binding AppIconUrl}" />
 							<StackLayout Padding="5,0,0,0" VerticalOptions="StartAndExpand" Orientation="Horizontal">

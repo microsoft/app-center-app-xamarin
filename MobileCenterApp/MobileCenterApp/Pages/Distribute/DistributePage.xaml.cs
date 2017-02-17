@@ -19,5 +19,17 @@ namespace MobileCenterApp
 				return;
 			(BindingContext as DistributeViewModel).OnSelected(item);
 		}
+		public async void OnDelete(object sender, EventArgs e)
+		{
+			var app = ((MenuItem)sender).CommandParameter as Release;
+			//var result = await DisplayAlert("Are you sure?", $"Deleting '{app.DisplayName}'", "Delete", "Nevermind");
+			//if (result)
+			//	(BindingContext as AppListViewModel).DeleteCommand.Execute(sender);
+		}
+		public async void OnInstall(object sender, EventArgs e)
+		{
+			var app = ((MenuItem)sender).CommandParameter as Release;
+			await (App.Current as App).InstallRelease(app);
+		}
 	}
 }
