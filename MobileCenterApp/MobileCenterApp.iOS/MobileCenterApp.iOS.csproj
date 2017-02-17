@@ -215,7 +215,7 @@
       <HintPath>..\..\packages\Xam.Plugins.Settings.2.5.4\lib\Xamarin.iOS10\Plugin.Settings.dll</HintPath>
     </Reference>
     <Reference Include="SimpleDatabase">
-      <HintPath>..\..\packages\Clancey.SimpleDatabase.1.0.3\lib\Xamarin.iOS10\SimpleDatabase.dll</HintPath>
+      <HintPath>..\..\packages\Clancey.SimpleDatabase.1.0.4\lib\Xamarin.iOS10\SimpleDatabase.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
