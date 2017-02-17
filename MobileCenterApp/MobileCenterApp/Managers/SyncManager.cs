@@ -48,7 +48,8 @@ namespace MobileCenterApp
 			await Database.Main.InsertAllAsync(myApps);
 			var distintOwners = owners.DistinctBy(x => x.Id).ToList();
 			Database.Main.InsertOrReplaceAll(distintOwners);
-			Database.Main.ClearMemory();
+			Database.Main.ClearMemory<AppClass>();
+			Database.Main.ClearMemory<Owner>();
 			NotificationManager.Shared.ProcAppsChanged();
 		}
 
@@ -150,7 +151,11 @@ namespace MobileCenterApp
 			Database.Main.InsertOrReplaceAll(distinctCommits);
 			var distinctBuilds = builds.DistinctBy(x => x.Id).ToList();
 			Database.Main.InsertOrReplaceAll(distinctBuilds);
-			Database.Main.ClearMemory();
+
+			Database.Main.ClearMemory<Branch>();
+			Database.Main.ClearMemory<Build>();
+			Database.Main.ClearMemory<CommitClass>();
+
 			NotificationManager.Shared.ProcBranchesChanged(app.Id);
 			syncbranchesTask.Remove(app.Id);
 		}
@@ -170,7 +175,7 @@ namespace MobileCenterApp
 		{
 			var configs = await Api.Build.GetRepositoryConfiguration(app.Owner.Name, app.Name,true).ConfigureAwait(false);
 			Database.Main.InsertOrReplaceAll(configs.Select(x=> x.ToRepoConfig(app.Id)));
-			Database.Main.ClearMemory();
+			Database.Main.ClearMemory<RepoConfig>();
 			syncRepoConfigTasks.Remove(app.Id);
 		}
 
@@ -204,6 +209,7 @@ namespace MobileCenterApp
 					Database.Main.InsertOrReplaceAll(commits.Select(x => x.ToCommit(app.Id)));
 				}
 			}
+			Database.Main.ClearMemory<Branch>();
 			syncBuildsTasks.Remove(branch.Id);
 		}
 
@@ -252,7 +258,30 @@ namespace MobileCenterApp
 		async Task syncReleases(AppClass app)
 		{
 			var releases = await Api.Distribute.GetV01AppsReleases(app.Owner.Name, app.Name).ConfigureAwait(false);
-			Database.Main.InsertOrReplaceAll(releases.Select(x => x.ToRelease(app)));
+			//This one does ignore. Just incase we fixed the missing fields
+			Database.Main.InsertOrIgnoreAll(releases.Select(x => x.ToRelease(app)));
+			Database.Main.ClearMemory<Release>();
 		}
+
+
+
+		Dictionary<string, Task> distributionReleaseDetailsTasks = new Dictionary<string, Task>();
+		public Task SyncReleasesDetails(Release release)
+		{
+			Task syncReleasesTask;
+			distributionReleaseDetailsTasks.TryGetValue(release.ReleaseId, out syncReleasesTask);
+			if (syncReleasesTask?.IsCompleted ?? true)
+				distributionReleaseDetailsTasks[release.ReleaseId] = syncReleasesTask = syncReleasesDetails(release);
+			return syncReleasesTask;
+		}
+
+		async Task syncReleasesDetails(Release release)
+		{
+			var app = Database.Main.GetObject<AppClass>(release.AppId);
+			var r = await Api.Distribute.GetReleaseOrLatestRelease(release.Id, app.Owner.Name, app.Name).ConfigureAwait(false);
+			Database.Main.InsertOrReplace(r.ToRelease(app));
+			Database.Main.ClearMemory<Release>();
+		}
+
 	}
 }

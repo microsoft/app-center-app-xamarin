@@ -39,8 +39,24 @@ namespace MobileCenterApp
 			SimpleIoC.RegisterPage<BranchDetailsViewModel, BranchDetailsPage>();
 			SimpleIoC.RegisterPage<RepoListViewModel, RepoListPage>();
 			SimpleIoC.RegisterPage<BuildLogViewModel, BuildLogPage>();
+			SimpleIoC.RegisterPage<ReleaseDetailsViewModel, ReleaseDetailsPage>();
 		}
 
+		public Action<string> OnInstallApp { get; set; }
+		public async Task InstallRelease(Release release)
+		{
+			if (OnInstallApp == null)
+				throw new NotImplementedException("OnInstallApp has not been implemented");
+
+			//await MainPage.DisplayActionSheet("Do you want to install
+
+			if (release.InstallUrl == null)
+			{
+
+			}
+			OnInstallApp(release.InstallUrl);
+
+		}
 
 		protected override void OnStart()
 		{

@@ -40,5 +40,12 @@ namespace MobileCenterApp
 			groupInfo.Params = CurrentApp?.Id;
 			Items.GroupInfo = groupInfo;
 		}
+
+		public async void OnSelected(Release release)
+		{
+			if (release == null)
+				return;
+			await NavigationService.PushAsync(new ReleaseDetailsViewModel { Release = release });
+		}
 	}
 }

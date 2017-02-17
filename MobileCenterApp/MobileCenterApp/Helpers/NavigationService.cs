@@ -9,6 +9,10 @@ namespace MobileCenterApp
 		public static async Task PushAsync (BaseViewModel viewModel)
 		{
 			var view = SimpleIoC.GetPage (viewModel.GetType ());
+			if (view == null)
+			{
+				throw new NotImplementedException($"There is now Page registered with {viewModel.GetType()}. Please register the page and view model with SimpleIoC");
+			}
 			view.BindingContext = viewModel;
 			await Navigation.PushAsync (view);
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Microsoft.Azure.Mobile.Analytics;
+using System.IO;
 namespace MobileCenterApp
 {
 	public class LogManager
@@ -15,6 +17,21 @@ namespace MobileCenterApp
 		public void UserLoggedIn(string username)
 		{
 			LogEvent("Login", new Dictionary<string, string> { { "Username", username } });
+		}
+
+		internal void Report(Exception ex, [CallerMemberName] string memberName = "",
+							   [CallerFilePath] string sourceFilePath = "",
+							   [CallerLineNumber] int sourceLineNumber = 0)
+		{
+			Console.WriteLine(ex);
+			var fileName = Path.GetFileNameWithoutExtension(sourceFilePath);
+			LogEvent("Exception", new Dictionary<string, string>
+			{
+				{"FileName",fileName},
+				{"Message",ex.Message},
+				{"Line Number",sourceLineNumber.ToString()},
+				{"Member Name",memberName}
+			});
 		}
 
 		public void PageView(string title,Dictionary<string,string> data = null)

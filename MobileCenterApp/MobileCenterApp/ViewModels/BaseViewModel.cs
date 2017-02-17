@@ -7,7 +7,7 @@ namespace MobileCenterApp
 	public class BaseViewModel : BaseModel
 	{
 		string title;
-		public string Title
+		public virtual string Title
 		{
 			get { return title; }
 			set { ProcPropertyChanged(ref title, value); }

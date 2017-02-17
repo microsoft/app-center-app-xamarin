@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<local:BasePage xmlns:local="clr-namespace:MobileCenterApp;" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MobileCenterApp.ReleaseDetailsPage">
+<StackLayout>
+		<ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}"/>
+		<Label Text="{Binding Release.Id}"/>
+		<Label Text="{Binding Release.Version}"/>
+		<Label Text="{Binding Release.ReleaseNotes}"/>
+		<Label Text="{Binding Release.Status}"/>
+		<Button Text="Install" Command="{Binding InstallAppCommand}"/>
+</StackLayout>
+</local:BasePage>

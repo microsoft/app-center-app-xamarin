@@ -102,6 +102,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ModelConversionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Release.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Distribute\ReleaseDetailsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Distribute\ReleaseDetailsPage.xaml.cs">
+      <DependentUpon>ReleaseDetailsPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />
@@ -166,6 +169,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Build\BuildLogPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Distribute\ReleaseDetailsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

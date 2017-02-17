@@ -6,6 +6,11 @@ namespace MobileCenterApp
 	public class Release
 	{
 		[PrimaryKey]
+		public string ReleaseId { 
+			get { return $"{AppId} - {Id}"; }
+			set { }
+		}
+
 		public string Id { get; set; }
 
 		public string Status { get; set; }
@@ -17,7 +22,6 @@ namespace MobileCenterApp
 
 		public string Version { get; set; }
 
-		[OrderBy]
 		public string ShortVersion { get; set; }
 
 		public string ReleaseNotes { get; set; }
@@ -30,7 +34,8 @@ namespace MobileCenterApp
 
 		public string Fingerprint { get; set; }
 
-		public string UploadedAt { get; set; }
+		[OrderBy]
+		public DateTime UploadedAt { get; set; }
 
 		public string DownloadUrl { get; set; }
 

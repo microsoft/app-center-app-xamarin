@@ -26,15 +26,15 @@ namespace MobileCenterApp.Droid
 		
 		public static void UpdateIdValues()
 		{
+			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::MobileCenterApp.Droid.Resource.Attribute.actionBarSize;
+			global::NGraphics.Android.Resource.String.library_name = global::MobileCenterApp.Droid.Resource.String.library_name;
+			global::ModernHttpClient.Resource.String.library_name = global::MobileCenterApp.Droid.Resource.String.library_name;
 			global::SimpleAuth.Resource.Id.loginButton = global::MobileCenterApp.Droid.Resource.Id.loginButton;
 			global::SimpleAuth.Resource.Id.password = global::MobileCenterApp.Droid.Resource.Id.password;
 			global::SimpleAuth.Resource.Id.username = global::MobileCenterApp.Droid.Resource.Id.username;
 			global::SimpleAuth.Resource.Layout.login = global::MobileCenterApp.Droid.Resource.Layout.login;
 			global::SimpleAuth.Resource.String.ApplicationName = global::MobileCenterApp.Droid.Resource.String.ApplicationName;
 			global::SimpleAuth.Resource.String.Hello = global::MobileCenterApp.Droid.Resource.String.Hello;
-			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::MobileCenterApp.Droid.Resource.Attribute.actionBarSize;
-			global::NGraphics.Android.Resource.String.library_name = global::MobileCenterApp.Droid.Resource.String.library_name;
-			global::ModernHttpClient.Resource.String.library_name = global::MobileCenterApp.Droid.Resource.String.library_name;
 		}
 		
 		public partial class Animation
@@ -2945,11 +2945,11 @@ namespace MobileCenterApp.Droid
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f080028
-			public const int ApplicationName = 2131230760;
-			
 			// aapt resource value: 0x7f080027
-			public const int Hello = 2131230759;
+			public const int ApplicationName = 2131230759;
+			
+			// aapt resource value: 0x7f080026
+			public const int Hello = 2131230758;
 			
 			// aapt resource value: 0x7f08000f
 			public const int abc_action_bar_home_description = 2131230735;
@@ -3017,8 +3017,8 @@ namespace MobileCenterApp.Droid
 			// aapt resource value: 0x7f080025
 			public const int character_counter_pattern = 2131230757;
 			
-			// aapt resource value: 0x7f080026
-			public const int library_name = 2131230758;
+			// aapt resource value: 0x7f080028
+			public const int library_name = 2131230760;
 			
 			// aapt resource value: 0x7f080000
 			public const int mr_button_content_description = 2131230720;

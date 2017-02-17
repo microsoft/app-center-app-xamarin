@@ -23,12 +23,15 @@ namespace MobileCenterApp.iOS
 		//
 		// You have 17 seconds to return from this method, or iOS will terminate your application.
 		//
+		App formsApp;
 		public override bool FinishedLaunching(UIApplication app, NSDictionary options)
 		{
 			MobileCenter.Start("894ddd86-3771-44db-bf3a-fca3385abf68",
 					typeof(Analytics), typeof(Crashes));
 			global::Xamarin.Forms.Forms.Init ();
-			LoadApplication (new MobileCenterApp.App ());
+			LoadApplication (formsApp = new MobileCenterApp.App ());
+			//Install apps
+			formsApp.OnInstallApp = (installUrl) => UIApplication.SharedApplication.OpenUrl(new NSUrl($"itms-services://?action=download-manifest&url={installUrl}"));
 
 			return base.FinishedLaunching (app, options);
 		}

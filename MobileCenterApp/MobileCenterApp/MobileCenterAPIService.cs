@@ -10606,68 +10606,7 @@ namespace MobileCenterApi.Models
         /// <summary>
         /// Initializes a new instance of the ReleaseDetails class.
         /// </summary>
-        public ReleaseDetails() { }
-
-        /// <summary>
-        /// Initializes a new instance of the ReleaseDetails class.
-        /// </summary>
-        /// <param name="id">ID identifying this unique release.</param>
-        /// <param name="status">OBSOLETE. Will be removed in next version. The
-        /// availability concept is now replaced with distributed. Any
-        /// 'available' release will be associated with the default
-        /// distribution group of an app.&lt;/br&gt;
-        /// The release state.&lt;br&gt;
-        /// &lt;b&gt;available&lt;/b&gt;: The uploaded release has been
-        /// distributed.&lt;br&gt;
-        /// &lt;b&gt;unavailable&lt;/b&gt;: The uploaded release is not visible
-        /// to the user. &lt;br&gt;
-        /// . Possible values include: 'available', 'unavailable'</param>
-        /// <param name="appName">The app's name (extracted from the uploaded
-        /// release).</param>
-        /// <param name="version">The release's version.&lt;br&gt;
-        /// For iOS: CFBundleVersion from info.plist.
-        /// For Android: android:versionCode from AppManifest.xml.
-        /// </param>
-        /// <param name="shortVersion">The release's short version.&lt;br&gt;
-        /// For iOS: CFBundleShortVersionString from info.plist.
-        /// For Android: android:versionName from AppManifest.xml.
-        /// </param>
-        /// <param name="releaseNotes">The release's release notes.</param>
-        /// <param name="provisioningProfileName">The release's release
-        /// notes.</param>
-        /// <param name="size">The release's size in bytes.</param>
-        /// <param name="minOs">The release's minimum required operating
-        /// system.</param>
-        /// <param name="fingerprint">MD5 checksum of the release
-        /// binary.</param>
-        /// <param name="uploadedAt">UTC time in ISO 8601 format of the
-        /// uploaded time.</param>
-        /// <param name="downloadUrl">The URL that hosts the binary for this
-        /// release.</param>
-        /// <param name="appIconUrl">A URL to the app's icon.</param>
-        /// <param name="installUrl">The href required to install a release on
-        /// a mobile device. On iOS devices will be prefixed with
-        /// `itms-services://?action=download-manifest&amp;url=`</param>
-        /// <param name="distributionGroups">a list of distribution groups that
-        /// are associated with this release.</param>
-        public ReleaseDetails(string id = default(string), ReleaseDetailsStatus? status = default(ReleaseDetailsStatus?), string appName = default(string), string version = default(string), string shortVersion = default(string), string releaseNotes = default(string), string provisioningProfileName = default(string), double? size = default(double?), string minOs = default(string), string fingerprint = default(string), string uploadedAt = default(string), string downloadUrl = default(string), string appIconUrl = default(string), string installUrl = default(string), DistributionGroup[] distributionGroups = default(DistributionGroup[]))
-        {
-            Id = id;
-            Status = status;
-            AppName = appName;
-            Version = version;
-            ShortVersion = shortVersion;
-            ReleaseNotes = releaseNotes;
-            ProvisioningProfileName = provisioningProfileName;
-            Size = size;
-            MinOs = minOs;
-            Fingerprint = fingerprint;
-            UploadedAt = uploadedAt;
-            DownloadUrl = downloadUrl;
-            AppIconUrl = appIconUrl;
-            InstallUrl = installUrl;
-            DistributionGroups = distributionGroups;
-        }
+		public ReleaseDetails() { }
 
         /// <summary>
         /// Gets or sets ID identifying this unique release.
@@ -10748,7 +10687,7 @@ namespace MobileCenterApi.Models
         /// Gets or sets UTC time in ISO 8601 format of the uploaded time.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "uploaded_at")]
-        public string UploadedAt { get; set; }
+		public System.DateTime UploadedAt { get; set; }
 
         /// <summary>
         /// Gets or sets the URL that hosts the binary for this release.

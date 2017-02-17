@@ -4,12 +4,32 @@ using System.IO;
 using MobileCenterApp.Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace MobileCenterApp
 {
 	internal class Database : SimpleDatabaseConnection
 	{
-		public static Database Main { get; set; } = new Database();
+		static Database main;
+		public static Database Main {
+			get {
+				try
+				{
+					if(main == null)
+						main = new Database();
+				}
+				catch (Exception ex)
+				{
+					LogManager.Shared.Report(ex);
+					//If the database is bad, delete and start over!
+					File.Delete(dbPath);
+					Task.Delay(100).Wait();
+					main = new Database();
+				}
+				return main;
+			}
+			set { main = value; }
+		}
 		static string dbPath => Path.Combine(Locations.LibDir, "db.db");
 
 		public Database() : base(dbPath)
@@ -43,6 +63,15 @@ namespace MobileCenterApp
 				   
 			});
 			return tcs.Task;
+		}
+
+		public int InsertOrIgnore(object obj)
+		{
+			return this.Insert(obj, "OR IGNORE");
+		}
+		public int InsertOrIgnoreAll(IEnumerable objects)
+		{
+			return this.InsertAll(objects, "OR IGNORE");
 		}
 	}
 }

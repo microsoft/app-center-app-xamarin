@@ -8,9 +8,10 @@
 					<ViewCell>
 						<StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
 							<Image WidthRequest="44" HeightRequest="44" Source="{Binding AppIconUrl}" />
-							<StackLayout Padding="5,0,0,0" VerticalOptions="StartAndExpand" Orientation="Vertical">
-								<Label Text="{Binding Version}" VerticalTextAlignment="Center" Font="Medium" />
-								<Label Text="{Binding ReleaseNotes}" VerticalTextAlignment="Center" Font="Micro" />
+							<StackLayout Padding="5,0,0,0" VerticalOptions="StartAndExpand" Orientation="Horizontal">
+								<Label Text="{Binding Id}" VerticalTextAlignment="Center" HorizontalOptions="Start" Font="Medium" />
+								<Label Text="{Binding Version}" VerticalTextAlignment="Center" Font="Micro" HorizontalOptions="Center" />
+								<Label Text="{Binding UploadedAt}" VerticalTextAlignment="Center" Font="Micro" HorizontalOptions="End"/>
 							</StackLayout>
 						</StackLayout>
 					</ViewCell>
