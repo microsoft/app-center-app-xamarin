@@ -105,6 +105,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Pages\Distribute\ReleaseDetailsPage.xaml.cs">
       <DependentUpon>ReleaseDetailsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Distribute\DistributionGroupsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DistributionGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Distribute\DistributionGroupsPage.xaml.cs">
+      <DependentUpon>DistributionGroupsPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />
@@ -172,6 +177,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Distribute\ReleaseDetailsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Distribute\DistributionGroupsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

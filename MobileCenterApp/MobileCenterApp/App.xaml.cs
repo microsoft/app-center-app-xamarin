@@ -40,6 +40,7 @@ namespace MobileCenterApp
 			SimpleIoC.RegisterPage<RepoListViewModel, RepoListPage>();
 			SimpleIoC.RegisterPage<BuildLogViewModel, BuildLogPage>();
 			SimpleIoC.RegisterPage<ReleaseDetailsViewModel, ReleaseDetailsPage>();
+			SimpleIoC.RegisterPage<DistributionGroupsViewModel, DistributionGroupsPage>();
 		}
 
 		public Action<string> OnInstallApp { get; set; }

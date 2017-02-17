@@ -281,6 +281,23 @@ namespace MobileCenterApp
 			distributionReleaseDetailsTasks.Remove(release.ReleaseId);
 		}
 
+		Dictionary<string, Task> syncDistributionGroupsTasks = new Dictionary<string, Task>();
+		public Task SyncDistributionGroups(AppClass app)
+		{
+			Task syncReleasesTask;
+			syncDistributionGroupsTasks.TryGetValue(app.Id, out syncReleasesTask);
+			if (syncReleasesTask?.IsCompleted ?? true)
+				syncDistributionGroupsTasks[app.Id] = syncReleasesTask = syncDistributionGroups(app);
+			return syncReleasesTask;
+		}
+
+		async Task syncDistributionGroups(AppClass app)
+		{
+			var groups = await Api.Account.GetDistributionGroups(app.Owner.Name, app.Name);
+			Database.Main.InsertOrReplaceAll(groups.Select(x => x.ToDistributionGroup(app)));
+			syncDistributionGroupsTasks.Remove(app.Id);
+		}
+
 		#endregion //Distibtion
 
 	}

@@ -41,7 +41,8 @@ namespace MobileCenterApp
 				typeof(CommitClass),
 				typeof(Build),
 				typeof(RepoConfig),
-				typeof(Release)
+				typeof(Release),
+				typeof(DistributionGroup)
 			);
 		}
 

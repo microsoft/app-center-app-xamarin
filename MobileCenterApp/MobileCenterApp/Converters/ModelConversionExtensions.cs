@@ -204,5 +204,16 @@ namespace MobileCenterApp
 				Version = releaseDetails.Version,
 			};
 		}
+
+		public static DistributionGroup ToDistributionGroup(this MobileCenterApi.Models.DistributionGroupResponse request, AppClass app)
+		{
+			return new DistributionGroup
+			{
+				AppId = app.Id,
+				Name = request.Name,
+				Id = request.Name,
+				IndexCharacter = BaseModel.GetIndexChar(request.Name),
+			};
+		}
 	}
 }
