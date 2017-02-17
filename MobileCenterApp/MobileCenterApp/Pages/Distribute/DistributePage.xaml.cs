@@ -12,14 +12,14 @@ namespace MobileCenterApp
 			InitializeComponent();
 		}
 
-		async void Handle_ItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
+		void Handle_ItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
 		{
 			var item = e.SelectedItem as Release;
 			if (item == null)
 				return;
 			(BindingContext as DistributeViewModel).OnSelected(item);
 		}
-		public async void OnDelete(object sender, EventArgs e)
+		public void OnDelete(object sender, EventArgs e)
 		{
 			var app = ((MenuItem)sender).CommandParameter as Release;
 			//var result = await DisplayAlert("Are you sure?", $"Deleting '{app.DisplayName}'", "Delete", "Nevermind");

@@ -7,11 +7,11 @@ namespace MobileCenterApp
 	{
 		public DistributeViewModel()
 		{
-			Title = "Distribute";
+			Title = "Releases";
 			Icon = Images.DistributePageIcon;
 		}
 
-		SimpleDatabaseSource<Release> items = new SimpleDatabaseSource<Release>( Database.Main);
+		SimpleDatabaseSource<Release> items = new SimpleDatabaseSource<Release>(Database.Main) { IsGrouped = false};
 		public SimpleDatabaseSource<Release> Items
 		{
 			get { return items; }
