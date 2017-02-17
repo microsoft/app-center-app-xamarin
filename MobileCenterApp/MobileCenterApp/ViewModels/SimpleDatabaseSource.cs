@@ -9,6 +9,7 @@ namespace MobileCenterApp
 {
 	public class SimpleDatabaseSource<T> : IList, INotifyCollectionChanged where T : new()
 	{
+		public bool IsGrouped { get; set; } = true;
 		public SimpleDatabaseSource(SimpleDatabaseConnection connection)
 		{
 			Database = connection;
@@ -20,15 +21,17 @@ namespace MobileCenterApp
 				try
 				{
 					Debug.WriteLine($"Loading {index}");
-					return new GroupedList<T>(Database, GroupInfo, index)
-					{
-						Display = Database?.SectionHeader<T>(GroupInfo, index) ?? "",
-					};
+					if (IsGrouped)
+						return new GroupedList<T>(Database, GroupInfo, index)
+						{
+							Display = Database?.SectionHeader<T>(GroupInfo, index) ?? "",
+						};
+					return Database != null ? Database.ObjectForRow<T>(GroupInfo,0,index) : new T();
 				}
 				catch (Exception ex)
 				{
 					Debug.WriteLine(ex);
-					return null;
+					return new T();
 				}
 			}
 
@@ -60,7 +63,7 @@ namespace MobileCenterApp
 		{
 			get
 			{
-				return Database?.NumberOfSections<T>(GroupInfo) ?? 0;
+				return (IsGrouped ? Database?.NumberOfSections<T>(GroupInfo) : Database?.RowsInSection<T>(GroupInfo, 0)) ?? 0;
 			}
 		}
 
@@ -213,12 +216,13 @@ namespace MobileCenterApp
 				try
 				{
 					Debug.WriteLine($"Loading {Section}:{index}");
-					return Database.ObjectForRow<T>(GroupInfo, Section, index);
+					var item =  Database.ObjectForRow<T>(GroupInfo, Section, index);
+					return item;
 				}
 				catch (Exception ex)
 				{
 					Debug.WriteLine(ex);
-					return null;
+					return new T();
 				}
 			}
 
