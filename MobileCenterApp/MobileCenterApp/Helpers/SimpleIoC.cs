@@ -27,6 +27,10 @@ namespace MobileCenterApp
 		public static Page GetPage(BaseViewModel model)
 		{
 			var page = GetPage(model.GetType());
+			if (page == null)
+			{
+				throw new NotImplementedException($"There is no Page registered with {model.GetType()}. Please register the page and view model with SimpleIoC");
+			}
 			page.BindingContext = model;
 			return page;
 		}

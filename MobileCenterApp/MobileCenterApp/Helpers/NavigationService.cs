@@ -11,7 +11,7 @@ namespace MobileCenterApp
 			var view = SimpleIoC.GetPage (viewModel.GetType ());
 			if (view == null)
 			{
-				throw new NotImplementedException($"There is now Page registered with {viewModel.GetType()}. Please register the page and view model with SimpleIoC");
+				throw new NotImplementedException($"There is no Page registered with {viewModel.GetType()}. Please register the page and view model with SimpleIoC");
 			}
 			view.BindingContext = viewModel;
 			await Navigation.PushAsync (view);
