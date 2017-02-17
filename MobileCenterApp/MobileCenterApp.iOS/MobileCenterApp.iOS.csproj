@@ -204,9 +204,6 @@
     <Reference Include="SQLite-net">
       <HintPath>..\..\packages\sqlite-net-pcl.1.3.1\lib\netstandard1.1\SQLite-net.dll</HintPath>
     </Reference>
-    <Reference Include="SimpleDatabase">
-      <HintPath>..\..\packages\Clancey.SimpleDatabase.1.0.2\lib\netstandard1.1\SimpleDatabase.dll</HintPath>
-    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="SimpleAuth">
       <HintPath>..\..\packages\Clancey.SimpleAuth.1.0.31\lib\Xamarin.iOS10\SimpleAuth.dll</HintPath>
@@ -216,6 +213,9 @@
     </Reference>
     <Reference Include="Plugin.Settings">
       <HintPath>..\..\packages\Xam.Plugins.Settings.2.5.4\lib\Xamarin.iOS10\Plugin.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleDatabase">
+      <HintPath>..\..\packages\Clancey.SimpleDatabase.1.0.3\lib\Xamarin.iOS10\SimpleDatabase.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
