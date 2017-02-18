@@ -41,7 +41,7 @@ namespace MobileCenterApp
 			NotificationManager.Shared.BranchesChanged += Shared_BranchesChanged;
 		}
 
-		public override async Task Refresh()
+		public override async Task OnRefresh()
 		{
 			SetCurrentApp();
 			var syncRepoTask = SyncManager.Shared.SyncRepoConfig(CurrentApp);

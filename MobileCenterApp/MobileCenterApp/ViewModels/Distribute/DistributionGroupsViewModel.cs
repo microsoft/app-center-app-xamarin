@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace MobileCenterApp
 {
@@ -20,7 +23,7 @@ namespace MobileCenterApp
 
 		public AppClass CurrentApp { get; set; }
 
-		public override async Task Refresh()
+		public override async Task OnRefresh()
 		{
 			var currentId = Settings.CurrentApp;
 			if (string.IsNullOrWhiteSpace(currentId))
@@ -40,5 +43,33 @@ namespace MobileCenterApp
 			groupInfo.Params = CurrentApp?.Id;
 			Items.GroupInfo = groupInfo;
 		}
+
+		public ICommand CreateCommand { get; private set; } = new Command(async (obj) =>
+		{
+			try
+			{
+				await NavigationService.PushModalAsync(new CreateDistributionGroupViewModel());
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex);
+			}
+		});
+
+		public ICommand DeleteCommand { get; private set; } = new Command(async (obj) =>
+		{
+			try
+			{
+				var app = ((MenuItem)obj).CommandParameter as AppClass;
+				var success = await SyncManager.Shared.DeleteApp(app);
+				if (!success)
+					App.Current.MainPage.DisplayActionSheet("Error deleting the app. Please try again", "Ok", null);
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex);
+			}
+		});
+
 	}
 }

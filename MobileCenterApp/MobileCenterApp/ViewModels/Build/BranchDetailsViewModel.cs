@@ -31,7 +31,7 @@ namespace MobileCenterApp
 			}
 		}
 
-		public override async Task Refresh()
+		public override async Task OnRefresh()
 		{
 			Items.ResfreshData();
 			await SyncManager.Shared.SyncBuilds(CurrentBranch);

@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace MobileCenterApp
 {
 	public class BaseViewModel : BaseModel
 	{
+		public BaseViewModel()
+		{
+			RefreshCommand = new Command(async (obj) => await Refresh());
+		}
 		string title;
 		public virtual string Title
 		{
@@ -25,13 +31,38 @@ namespace MobileCenterApp
 		public virtual async void OnAppearing()
 		{
 			LoggingPageView();
-			var refresh = Refresh();
-			if (refresh.IsCompleted)
+			await Refresh();
+
+		}
+
+		protected virtual void LoggingPageView()
+		{
+			LogManager.Shared.PageView(Title);
+		}
+		public virtual void OnDisappearing()
+		{
+
+		}
+
+		public ICommand RefreshCommand { get; set; }
+
+		Task refreshTask;
+		public Task Refresh()
+		{
+			if (refreshTask?.IsCompleted ?? true)
+				refreshTask = refresh();
+			return refreshTask;
+			
+		}
+		async Task refresh()
+		{
+			var r = OnRefresh();
+			if (r.IsCompleted)
 				return;
 			IsLoading = true;
 			try
 			{
-				await refresh;
+				await r;
 			}
 			catch (Exception ex)
 			{
@@ -48,16 +79,7 @@ namespace MobileCenterApp
 			}
 		}
 
-		protected virtual void LoggingPageView()
-		{
-			LogManager.Shared.PageView(Title);
-		}
-		public virtual void OnDisappearing()
-		{
-
-		}
-
-		public virtual Task Refresh()
+		public virtual Task OnRefresh()
 		{
 			return Task.FromResult(true);
 		}

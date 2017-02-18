@@ -34,7 +34,7 @@ namespace MobileCenterApp
 			base.OnAppearing();
 		}
 
-		public override async Task Refresh()
+		public override async Task OnRefresh()
 		{
 			if (logs?.Count > 0 || CurrentBuild == null)
 				return;

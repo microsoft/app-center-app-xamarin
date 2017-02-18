@@ -4,14 +4,11 @@
 		<ToolbarItem Name="Cancel" Command="{Binding CancelCommand}">
 		</ToolbarItem>
 	</ContentPage.ToolbarItems>
-	<StackLayout>
-		<ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}"/>
-		<ListView ItemsSource="{Binding Repositories}" ItemSelected="Handle_ItemSelected">
-			<ListView.ItemTemplate>
-				<DataTemplate>
-					<TextCell Text="{Binding Name}" Detail="{Binding Description}" />
-				</DataTemplate>
-			</ListView.ItemTemplate>
-		</ListView>
-	</StackLayout>
+	<ListView ItemsSource="{Binding Repositories}" ItemSelected="Handle_ItemSelected" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsLoading, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}">
+		<ListView.ItemTemplate>
+			<DataTemplate>
+				<TextCell Text="{Binding Name}" Detail="{Binding Description}" />
+			</DataTemplate>
+		</ListView.ItemTemplate>
+	</ListView>
 </local:BasePage>

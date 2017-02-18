@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <local:BasePage xmlns:local="clr-namespace:MobileCenterApp;" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MobileCenterApp.DistributionGroupsPage">
-	<StackLayout>
-		<ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" />
-		<ListView IsGroupingEnabled="true" GroupDisplayBinding="{Binding Display}" GroupShortNameBinding="{Binding Display}" ItemsSource="{Binding Items}">
-			<ListView.ItemTemplate>
-				<DataTemplate>
-					<TextCell Text="{Binding Name}" />
-				</DataTemplate>
-			</ListView.ItemTemplate>
-		</ListView>
-	</StackLayout>
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Name="Add new app" Command="{Binding CreateCommand}">
+		</ToolbarItem>
+	</ContentPage.ToolbarItems>
+	<ListView IsGroupingEnabled="true" GroupDisplayBinding="{Binding Display}" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsLoading, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" GroupShortNameBinding="{Binding Display}" ItemsSource="{Binding Items}">
+		<ListView.ItemTemplate>
+			<DataTemplate>
+				<TextCell Text="{Binding Name}">
+					<TextCell.ContextActions>
+						<MenuItem Command="{Binding DeleteCommand}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+					</TextCell.ContextActions>
+				</TextCell>
+			</DataTemplate>
+		</ListView.ItemTemplate>
+	</ListView>
 </local:BasePage>

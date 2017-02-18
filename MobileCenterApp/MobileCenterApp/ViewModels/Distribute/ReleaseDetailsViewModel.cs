@@ -24,7 +24,7 @@ namespace MobileCenterApp
 				}
 			}
 		}
-		public override async Task Refresh()
+		public override async Task OnRefresh()
 		{
 			if (Release == null)
 				return;

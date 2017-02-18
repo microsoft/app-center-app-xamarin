@@ -21,7 +21,7 @@ namespace MobileCenterApp
 
 		public AppClass CurrentApp { get; set; }
 
-		public override async Task Refresh()
+		public override async Task OnRefresh()
 		{
 			var currentId = Settings.CurrentApp;
 			if (string.IsNullOrWhiteSpace(currentId))

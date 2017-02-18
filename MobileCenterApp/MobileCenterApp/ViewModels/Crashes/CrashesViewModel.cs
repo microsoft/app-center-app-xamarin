@@ -12,7 +12,7 @@ namespace MobileCenterApp
 			Icon = Images.CrashesPageIcon;
 		}
 
-		public override async Task Refresh()
+		public override async Task OnRefresh()
 		{
 			var app = Database.Main.GetObject<AppClass>(Settings.CurrentApp);
 			var crashes = await SyncManager.Shared.Api.Crash.GetCrashGroups(app.Owner.Name, app.Name);
