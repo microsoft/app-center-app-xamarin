@@ -12,6 +12,22 @@ namespace MobileCenterApp
 		{
 			Title = "Distribution";
 			Icon = Images.DistributePageIcon;
+			DeleteCommand = new Command(async (obj) =>
+			{
+				try
+				{
+					var distribution = ((MenuItem)obj).CommandParameter as DistributionGroup;
+					var success = await SyncManager.Shared.Delete(distribution);
+					if (!success)
+						await App.Current.MainPage.DisplayActionSheet("Error deleting the app. Please try again", "Ok", null);
+					else
+						Items.ResfreshData();
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine(ex);
+				}
+			});
 		}
 
 		SimpleDatabaseSource<DistributionGroup> items = new SimpleDatabaseSource<DistributionGroup>(Database.Main);
@@ -56,20 +72,7 @@ namespace MobileCenterApp
 			}
 		});
 
-		public ICommand DeleteCommand { get; private set; } = new Command(async (obj) =>
-		{
-			try
-			{
-				var app = ((MenuItem)obj).CommandParameter as AppClass;
-				var success = await SyncManager.Shared.DeleteApp(app);
-				if (!success)
-					App.Current.MainPage.DisplayActionSheet("Error deleting the app. Please try again", "Ok", null);
-			}
-			catch (Exception ex)
-			{
-				Debug.WriteLine(ex);
-			}
-		});
+		public ICommand DeleteCommand { get; private set; }
 
 	}
 }

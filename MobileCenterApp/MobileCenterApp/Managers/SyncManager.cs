@@ -297,7 +297,21 @@ namespace MobileCenterApp
 			Database.Main.InsertOrReplaceAll(groups.Select(x => x.ToDistributionGroup(app)));
 			syncDistributionGroupsTasks.Remove(app.Id);
 		}
-
+		public async Task<bool> Delete(DistributionGroup distribution)
+		{
+			try
+			{
+				var app = Database.Main.GetObject<AppClass>(distribution.AppId);
+				await Api.Account.DeleteDistributionGroup(app.Name, app.Owner.Name, distribution.Name);
+				Database.Main.Delete(distribution);
+				return true;
+			}
+			catch (Exception ex)
+			{
+				LogManager.Shared.Report(ex);
+				return false;
+			}
+		}
 		#endregion //Distibtion
 
 	}

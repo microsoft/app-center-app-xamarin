@@ -41,6 +41,7 @@ namespace MobileCenterApp
 			SimpleIoC.RegisterPage<BuildLogViewModel, BuildLogPage>();
 			SimpleIoC.RegisterPage<ReleaseDetailsViewModel, ReleaseDetailsPage>();
 			SimpleIoC.RegisterPage<DistributionGroupsViewModel, DistributionGroupsPage>();
+			SimpleIoC.RegisterPage<CreateDistributionGroupViewModel, CreateDistributionGroupPage>();
 		}
 
 		public Action<string> OnInstallApp { get; set; }

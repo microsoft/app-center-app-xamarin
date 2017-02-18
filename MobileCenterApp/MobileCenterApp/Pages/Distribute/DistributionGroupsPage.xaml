@@ -9,7 +9,7 @@
 			<DataTemplate>
 				<TextCell Text="{Binding Name}">
 					<TextCell.ContextActions>
-						<MenuItem Command="{Binding DeleteCommand}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+						<MenuItem Clicked="OnDelete" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
 					</TextCell.ContextActions>
 				</TextCell>
 			</DataTemplate>

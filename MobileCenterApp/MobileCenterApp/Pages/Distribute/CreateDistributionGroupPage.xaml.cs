@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace MobileCenterApp
 {
-	public partial class CreateDistributionGroupPage : ContentPage
+	public partial class CreateDistributionGroupPage : BasePage
 	{
 		public CreateDistributionGroupPage()
 		{
