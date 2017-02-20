@@ -4,4 +4,9 @@
 		<ToolbarItem Name="Cancel" Command="{Binding CancelCommand}">
 		</ToolbarItem>
 	</ContentPage.ToolbarItems>
+	<StackLayout>
+		<Entry Text="{Binding Name}"/>
+		<Button Text="Add Group" Command="{Binding CreateCommand}"/>
+		<ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}"/>
+	</StackLayout>
 </local:BasePage>

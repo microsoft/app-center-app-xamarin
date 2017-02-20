@@ -312,6 +312,21 @@ namespace MobileCenterApp
 				return false;
 			}
 		}
+
+		public async Task<bool> CreateDistributionGroup(AppClass app, string name)
+		{
+			try
+			{
+				var distribution = await Api.Account.CreateDistributionGroup(app.Owner.Name, app.Name, new MobileCenterApi.Models.DistributionGroupRequest { Name = name });
+				Database.Main.Insert(distribution.ToDistributionGroup(app));
+				return true;
+			}
+			catch (Exception ex)
+			{
+				LogManager.Shared.Report(ex);
+				return false;
+			}
+		}
 		#endregion //Distibtion
 
 	}
