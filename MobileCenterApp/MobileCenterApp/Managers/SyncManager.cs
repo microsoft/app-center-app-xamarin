@@ -182,11 +182,11 @@ namespace MobileCenterApp
 			Task syncBuildsTask;
 			syncBuildsTasks.TryGetValue(branch.Id, out syncBuildsTask);
 			if (syncBuildsTask?.IsCompleted ?? true)
-				syncBuildsTasks[branch.Id] = syncBuildsTask = syncBranches(branch);
+				syncBuildsTasks[branch.Id] = syncBuildsTask = syncBuilds(branch);
 			return syncBuildsTask;
 		}
 
-		async Task syncBranches(Branch branch)
+		async Task syncBuilds(Branch branch)
 		{
 			var app = branch.App;
 			var builds = await Api.Build.GetBranchBuilds(branch.Name, app.Owner.Name, app.Name).ConfigureAwait(false);
