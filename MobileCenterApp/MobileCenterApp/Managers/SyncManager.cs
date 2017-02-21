@@ -205,6 +205,7 @@ namespace MobileCenterApp
 					Database.Main.InsertOrReplaceAll(commits.Select(x => x.ToCommit(app.Id)));
 				}
 			}
+			NotificationManager.Shared.ProcBuildsChanged(app.Id);
 			syncBuildsTasks.Remove(branch.Id);
 		}
 
@@ -258,6 +259,7 @@ namespace MobileCenterApp
 			var releases = await Api.Distribute.GetV01AppsReleases(app.Owner.Name, app.Name).ConfigureAwait(false);
 			//This one does ignore. Just incase we fixed the missing fields
 			Database.Main.InsertOrIgnoreAll(releases.Select(x => x.ToRelease(app)));
+			NotificationManager.Shared.ProcReleasesChanged(app.Id);
 			distributionReleaseTaskTask.Remove(app.Id);
 		}
 
@@ -278,6 +280,7 @@ namespace MobileCenterApp
 			var app = Database.Main.GetObject<AppClass>(release.AppId);
 			var r = await Api.Distribute.GetReleaseOrLatestRelease(release.Id, app.Owner.Name, app.Name).ConfigureAwait(false);
 			Database.Main.InsertOrReplace(r.ToRelease(app));
+			NotificationManager.Shared.ProcReleaseDetailsChanged(r.Id);
 			distributionReleaseDetailsTasks.Remove(release.ReleaseId);
 		}
 
@@ -295,6 +298,7 @@ namespace MobileCenterApp
 		{
 			var groups = await Api.Account.GetDistributionGroups(app.Owner.Name, app.Name);
 			Database.Main.InsertOrReplaceAll(groups.Select(x => x.ToDistributionGroup(app)));
+			NotificationManager.Shared.ProcDistributionGroupsChanged(app.Id);
 			syncDistributionGroupsTasks.Remove(app.Id);
 		}
 
@@ -318,6 +322,7 @@ namespace MobileCenterApp
 				var app = Database.Main.GetObject<AppClass>(distribution.AppId);
 				await Api.Account.DeleteDistributionGroup(app.Name, app.Owner.Name, distribution.Name);
 				Database.Main.Delete(distribution);
+				NotificationManager.Shared.ProcDistributionGroupsChanged(app.Id);
 				return true;
 			}
 			catch (Exception ex)
@@ -353,6 +358,7 @@ namespace MobileCenterApp
 			{
 				var distribution = await Api.Account.CreateDistributionGroup(app.Owner.Name, app.Name, new MobileCenterApi.Models.DistributionGroupRequest { Name = name });
 				Database.Main.Insert(distribution.ToDistributionGroup(app));
+				NotificationManager.Shared.ProcDistributionGroupsChanged(app.Id);
 				return true;
 			}
 			catch (Exception ex)
@@ -366,8 +372,51 @@ namespace MobileCenterApp
 			}
 		}
 
+		Dictionary<string, Task> syncDistributionGroupsMembersTasks = new Dictionary<string, Task>();
+		public Task SyncDistributionGroupMembers(DistributionGroup distributionGroup)
+		{
+			Task syncReleasesTask;
+			syncDistributionGroupsMembersTasks.TryGetValue(distributionGroup.Id, out syncReleasesTask);
+			if (syncReleasesTask?.IsCompleted ?? true)
+				syncDistributionGroupsMembersTasks[distributionGroup.Id] = syncReleasesTask = syncDistributionGroupMembers(distributionGroup);
+			return syncReleasesTask;
+		}
 
-		#endregion //Distibtion
+		async Task syncDistributionGroupMembers(DistributionGroup distributionGroup)
+		{
+			var app = Database.Main.GetObject<AppClass>(distributionGroup.AppId);
+			var members = await Api.Account.GetDistributionGroupUsers(app.Owner.Name, app.Name, distributionGroup.Name);
+			Database.Main.InsertOrReplaceAll(members.Select(x => x.ToTester(distributionGroup)));
+			NotificationManager.Shared.ProcDistributionGroupMembersChanged(distributionGroup.Id);
+			syncDistributionGroupsMembersTasks.Remove(distributionGroup.Id);
+		}
+
+
+		Dictionary<string, Task> syncDistributionGroupsReleasesTasks = new Dictionary<string, Task>();
+		public Task SyncDistributionGroupReleases(DistributionGroup distributionGroup)
+		{
+			Task syncReleasesTask;
+			syncDistributionGroupsReleasesTasks.TryGetValue(distributionGroup.Id, out syncReleasesTask);
+			if (syncReleasesTask?.IsCompleted ?? true)
+				syncDistributionGroupsReleasesTasks[distributionGroup.Id] = syncReleasesTask = syncDistributionGroupReleases(distributionGroup);
+			return syncReleasesTask;
+		}
+
+		async Task syncDistributionGroupReleases(DistributionGroup distributionGroup)
+		{
+			var app = Database.Main.GetObject<AppClass>(distributionGroup.AppId);
+			var resp = await Api.Distribute.GetReleasesForDistributionGroup(distributionGroup.Name, app.Owner.Name, app.Name);
+			var releases = resp.Select(x => x.ToRelease(app)).ToList();
+			var releaseGroups = releases.Select(x => new DistributionReleaseGroup { DistributionId = distributionGroup.Id, Release = x });
+			Database.Main.InsertOrReplaceAll(releases);
+			//Remove all first to handle deletes
+			await Database.Main.ExecuteAsync("delete from DistributionReleaseGroup where DistributionId = ?", distributionGroup.Id);
+			Database.Main.InsertOrReplaceAll(releaseGroups);
+			NotificationManager.Shared.ProcDistributionGroupReleasesChanged(distributionGroup.Id);
+			syncDistributionGroupsReleasesTasks.Remove(distributionGroup.Id);
+		}
+
+		#endregion //Distribution
 
 	}
 }

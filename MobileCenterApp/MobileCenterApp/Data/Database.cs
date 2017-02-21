@@ -42,7 +42,9 @@ namespace MobileCenterApp
 				typeof(Build),
 				typeof(RepoConfig),
 				typeof(Release),
-				typeof(DistributionGroup)
+				typeof(DistributionGroup),
+				typeof(Tester),
+				typeof(DistributionReleaseGroup)
 			);
 		}
 

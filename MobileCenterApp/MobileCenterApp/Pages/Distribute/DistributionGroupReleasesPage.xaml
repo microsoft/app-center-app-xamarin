@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<local:BasePage xmlns:local="clr-namespace:MobileCenterApp;" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MobileCenterApp.DistributionGroupReleasesPage">
+	<ListView ItemsSource="{Binding Releases}" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsLoading, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemSelected="Handle_ItemSelected">
+		<ListView.ItemTemplate>
+			<DataTemplate>
+				<ViewCell>
+					<ViewCell.ContextActions>
+						<MenuItem Clicked="OnInstall" CommandParameter="{Binding .}" Text="Install" IsDestructive="False" />
+					</ViewCell.ContextActions>
+					<StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+						<Image WidthRequest="44" HeightRequest="44" Source="{Binding AppIconUrl}" />
+						<StackLayout Padding="5,0,0,0" VerticalOptions="StartAndExpand" Orientation="Horizontal">
+							<Label Text="{Binding Release.Id}" VerticalTextAlignment="Center" HorizontalOptions="Start" Font="Medium" />
+							<Label Text="{Binding Release.Version}" VerticalTextAlignment="Center" Font="Micro" HorizontalOptions="Center" />
+							<Label Text="{Binding Release.UploadedAt}" VerticalTextAlignment="Center" Font="Micro" HorizontalOptions="End" />
+						</StackLayout>
+					</StackLayout>
+				</ViewCell>
+			</DataTemplate>
+		</ListView.ItemTemplate>
+	</ListView>
+</local:BasePage>

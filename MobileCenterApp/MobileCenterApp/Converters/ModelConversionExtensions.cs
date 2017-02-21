@@ -215,5 +215,19 @@ namespace MobileCenterApp
 				IndexCharacter = BaseModel.GetIndexChar(request.Name),
 			};
 		}
+		public static Tester ToTester(this MobileCenterApi.Models.DistributionGroupUserGetResponse resp, DistributionGroup distribution)
+		{
+			return new Tester
+			{
+				DistributionId = distribution.Id,
+				AvatarUrl = resp.AvatarUrl,
+				Id = resp.Id,
+				CanChangePassword = resp.CanChangePassword,
+				DisplayName = resp.DisplayName,
+				Email = resp.Email,
+				InvitePending = resp.InvitePending,
+				Name = resp.Name
+			};
+		}
 	}
 }

@@ -114,6 +114,18 @@
       <DependentUpon>CreateDistributionGroupPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Distribute\CreateDistributionGroupViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Distribute\DistributionGroupDetailsPage.xaml.cs">
+      <DependentUpon>DistributionGroupDetailsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Distribute\DistributionGroupMembersPage.xaml.cs">
+      <DependentUpon>DistributionGroupMembersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Distribute\DistributionGroupReleasesPage.xaml.cs">
+      <DependentUpon>DistributionGroupReleasesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Distribute\DistributionGroupDetailsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Tester.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DistributionReleaseGroup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />
@@ -187,6 +199,15 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Distribute\CreateDistributionGroupPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Distribute\DistributionGroupDetailsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Distribute\DistributionGroupMembersPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Distribute\DistributionGroupReleasesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

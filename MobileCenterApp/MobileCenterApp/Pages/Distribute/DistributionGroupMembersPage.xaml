@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<local:BasePage xmlns:local="clr-namespace:MobileCenterApp;"  xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MobileCenterApp.DistributionGroupMembersPage">
+	<ListView ItemsSource="{Binding Members}" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsLoading, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemSelected="Handle_ItemSelected">
+		<ListView.ItemTemplate>
+			<DataTemplate>
+				<ViewCell>
+					<ViewCell.ContextActions>
+						<MenuItem Clicked="OnDelete" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+					</ViewCell.ContextActions>
+					<StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+						<Image WidthRequest="44" HeightRequest="44" Source="{Binding AvatarUrl}" />
+						<StackLayout Padding="5,0,0,0" VerticalOptions="StartAndExpand" Orientation="Vertical">
+							<Label Text="{Binding DisplayName}" VerticalTextAlignment="Center" Font="Medium" />
+							<Label Text="{Binding Email}" VerticalTextAlignment="Center" Font="Micro" />
+						</StackLayout>
+					</StackLayout>
+				</ViewCell>
+			</DataTemplate>
+		</ListView.ItemTemplate>
+	</ListView>
+</local:BasePage>

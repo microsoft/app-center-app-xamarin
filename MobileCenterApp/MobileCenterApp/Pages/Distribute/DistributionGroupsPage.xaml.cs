@@ -18,5 +18,12 @@ namespace MobileCenterApp
 			if (result)
 				(BindingContext as DistributionGroupsViewModel).DeleteCommand.Execute(sender);
 		}
+		void Handle_ItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
+		{
+			var item = e.SelectedItem as DistributionGroup;
+			if (item == null)
+				return;
+			(BindingContext as DistributionGroupsViewModel).OnSelected(item);
+		}
 	}
 }

@@ -4,7 +4,7 @@
 		<ToolbarItem Name="Add new app" Command="{Binding CreateCommand}">
 		</ToolbarItem>
 	</ContentPage.ToolbarItems>
-	<ListView IsGroupingEnabled="true" GroupDisplayBinding="{Binding Display}" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsLoading, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" GroupShortNameBinding="{Binding Display}" ItemsSource="{Binding Items}">
+	<ListView IsGroupingEnabled="true" GroupDisplayBinding="{Binding Display}" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsLoading, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" GroupShortNameBinding="{Binding Display}" ItemsSource="{Binding Items}" ItemSelected="Handle_ItemSelected">
 		<ListView.ItemTemplate>
 			<DataTemplate>
 				<TextCell Text="{Binding Name}">

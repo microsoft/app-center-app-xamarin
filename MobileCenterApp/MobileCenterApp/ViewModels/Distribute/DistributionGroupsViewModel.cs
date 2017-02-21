@@ -31,6 +31,8 @@ namespace MobileCenterApp
 		}
 
 		SimpleDatabaseSource<DistributionGroup> items = new SimpleDatabaseSource<DistributionGroup>(Database.Main);
+
+	
 		public SimpleDatabaseSource<DistributionGroup> Items
 		{
 			get { return items; }
@@ -73,6 +75,12 @@ namespace MobileCenterApp
 		});
 
 		public ICommand DeleteCommand { get; private set; }
+
+		public async void OnSelected(DistributionGroup item)
+		{
+			await NavigationService.PushAsync(new DistributionGroupDetailsViewModel { DistributionGroupId = item.Id});
+		}
+
 
 	}
 }
