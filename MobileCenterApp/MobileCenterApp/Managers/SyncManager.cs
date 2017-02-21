@@ -297,7 +297,21 @@ namespace MobileCenterApp
 			Database.Main.InsertOrReplaceAll(groups.Select(x => x.ToDistributionGroup(app)));
 			syncDistributionGroupsTasks.Remove(app.Id);
 		}
-		public async Task<bool> Delete(DistributionGroup distribution)
+
+
+		Dictionary<string, Task<bool>> deleteDistributionGroupTasks = new Dictionary<string, Task<bool>>();
+		public Task<bool> Delete(DistributionGroup distribution)
+		{
+			Task<bool> deleteDistributionGroupTask;
+			deleteDistributionGroupTasks.TryGetValue(distribution.Id, out deleteDistributionGroupTask);
+			if (deleteDistributionGroupTask?.IsCompleted ?? true)
+			{
+				createDistributionGroupTasks[distribution.Id] = deleteDistributionGroupTask = delete(distribution);
+			}
+			return deleteDistributionGroupTask;
+		}
+
+		async Task<bool> delete(DistributionGroup distribution)
 		{
 			try
 			{
@@ -311,9 +325,29 @@ namespace MobileCenterApp
 				LogManager.Shared.Report(ex);
 				return false;
 			}
+			finally
+			{
+
+				deleteDistributionGroupTasks.Remove(distribution.Id);
+			}
 		}
 
-		public async Task<bool> CreateDistributionGroup(AppClass app, string name)
+
+		Dictionary<string, Task<bool>> createDistributionGroupTasks = new Dictionary<string, Task<bool>>();
+		public Task<bool> CreateDistributionGroup(AppClass app, string name)
+		{
+
+			Task<bool> createDistributionGroupTask;
+			createDistributionGroupTasks.TryGetValue(name, out createDistributionGroupTask);
+			if (createDistributionGroupTask?.IsCompleted ?? true)
+			{
+				createDistributionGroupTasks[name] = createDistributionGroupTask = createDistributionGroup(app, name);
+			}
+			return createDistributionGroupTask;
+
+		}
+
+		async Task<bool> createDistributionGroup(AppClass app, string name)
 		{
 			try
 			{
@@ -326,7 +360,13 @@ namespace MobileCenterApp
 				LogManager.Shared.Report(ex);
 				return false;
 			}
+			finally
+			{
+				createDistributionGroupTasks.Remove(name);
+			}
 		}
+
+
 		#endregion //Distibtion
 
 	}
