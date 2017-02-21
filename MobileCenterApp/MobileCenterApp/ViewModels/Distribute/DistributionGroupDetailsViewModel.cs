@@ -23,12 +23,26 @@ namespace MobileCenterApp
 			set { ProcPropertyChanged(ref releases, value); }
 		}
 
-		public string DistributionGroupId { get; set; }
+		string distributionId;
+		public string DistributionGroupId { 
+			get { return distributionId; }
+			set
+			{
+				if (ProcPropertyChanged(ref distributionId, value))
+				{
+					SetMemberGroupInfo();
+					SetReleaseGroupInfo();
+				}
+
+			}
+		}
 
 		public DistributionGroup DistributionGroup
 		{
 			get { return Database.Main.GetObject<DistributionGroup>(DistributionGroupId); }
-			set { DistributionGroupId = value?.Id; }
+			set {
+				DistributionGroupId = value?.Id;
+			}
 		}
 
 		public override async Task OnRefresh()
@@ -36,18 +50,24 @@ namespace MobileCenterApp
 			var distributionGroup = DistributionGroup;
 			await Task.WhenAll(SyncManager.Shared.SyncDistributionGroupMembers(distributionGroup), SyncManager.Shared.SyncDistributionGroupReleases(distributionGroup));
 		}
+		bool isHookedUp;
 		public override void OnAppearing()
 		{
-			SetMemberGroupInfo();
-			SetReleaseGroupInfo();
+			base.OnAppearing();
+			if (isHookedUp)
+				return;
+			isHookedUp = true;
 			NotificationManager.Shared.DistributionGroupMembersChanged += Shared_DistributionGroupMembersChanged;
 			NotificationManager.Shared.DistributionGroupReleasesChanged += Shared_DistributionGroupReleasesChanged;
-			base.OnAppearing();
+
 		}
 
 		public override void OnDisappearing()
 		{
 			base.OnDisappearing();
+			if (!isHookedUp)
+				return;
+			isHookedUp = false;
 			NotificationManager.Shared.DistributionGroupMembersChanged -= Shared_DistributionGroupMembersChanged;
 			NotificationManager.Shared.DistributionGroupReleasesChanged -= Shared_DistributionGroupReleasesChanged;
 		}

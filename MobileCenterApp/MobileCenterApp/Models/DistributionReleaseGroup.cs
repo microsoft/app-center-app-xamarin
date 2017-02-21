@@ -10,6 +10,7 @@ namespace MobileCenterApp
 			get { return $"{DistributionId} - {ReleaseId}";}
 			set { }
 		}
+
 		[Indexed]
 		public string DistributionId { get; set; }
 

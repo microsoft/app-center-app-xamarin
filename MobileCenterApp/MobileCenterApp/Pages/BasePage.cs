@@ -12,13 +12,13 @@ namespace MobileCenterApp
 		}
 		protected override void OnAppearing()
 		{
-			base.OnAppearing();
 			(BindingContext as BaseViewModel)?.OnAppearing();
+			base.OnAppearing();
 		}
 		protected override void OnDisappearing()
 		{
-			base.OnDisappearing();
 			(BindingContext as BaseViewModel)?.OnDisappearing();
+			base.OnDisappearing();
 		}
 	}
 }

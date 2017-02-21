@@ -68,6 +68,7 @@ namespace MobileCenterApp
 						Email = profile.Email,
 						Id = profile.Id,
 						Name = profile.Name,
+						IndexCharacter = BaseModel.GetIndexChar(profile.DisplayName),
 					};
 					Settings.CurrentUser = user;
 					return user;
@@ -279,7 +280,7 @@ namespace MobileCenterApp
 		{
 			var app = Database.Main.GetObject<AppClass>(release.AppId);
 			var r = await Api.Distribute.GetReleaseOrLatestRelease(release.Id, app.Owner.Name, app.Name).ConfigureAwait(false);
-			Database.Main.InsertOrReplace(r.ToRelease(app));
+			Database.Main.InsertOrReplace(r.UpdateRelease(release));
 			NotificationManager.Shared.ProcReleaseDetailsChanged(r.Id);
 			distributionReleaseDetailsTasks.Remove(release.ReleaseId);
 		}
@@ -297,6 +298,8 @@ namespace MobileCenterApp
 		async Task syncDistributionGroups(AppClass app)
 		{
 			var groups = await Api.Account.GetDistributionGroups(app.Owner.Name, app.Name);
+
+			Database.Main.Execute("delete from DistributionGroup where AppId = ?", app.Id);
 			Database.Main.InsertOrReplaceAll(groups.Select(x => x.ToDistributionGroup(app)));
 			NotificationManager.Shared.ProcDistributionGroupsChanged(app.Id);
 			syncDistributionGroupsTasks.Remove(app.Id);
@@ -386,7 +389,18 @@ namespace MobileCenterApp
 		{
 			var app = Database.Main.GetObject<AppClass>(distributionGroup.AppId);
 			var members = await Api.Account.GetDistributionGroupUsers(app.Owner.Name, app.Name, distributionGroup.Name);
-			Database.Main.InsertOrReplaceAll(members.Select(x => x.ToTester(distributionGroup)));
+			var users = new List<User>();
+			var testers = new List<Tester>();
+			foreach (var resp in members)
+			{
+				var user = resp.ToUser();
+				testers.Add(resp.ToTester(distributionGroup, user));
+				users.Add(user);
+			}
+			Database.Main.InsertOrReplaceAll(users);
+			//Handle deletes
+			await Database.Main.ExecuteAsync("delete from Tester where DistributionId = ? and AppId = ?", distributionGroup.Id, distributionGroup.AppId);
+			Database.Main.InsertOrReplaceAll(testers);
 			NotificationManager.Shared.ProcDistributionGroupMembersChanged(distributionGroup.Id);
 			syncDistributionGroupsMembersTasks.Remove(distributionGroup.Id);
 		}
@@ -408,6 +422,7 @@ namespace MobileCenterApp
 			var resp = await Api.Distribute.GetReleasesForDistributionGroup(distributionGroup.Name, app.Owner.Name, app.Name);
 			var releases = resp.Select(x => x.ToRelease(app)).ToList();
 			var releaseGroups = releases.Select(x => new DistributionReleaseGroup { DistributionId = distributionGroup.Id, Release = x });
+			Database.Main.Execute("delete from Release where AppId = ? and ReleaseId in (select ReleaseId from DistributionReleaseGroup where DistributionId = ?)",distributionGroup.AppId, distributionGroup.Id);
 			Database.Main.InsertOrReplaceAll(releases);
 			//Remove all first to handle deletes
 			await Database.Main.ExecuteAsync("delete from DistributionReleaseGroup where DistributionId = ?", distributionGroup.Id);

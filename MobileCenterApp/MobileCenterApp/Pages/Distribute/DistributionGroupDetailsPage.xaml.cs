@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace MobileCenterApp
 {
-	public partial class DistributionGroupDetailsPage : CarouselPage
+	public partial class DistributionGroupDetailsPage : TabbedPage
 	{
 		public DistributionGroupDetailsPage()
 		{

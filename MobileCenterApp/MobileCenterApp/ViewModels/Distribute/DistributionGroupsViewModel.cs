@@ -28,6 +28,7 @@ namespace MobileCenterApp
 					Debug.WriteLine(ex);
 				}
 			});
+			SetGroupInfo();
 		}
 
 		SimpleDatabaseSource<DistributionGroup> items = new SimpleDatabaseSource<DistributionGroup>(Database.Main);
@@ -48,11 +49,27 @@ namespace MobileCenterApp
 				return;
 			CurrentApp = Database.Main.GetObject<AppClass>(currentId);
 			SetGroupInfo();
-			await Task.Delay(1999);
 			await SyncManager.Shared.SyncDistributionGroups(CurrentApp);
-			SetGroupInfo();
 
 		}
+		public override void OnAppearing()
+		{
+			base.OnAppearing();
+			NotificationManager.Shared.DistributionGroupsChanged += Shared_DistributionGroupsChanged;
+		}
+		public override void OnDisappearing()
+		{
+			base.OnDisappearing();
+			NotificationManager.Shared.DistributionGroupsChanged -= Shared_DistributionGroupsChanged;
+		}
+
+		void Shared_DistributionGroupsChanged(object sender, MobileCenterApp.EventArgs<string> e)
+		{
+			if (e.Data != Settings.CurrentApp)
+				return;
+			SetGroupInfo();
+		}
+
 		void SetGroupInfo()
 		{
 			var groupInfo = Database.Main.GetGroupInfo<DistributionGroup>().Clone();

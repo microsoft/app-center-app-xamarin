@@ -44,6 +44,7 @@ namespace MobileCenterApp
 				typeof(Release),
 				typeof(DistributionGroup),
 				typeof(Tester),
+				typeof(User),
 				typeof(DistributionReleaseGroup)
 			);
 		}

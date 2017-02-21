@@ -205,28 +205,57 @@ namespace MobileCenterApp
 			};
 		}
 
+		public static Release UpdateRelease(this MobileCenterApi.Models.ReleaseDetails releaseDetails, Release release)
+		{
+			release.AppIconUrl = releaseDetails.AppIconUrl;
+			release.AppName = releaseDetails.AppName;
+			release.DownloadUrl = releaseDetails.DownloadUrl;
+			release.Fingerprint = releaseDetails.Fingerprint;
+			release.Id = releaseDetails.Id;
+			release.InstallUrl = releaseDetails.InstallUrl;
+			release.MinOs = releaseDetails.MinOs;
+			release.ProvisioningProfileName = releaseDetails.ProvisioningProfileName;
+			release.ReleaseNotes = releaseDetails.ReleaseNotes;
+			release.ShortVersion = releaseDetails.ShortVersion;
+			release.Size = releaseDetails.Size;
+			release.Status = releaseDetails.Status.ToString();
+			release.UploadedAt = releaseDetails.UploadedAt;
+			release.Version = releaseDetails.Version;
+			return release;
+		}
+
 		public static DistributionGroup ToDistributionGroup(this MobileCenterApi.Models.DistributionGroupResponse request, AppClass app)
 		{
 			return new DistributionGroup
 			{
 				AppId = app.Id,
 				Name = request.Name,
-				Id = request.Name,
+				Id = request.Id,
 				IndexCharacter = BaseModel.GetIndexChar(request.Name),
 			};
 		}
-		public static Tester ToTester(this MobileCenterApi.Models.DistributionGroupUserGetResponse resp, DistributionGroup distribution)
+		public static User ToUser(this MobileCenterApi.Models.DistributionGroupUserGetResponse resp)
 		{
-			return new Tester
+			return new User
 			{
-				DistributionId = distribution.Id,
 				AvatarUrl = resp.AvatarUrl,
 				Id = resp.Id,
 				CanChangePassword = resp.CanChangePassword,
 				DisplayName = resp.DisplayName,
 				Email = resp.Email,
+				Name = resp.Name,
+				IndexCharacter = BaseModel.GetIndexChar(resp.DisplayName),
+			};
+		}
+		public static Tester ToTester(this MobileCenterApi.Models.DistributionGroupUserGetResponse resp, DistributionGroup distribution, User user)
+		{
+			return new Tester
+			{
+				DisplayName = user.DisplayName,
+				DistributionId = distribution.Id,
+				User = user,
 				InvitePending = resp.InvitePending,
-				Name = resp.Name
+				AppId = distribution.AppId,
 			};
 		}
 	}

@@ -63,7 +63,10 @@ namespace MobileCenterApp
 		{
 			get
 			{
-				return (IsGrouped ? Database?.NumberOfSections<T>(GroupInfo) : Database?.RowsInSection<T>(GroupInfo, 0)) ?? 0;
+				var c = (IsGrouped ? Database?.NumberOfSections<T>(GroupInfo) : Database?.RowsInSection<T>(GroupInfo, 0)) ?? 0;
+				if (c == 0)
+					Console.WriteLine("what?");
+				return c;
 			}
 		}
 

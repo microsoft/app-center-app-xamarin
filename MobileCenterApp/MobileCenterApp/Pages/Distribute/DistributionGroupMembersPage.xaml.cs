@@ -10,6 +10,7 @@ namespace MobileCenterApp
 		public DistributionGroupMembersPage()
 		{
 			InitializeComponent();
+			Title = "Members";
 		}
 		void Handle_ItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
 		{

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using SQLite;
 
 namespace MobileCenterApp
 {
@@ -52,5 +53,10 @@ namespace MobileCenterApp
 			var theChar = name[0];
 			return char.IsLetter(theChar) ? name.Substring(0, 1).ToUpper() : "#";
 		}
+
+		[Indexed]
+		public DateTime LastSyncDate { get; set; } = DateTime.Now;
+
+		public bool IsDeleted { get; set; }
 	}
 }

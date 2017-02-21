@@ -55,7 +55,7 @@ namespace MobileCenterApp
 
 			if (release.InstallUrl == null)
 			{
-
+				await SyncManager.Shared.SyncReleasesDetails(release);
 			}
 			OnInstallApp(release.InstallUrl);
 
