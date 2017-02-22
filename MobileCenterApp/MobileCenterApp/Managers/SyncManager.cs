@@ -23,28 +23,40 @@ namespace MobileCenterApp
 			Api.Verbose = true;
 #endif
 		}
+
+		object taskLocker = new object();
 		Dictionary<string, object> TaskDictionary = new Dictionary<string, object>();
 		async Task RunSingularTask(Func<Task> getTask, string id = null, [CallerMemberName]string grouping = "")
 		{
 			var key = $"{grouping} - {id}";
 			object obj;
 			Task foundTask;
-			TaskDictionary.TryGetValue(key, out obj);
-			foundTask = obj as Task;
-			if (foundTask?.IsCompleted ?? true)
+			bool shouldClear = false;
+			lock(taskLocker)
 			{
-				TaskDictionary[key] = foundTask = getTask();
-				try
+				TaskDictionary.TryGetValue(key, out obj);
+				foundTask = obj as Task;
+				if (foundTask?.IsCompleted ?? true)
 				{
-					await foundTask;
-				}
-				finally
-				{
-					TaskDictionary.Remove(key);
+					TaskDictionary[key] = foundTask = getTask();
+					shouldClear = true;
 				}
 			}
-			else
+			try
+			{
 				await foundTask;
+			}
+			finally
+			{
+				if (shouldClear)
+				{
+					lock (foundTask)
+					{
+						TaskDictionary.Remove(key);
+					}
+				}
+			}
+		
 		}
 
 		async Task<T> RunSingularTask<T>(Func<Task<T>> getTask, string id = null, [CallerMemberName]string grouping = "")
@@ -52,23 +64,31 @@ namespace MobileCenterApp
 			var key = $"{grouping} - {id}";
 			object obj;
 			Task<T> foundTask;
-			TaskDictionary.TryGetValue(key, out obj);
-			foundTask = obj as Task<T>;
-			if (foundTask?.IsCompleted ?? true)
+			bool shouldClear = false;
+			lock (taskLocker)
 			{
-				TaskDictionary[key] = foundTask = getTask();
-				try
+				TaskDictionary.TryGetValue(key, out obj);
+				foundTask = obj as Task<T>;
+				if (foundTask?.IsCompleted ?? true)
 				{
-					var result = await foundTask;
-					return result;
-				}
-				finally
-				{
-					TaskDictionary.Remove(key);
+					TaskDictionary[key] = foundTask = getTask();
+					shouldClear = true;
 				}
 			}
-			else
+			try
+			{
 				return await foundTask;
+			}
+			finally
+			{
+				if (shouldClear)
+				{
+					lock (foundTask)
+					{
+						TaskDictionary.Remove(key);
+					}
+				}
+			}
 		}
 
 		#region Account
