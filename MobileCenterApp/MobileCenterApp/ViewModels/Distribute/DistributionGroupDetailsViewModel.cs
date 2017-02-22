@@ -139,7 +139,7 @@ namespace MobileCenterApp
 		}
 		public async Task RemoveRelease(Release release)
 		{
-
+			await NavigationService.PushAsync(new ReleaseDetailsViewModel { Release = release });
 		}
 	}
 }
