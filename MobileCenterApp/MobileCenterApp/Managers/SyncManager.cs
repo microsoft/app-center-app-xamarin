@@ -24,7 +24,7 @@ namespace MobileCenterApp
 #endif
 		}
 		Dictionary<string, object> TaskDictionary = new Dictionary<string, object>();
-		async Task RunSingularTask(Func<Task> getTask,string id = null, [CallerMemberName]string grouping = "")
+		async Task RunSingularTask(Func<Task> getTask, string id = null, [CallerMemberName]string grouping = "")
 		{
 			var key = $"{grouping} - {id}";
 			object obj;
@@ -43,7 +43,7 @@ namespace MobileCenterApp
 					TaskDictionary.Remove(key);
 				}
 			}
-			else 
+			else
 				await foundTask;
 		}
 
@@ -100,22 +100,22 @@ namespace MobileCenterApp
 
 		public Task<User> GetUser()
 		{
-			return RunSingularTask(()=> Task.Run(async () =>
-				{
-					var profile = await Api.Account.GetUserProfile();
-					var user = new User
-					{
-						AvatarUrl = profile.AvatarUrl,
-						DisplayName = profile.DisplayName,
-						CanChangePassword = profile.CanChangePassword,
-						Email = profile.Email,
-						Id = profile.Id,
-						Name = profile.Name,
-						IndexCharacter = BaseModel.GetIndexChar(profile.DisplayName),
-					};
-					Settings.CurrentUser = user;
-					return user;
-			}));
+			return RunSingularTask(() => Task.Run(async () =>
+				 {
+					 var profile = await Api.Account.GetUserProfile();
+					 var user = new User
+					 {
+						 AvatarUrl = profile.AvatarUrl,
+						 DisplayName = profile.DisplayName,
+						 CanChangePassword = profile.CanChangePassword,
+						 Email = profile.Email,
+						 Id = profile.Id,
+						 Name = profile.Name,
+						 IndexCharacter = BaseModel.GetIndexChar(profile.DisplayName),
+					 };
+					 Settings.CurrentUser = user;
+					 return user;
+				 }));
 		}
 
 		public async Task<bool> CreateApp(AppClass app)
@@ -143,7 +143,7 @@ namespace MobileCenterApp
 
 		public Task<bool> DeleteApp(AppClass app)
 		{
-			return RunSingularTask(() => deleteApp(app),app.Id);
+			return RunSingularTask(() => deleteApp(app), app.Id);
 		}
 		public async Task<bool> deleteApp(AppClass app)
 		{
@@ -323,7 +323,7 @@ namespace MobileCenterApp
 
 		public Task<bool> CreateDistributionGroup(AppClass app, string name)
 		{
-			return RunSingularTask(() => createDistributionGroup(app,name), name);
+			return RunSingularTask(() => createDistributionGroup(app, name), name);
 		}
 
 		async Task<bool> createDistributionGroup(AppClass app, string name)
@@ -369,7 +369,7 @@ namespace MobileCenterApp
 			var resp = await Api.Distribute.GetReleasesForDistributionGroup(distributionGroup.Name, app.Owner.Name, app.Name);
 			var releases = resp.Select(x => x.ToRelease(app)).ToList();
 			var releaseGroups = releases.Select(x => new DistributionReleaseGroup { DistributionId = distributionGroup.Id, Release = x });
-			Database.Main.Execute("delete from Release where AppId = ? and ReleaseId in (select ReleaseId from DistributionReleaseGroup where DistributionId = ?)",distributionGroup.AppId, distributionGroup.Id);
+			Database.Main.Execute("delete from Release where AppId = ? and ReleaseId in (select ReleaseId from DistributionReleaseGroup where DistributionId = ?)", distributionGroup.AppId, distributionGroup.Id);
 			Database.Main.InsertOrReplaceAll(releases);
 			//Remove all first to handle deletes
 			await Database.Main.ExecuteAsync("delete from DistributionReleaseGroup where DistributionId = ?", distributionGroup.Id);
@@ -379,7 +379,7 @@ namespace MobileCenterApp
 
 		public Task<bool> InviteDistributionGroup(DistributionGroup distributionGroup, string email)
 		{
-			return RunSingularTask(() => inviteDistributionGroup(distributionGroup,email), email);
+			return RunSingularTask(() => inviteDistributionGroup(distributionGroup, email), email);
 		}
 
 		async Task<bool> inviteDistributionGroup(DistributionGroup distribution, string email)
@@ -389,7 +389,7 @@ namespace MobileCenterApp
 			return true;
 		}
 
-		public Task<bool> RemoveTester (Tester tester)
+		public Task<bool> RemoveTester(Tester tester)
 		{
 			return RunSingularTask(() => removeTester(tester), tester.Id);
 		}
