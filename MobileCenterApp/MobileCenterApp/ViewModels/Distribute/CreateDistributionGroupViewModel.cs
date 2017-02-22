@@ -42,7 +42,15 @@ namespace MobileCenterApp
 			}
 			catch (Exception ex)
 			{
-				App.Current.MainPage.DisplayAlert("Error ", ex.Message, "Ok");
+				LogManager.Shared.Report(ex);
+				string message = "";
+				if (ex.Data.Contains("HttpContent"))
+				{
+					message = ex.Data["HttpContent"].ToString();
+				}
+				else
+					message = ex.Message;
+				await App.Current.MainPage.DisplayAlert("Error", message, "Ok");
 			}
 			finally
 			{

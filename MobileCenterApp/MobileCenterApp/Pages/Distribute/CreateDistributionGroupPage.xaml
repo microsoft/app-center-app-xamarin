@@ -4,7 +4,7 @@
 		<ToolbarItem Name="Cancel" Command="{Binding CancelCommand}">
 		</ToolbarItem>
 	</ContentPage.ToolbarItems>
-	<StackLayout>
+	<StackLayout Padding="10">
 		<Entry Text="{Binding Name}"/>
 		<Button Text="Add Group" Command="{Binding CreateCommand}"/>
 		<ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}"/>

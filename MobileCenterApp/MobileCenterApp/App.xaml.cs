@@ -43,6 +43,7 @@ namespace MobileCenterApp
 			SimpleIoC.RegisterPage<DistributionGroupsViewModel, DistributionGroupsPage>();
 			SimpleIoC.RegisterPage<CreateDistributionGroupViewModel, CreateDistributionGroupPage>();
 			SimpleIoC.RegisterPage<DistributionGroupDetailsViewModel, DistributionGroupDetailsPage>();
+			SimpleIoC.RegisterPage<InviteMemberViewModel, InviteMemberPage>();
 		}
 
 		public Action<string> OnInstallApp { get; set; }

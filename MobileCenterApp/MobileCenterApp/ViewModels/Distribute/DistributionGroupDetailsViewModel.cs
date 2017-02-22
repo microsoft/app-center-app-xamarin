@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace MobileCenterApp
 {
 	public class DistributionGroupDetailsViewModel : BaseViewModel
 	{
+		public ICommand AddMemberCommand { get; private set; } 
 		public DistributionGroupDetailsViewModel()
 		{
-			
+			AddMemberCommand = new Command(async (obj) => {
+				await NavigationService.PushModalAsync(new InviteMemberViewModel { DistributionGroup = DistributionGroup });
+			});
 		}
 		SimpleDatabaseSource<Tester> members = new SimpleDatabaseSource<Tester>(Database.Main);
 		public SimpleDatabaseSource<Tester> Members

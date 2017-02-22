@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <local:BasePage xmlns:local="clr-namespace:MobileCenterApp;"  xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MobileCenterApp.DistributionGroupMembersPage">
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Name="+" Command="{Binding AddMemberCommand}">
+		</ToolbarItem>
+	</ContentPage.ToolbarItems>
 	<ListView IsGroupingEnabled="true" GroupDisplayBinding="{Binding Display}" GroupShortNameBinding="{Binding Display}" ItemsSource="{Binding Members}" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsLoading, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemSelected="Handle_ItemSelected">
 		<ListView.ItemTemplate>
 			<DataTemplate>

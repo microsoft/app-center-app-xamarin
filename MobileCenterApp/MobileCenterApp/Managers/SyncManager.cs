@@ -364,11 +364,6 @@ namespace MobileCenterApp
 				NotificationManager.Shared.ProcDistributionGroupsChanged(app.Id);
 				return true;
 			}
-			catch (Exception ex)
-			{
-				LogManager.Shared.Report(ex);
-				return false;
-			}
 			finally
 			{
 				createDistributionGroupTasks.Remove(name);
@@ -429,6 +424,34 @@ namespace MobileCenterApp
 			Database.Main.InsertOrReplaceAll(releaseGroups);
 			NotificationManager.Shared.ProcDistributionGroupReleasesChanged(distributionGroup.Id);
 			syncDistributionGroupsReleasesTasks.Remove(distributionGroup.Id);
+		}
+
+		Dictionary<string, Task<bool>> inviteDistributionGroupTasks = new Dictionary<string, Task<bool>>();
+		public Task<bool> InviteDistributionGroup(DistributionGroup distribution, string email)
+		{
+
+			Task<bool> createDistributionGroupTask;
+			inviteDistributionGroupTasks.TryGetValue(email, out createDistributionGroupTask);
+			if (createDistributionGroupTask?.IsCompleted ?? true)
+			{
+				inviteDistributionGroupTasks[email] = createDistributionGroupTask = inviteDistributionGroup(distribution, email);
+			}
+			return createDistributionGroupTask;
+
+		}
+
+		async Task<bool> inviteDistributionGroup(DistributionGroup distribution, string email)
+		{
+			try
+			{
+				var app = Database.Main.GetObject<AppClass>(distribution.AppId);
+				var response = (await Api.Account.CreateDistributionGroupUsers(app.Owner.Name, app.Name, distribution.Name, new MobileCenterApi.Models.DistributionGroupUserRequest { UserEmails = new string[] { email } })).First();
+				return true;
+			}
+			finally
+			{
+				inviteDistributionGroupTasks.Remove(email);
+			}
 		}
 
 		#endregion //Distribution
