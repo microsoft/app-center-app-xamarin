@@ -17,7 +17,7 @@ namespace MobileCenterApp
 			var item = e.SelectedItem as Release;
 			if (item == null)
 				return;
-			(BindingContext as DistributeViewModel).OnSelected(item);
+			(BindingContext as DistributionGroupDetailsViewModel).OnReleaseSelected(item);
 		}
 		public void OnDelete(object sender, EventArgs e)
 		{

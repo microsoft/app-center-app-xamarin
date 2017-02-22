@@ -454,6 +454,34 @@ namespace MobileCenterApp
 			}
 		}
 
+		Dictionary<string, Task<bool>> removeTesterDistributionGroupTasks = new Dictionary<string, Task<bool>>();
+		public Task<bool> RemoveTester (Tester tester)
+		{
+			Task<bool> removeTesterTask;
+			removeTesterDistributionGroupTasks.TryGetValue(tester.Id, out removeTesterTask);
+			if (removeTesterTask?.IsCompleted ?? true)
+			{
+				removeTesterDistributionGroupTasks[tester.Id] = removeTesterTask = removeTester(tester);
+			}
+			return removeTesterTask;
+
+		}
+
+		async Task<bool> removeTester(Tester tester)
+		{
+			try
+			{
+				var distribution = Database.Main.GetObject<AppClass>(tester.DistributionId);
+				var app = Database.Main.GetObject<AppClass>(tester.AppId);
+				var response = await Api.Account.DeleteDistributionGroupUsers(app.Owner.Name, app.Name, distribution.Name, new MobileCenterApi.Models.DistributionGroupUserRequest { UserEmails = new string[] { tester.User.Email } });
+				return true;
+			}
+			finally
+			{
+				removeTesterDistributionGroupTasks.Remove(tester.Id);
+			}
+		}
+
 		#endregion //Distribution
 
 	}

@@ -7,12 +7,16 @@ namespace MobileCenterApp
 {
 	public class DistributionGroupDetailsViewModel : BaseViewModel
 	{
-		public ICommand AddMemberCommand { get; private set; } 
+		public ICommand AddMemberCommand { get; private set; }
+		public ICommand RemoveMemberCommand { get; private set; }
+		public ICommand RemoveReleaseCommand { get; private set; }
 		public DistributionGroupDetailsViewModel()
 		{
 			AddMemberCommand = new Command(async (obj) => {
 				await NavigationService.PushModalAsync(new InviteMemberViewModel { DistributionGroup = DistributionGroup });
 			});
+			RemoveMemberCommand = new Command(async (obj) => await RemoveTester(obj as Tester));
+			RemoveReleaseCommand = new Command(async (obj) => await RemoveRelease(obj as Release));
 		}
 		SimpleDatabaseSource<Tester> members = new SimpleDatabaseSource<Tester>(Database.Main);
 		public SimpleDatabaseSource<Tester> Members
@@ -105,6 +109,37 @@ namespace MobileCenterApp
 		void Shared_DistributionGroupReleasesChanged(object sender, MobileCenterApp.EventArgs<string> e)
 		{
 			SetReleaseGroupInfo();
+		}
+		public async Task OnReleaseSelected(Release release)
+		{
+			if (release == null)
+				return;
+			await NavigationService.PushAsync(new ReleaseDetailsViewModel { Release = release });
+		}
+		public async Task RemoveTester(Tester tester)
+		{
+			try
+			{
+				var success = await SyncManager.Shared.RemoveTester(tester);
+				if(!success)
+					await App.Current.MainPage.DisplayAlert("Error ", "There was an error removing the tester", "Ok");
+			}
+			catch(Exception ex)
+			{
+				LogManager.Shared.Report(ex);
+				string message = "";
+				if (ex.Data.Contains("HttpContent"))
+				{
+					message = ex.Data["HttpContent"].ToString();
+				}
+				else
+					message = ex.Message;
+				await App.Current.MainPage.DisplayAlert("Error", message, "Ok");
+			}
+		}
+		public async Task RemoveRelease(Release release)
+		{
+
 		}
 	}
 }

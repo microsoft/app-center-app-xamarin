@@ -22,9 +22,9 @@ namespace MobileCenterApp
 		public async void OnDelete(object sender, EventArgs e)
 		{
 			var app = ((MenuItem)sender).CommandParameter as Tester;
-			//var result = await DisplayAlert("Are you sure?", $"Deleting '{app.DisplayName}'", "Delete", "Nevermind");
-			//if (result)
-			//	(BindingContext as AppListViewModel).DeleteCommand.Execute(sender);
+			var result = await DisplayAlert("Are you sure?", $"Removing '{app.DisplayName}'", "Remove", "Nevermind");
+			if (result)
+				(BindingContext as DistributionGroupDetailsViewModel).RemoveMemberCommand.Execute(sender);
 		}
 	}
 }

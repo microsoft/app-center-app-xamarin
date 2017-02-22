@@ -9,7 +9,7 @@
 			<DataTemplate>
 				<ViewCell>
 					<ViewCell.ContextActions>
-						<MenuItem Clicked="OnDelete" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+						<MenuItem Clicked="OnDelete" CommandParameter="{Binding .}" Text="Remove" IsDestructive="True" />
 					</ViewCell.ContextActions>
 					<StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
 						<Image WidthRequest="44" HeightRequest="44" Source="{Binding User.AvatarUrl}" />
