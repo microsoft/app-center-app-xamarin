@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MobileCenterApp.Data;
 using System.IO;
 using SimpleAuth;
+using System.Runtime.CompilerServices;
 namespace MobileCenterApp
 {
 	public class SyncManager
@@ -22,14 +23,58 @@ namespace MobileCenterApp
 			Api.Verbose = true;
 #endif
 		}
+		Dictionary<string, object> TaskDictionary = new Dictionary<string, object>();
+		async Task RunSingularTask(Func<Task> getTask,string id = null, [CallerMemberName]string grouping = "")
+		{
+			var key = $"{grouping} - {id}";
+			object obj;
+			Task foundTask;
+			TaskDictionary.TryGetValue(key, out obj);
+			foundTask = obj as Task;
+			if (foundTask?.IsCompleted ?? true)
+			{
+				TaskDictionary[key] = foundTask = getTask();
+				try
+				{
+					await foundTask;
+				}
+				finally
+				{
+					TaskDictionary.Remove(key);
+				}
+			}
+			else 
+				await foundTask;
+		}
+
+		async Task<T> RunSingularTask<T>(Func<Task<T>> getTask, string id = null, [CallerMemberName]string grouping = "")
+		{
+			var key = $"{grouping} - {id}";
+			object obj;
+			Task<T> foundTask;
+			TaskDictionary.TryGetValue(key, out obj);
+			foundTask = obj as Task<T>;
+			if (foundTask?.IsCompleted ?? true)
+			{
+				TaskDictionary[key] = foundTask = getTask();
+				try
+				{
+					var result = await foundTask;
+					return result;
+				}
+				finally
+				{
+					TaskDictionary.Remove(key);
+				}
+			}
+			else
+				return await foundTask;
+		}
 
 		#region Account
-		Task syncAppsTask;
 		public Task SyncApps()
 		{
-			if (syncAppsTask?.IsCompleted ?? true)
-				syncAppsTask = syncApps();
-			return syncAppsTask;
+			return RunSingularTask(() => syncApps());
 		}
 
 		async Task syncApps()
@@ -37,13 +82,13 @@ namespace MobileCenterApp
 			if (Settings.IsOfflineMode)
 				return;
 			var apps = await Api.Account.GetApps1();
-			List<Owner> owners = new List<Owner>();
-			List<AppClass> myApps = new List<AppClass>();
+			var owners = new List<Owner>();
+			var myApps = new List<AppClass>();
 
 			apps.ToList().ForEach(x =>
 			{
-				myApps.Add((AppClass)x.ToAppClass());
-				owners.Add((Owner)x.Owner.ToAppOwner());
+				myApps.Add(x.ToAppClass());
+				owners.Add(x.Owner.ToAppOwner());
 			});
 
 			await Database.Main.ResetTable<AppClass>();
@@ -53,11 +98,9 @@ namespace MobileCenterApp
 			NotificationManager.Shared.ProcAppsChanged();
 		}
 
-		Task<User> userTask;
 		public Task<User> GetUser()
 		{
-			if (userTask?.IsCompleted ?? true)
-				userTask = Task.Run(async () =>
+			return RunSingularTask(()=> Task.Run(async () =>
 				{
 					var profile = await Api.Account.GetUserProfile();
 					var user = new User
@@ -72,8 +115,7 @@ namespace MobileCenterApp
 					};
 					Settings.CurrentUser = user;
 					return user;
-				});
-			return userTask;
+			}));
 		}
 
 		public async Task<bool> CreateApp(AppClass app)
@@ -99,7 +141,11 @@ namespace MobileCenterApp
 			return false;
 		}
 
-		public async Task<bool> DeleteApp(AppClass app)
+		public Task<bool> DeleteApp(AppClass app)
+		{
+			return RunSingularTask(() => deleteApp(app),app.Id);
+		}
+		public async Task<bool> deleteApp(AppClass app)
 		{
 			try
 			{
@@ -122,14 +168,9 @@ namespace MobileCenterApp
 		#endregion //Account
 
 		#region Build
-		Dictionary<string, Task> syncbranchesTask = new Dictionary<string, Task>();
 		public Task SyncBranch(AppClass app)
 		{
-			Task syncBranchTask;
-			syncbranchesTask.TryGetValue(app.Id, out syncBranchTask);
-			if (syncBranchTask?.IsCompleted ?? true)
-				syncbranchesTask[app.Id] = syncBranchTask = syncBranch(app);
-			return syncBranchTask;
+			return RunSingularTask(() => syncBranch(app), app.Id);
 		}
 
 		async Task syncBranch(AppClass app)
@@ -155,36 +196,23 @@ namespace MobileCenterApp
 			Database.Main.InsertOrReplaceAll(distinctBuilds);
 
 			NotificationManager.Shared.ProcBranchesChanged(app.Id);
-			syncbranchesTask.Remove(app.Id);
 		}
 
-
-		Dictionary<string, Task> syncRepoConfigTasks = new Dictionary<string, Task>();
 		public Task SyncRepoConfig(AppClass app)
 		{
-			Task syncRepoConfigTask;
-			syncRepoConfigTasks.TryGetValue(app.Id, out syncRepoConfigTask);
-			if (syncRepoConfigTask?.IsCompleted ?? true)
-				syncRepoConfigTasks[app.Id] = syncRepoConfigTask = syncRepoConfig(app);
-			return syncRepoConfigTask;
+			return RunSingularTask(() => syncRepoConfig(app), app.Id);
 		}
 
 		async Task syncRepoConfig(AppClass app)
 		{
 			var configs = await Api.Build.GetRepositoryConfiguration(app.Owner.Name, app.Name, true).ConfigureAwait(false);
 			Database.Main.InsertOrReplaceAll(configs.Select(x => x.ToRepoConfig(app.Id)));
-			syncRepoConfigTasks.Remove(app.Id);
 		}
 
 
-		Dictionary<string, Task> syncBuildsTasks = new Dictionary<string, Task>();
 		public Task SyncBuilds(Branch branch)
 		{
-			Task syncBuildsTask;
-			syncBuildsTasks.TryGetValue(branch.Id, out syncBuildsTask);
-			if (syncBuildsTask?.IsCompleted ?? true)
-				syncBuildsTasks[branch.Id] = syncBuildsTask = syncBuilds(branch);
-			return syncBuildsTask;
+			return RunSingularTask(() => syncBuilds(branch), branch.Id);
 		}
 
 		async Task syncBuilds(Branch branch)
@@ -207,17 +235,11 @@ namespace MobileCenterApp
 				}
 			}
 			NotificationManager.Shared.ProcBuildsChanged(app.Id);
-			syncBuildsTasks.Remove(branch.Id);
 		}
 
-		Dictionary<string, Task<List<LogSection>>> downloadLogsTask = new Dictionary<string, Task<List<LogSection>>>();
 		public Task<List<LogSection>> DownloadLog(Build build)
 		{
-			Task<List<LogSection>> syncBuildsTask;
-			downloadLogsTask.TryGetValue(build.Id, out syncBuildsTask);
-			if (syncBuildsTask?.IsCompleted ?? true)
-				downloadLogsTask[build.Id] = syncBuildsTask = downloadLog(build);
-			return syncBuildsTask;
+			return RunSingularTask(() => downloadLog(build), build.Id);
 		}
 
 		async Task<List<LogSection>> downloadLog(Build build)
@@ -237,22 +259,15 @@ namespace MobileCenterApp
 			var logs = logData.ToLogSections();
 			//Write our temp data
 			File.WriteAllText(tempPath, logs.ToJson());
-			downloadLogsTask.Remove(build.Id);
 			return logs;
 
 		}
 		#endregion //Build
 
 		#region Distribution
-
-		Dictionary<string, Task> distributionReleaseTaskTask = new Dictionary<string, Task>();
 		public Task SyncReleases(AppClass app)
 		{
-			Task syncReleasesTask;
-			distributionReleaseTaskTask.TryGetValue(app.Id, out syncReleasesTask);
-			if (syncReleasesTask?.IsCompleted ?? true)
-				distributionReleaseTaskTask[app.Id] = syncReleasesTask = syncReleases(app);
-			return syncReleasesTask;
+			return RunSingularTask(() => syncReleases(app), app.Id);
 		}
 
 		async Task syncReleases(AppClass app)
@@ -261,19 +276,12 @@ namespace MobileCenterApp
 			//This one does ignore. Just incase we fixed the missing fields
 			Database.Main.InsertOrIgnoreAll(releases.Select(x => x.ToRelease(app)));
 			NotificationManager.Shared.ProcReleasesChanged(app.Id);
-			distributionReleaseTaskTask.Remove(app.Id);
 		}
 
 
-
-		Dictionary<string, Task> distributionReleaseDetailsTasks = new Dictionary<string, Task>();
 		public Task SyncReleasesDetails(Release release)
 		{
-			Task syncReleasesTask;
-			distributionReleaseDetailsTasks.TryGetValue(release.ReleaseId, out syncReleasesTask);
-			if (syncReleasesTask?.IsCompleted ?? true)
-				distributionReleaseDetailsTasks[release.ReleaseId] = syncReleasesTask = syncReleasesDetails(release);
-			return syncReleasesTask;
+			return RunSingularTask(() => syncReleasesDetails(release), release.ReleaseId);
 		}
 
 		async Task syncReleasesDetails(Release release)
@@ -282,17 +290,11 @@ namespace MobileCenterApp
 			var r = await Api.Distribute.GetReleaseOrLatestRelease(release.Id, app.Owner.Name, app.Name).ConfigureAwait(false);
 			Database.Main.InsertOrReplace(r.UpdateRelease(release));
 			NotificationManager.Shared.ProcReleaseDetailsChanged(r.Id);
-			distributionReleaseDetailsTasks.Remove(release.ReleaseId);
 		}
 
-		Dictionary<string, Task> syncDistributionGroupsTasks = new Dictionary<string, Task>();
 		public Task SyncDistributionGroups(AppClass app)
 		{
-			Task syncReleasesTask;
-			syncDistributionGroupsTasks.TryGetValue(app.Id, out syncReleasesTask);
-			if (syncReleasesTask?.IsCompleted ?? true)
-				syncDistributionGroupsTasks[app.Id] = syncReleasesTask = syncDistributionGroups(app);
-			return syncReleasesTask;
+			return RunSingularTask(() => syncDistributionGroups(app), app.Id);
 		}
 
 		async Task syncDistributionGroups(AppClass app)
@@ -302,82 +304,39 @@ namespace MobileCenterApp
 			Database.Main.Execute("delete from DistributionGroup where AppId = ?", app.Id);
 			Database.Main.InsertOrReplaceAll(groups.Select(x => x.ToDistributionGroup(app)));
 			NotificationManager.Shared.ProcDistributionGroupsChanged(app.Id);
-			syncDistributionGroupsTasks.Remove(app.Id);
 		}
 
-
-		Dictionary<string, Task<bool>> deleteDistributionGroupTasks = new Dictionary<string, Task<bool>>();
 		public Task<bool> Delete(DistributionGroup distribution)
 		{
-			Task<bool> deleteDistributionGroupTask;
-			deleteDistributionGroupTasks.TryGetValue(distribution.Id, out deleteDistributionGroupTask);
-			if (deleteDistributionGroupTask?.IsCompleted ?? true)
-			{
-				createDistributionGroupTasks[distribution.Id] = deleteDistributionGroupTask = delete(distribution);
-			}
-			return deleteDistributionGroupTask;
+			return RunSingularTask(() => delete(distribution), distribution.Id);
 		}
 
 		async Task<bool> delete(DistributionGroup distribution)
 		{
-			try
-			{
-				var app = Database.Main.GetObject<AppClass>(distribution.AppId);
-				await Api.Account.DeleteDistributionGroup(app.Name, app.Owner.Name, distribution.Name);
-				Database.Main.Delete(distribution);
-				NotificationManager.Shared.ProcDistributionGroupsChanged(app.Id);
-				return true;
-			}
-			catch (Exception ex)
-			{
-				LogManager.Shared.Report(ex);
-				return false;
-			}
-			finally
-			{
+			var app = Database.Main.GetObject<AppClass>(distribution.AppId);
+			await Api.Account.DeleteDistributionGroup(app.Name, app.Owner.Name, distribution.Name);
+			Database.Main.Delete(distribution);
+			NotificationManager.Shared.ProcDistributionGroupsChanged(app.Id);
+			return true;
 
-				deleteDistributionGroupTasks.Remove(distribution.Id);
-			}
 		}
 
-
-		Dictionary<string, Task<bool>> createDistributionGroupTasks = new Dictionary<string, Task<bool>>();
 		public Task<bool> CreateDistributionGroup(AppClass app, string name)
 		{
-
-			Task<bool> createDistributionGroupTask;
-			createDistributionGroupTasks.TryGetValue(name, out createDistributionGroupTask);
-			if (createDistributionGroupTask?.IsCompleted ?? true)
-			{
-				createDistributionGroupTasks[name] = createDistributionGroupTask = createDistributionGroup(app, name);
-			}
-			return createDistributionGroupTask;
-
+			return RunSingularTask(() => createDistributionGroup(app,name), name);
 		}
 
 		async Task<bool> createDistributionGroup(AppClass app, string name)
 		{
-			try
-			{
-				var distribution = await Api.Account.CreateDistributionGroup(app.Owner.Name, app.Name, new MobileCenterApi.Models.DistributionGroupRequest { Name = name });
-				Database.Main.Insert(distribution.ToDistributionGroup(app));
-				NotificationManager.Shared.ProcDistributionGroupsChanged(app.Id);
-				return true;
-			}
-			finally
-			{
-				createDistributionGroupTasks.Remove(name);
-			}
+			var distribution = await Api.Account.CreateDistributionGroup(app.Owner.Name, app.Name, new MobileCenterApi.Models.DistributionGroupRequest { Name = name });
+			Database.Main.Insert(distribution.ToDistributionGroup(app));
+			NotificationManager.Shared.ProcDistributionGroupsChanged(app.Id);
+			return true;
 		}
 
-		Dictionary<string, Task> syncDistributionGroupsMembersTasks = new Dictionary<string, Task>();
 		public Task SyncDistributionGroupMembers(DistributionGroup distributionGroup)
 		{
-			Task syncReleasesTask;
-			syncDistributionGroupsMembersTasks.TryGetValue(distributionGroup.Id, out syncReleasesTask);
-			if (syncReleasesTask?.IsCompleted ?? true)
-				syncDistributionGroupsMembersTasks[distributionGroup.Id] = syncReleasesTask = syncDistributionGroupMembers(distributionGroup);
-			return syncReleasesTask;
+			return RunSingularTask(() => syncDistributionGroupMembers(distributionGroup), distributionGroup.Id);
 		}
 
 		async Task syncDistributionGroupMembers(DistributionGroup distributionGroup)
@@ -397,18 +356,11 @@ namespace MobileCenterApp
 			await Database.Main.ExecuteAsync("delete from Tester where DistributionId = ? and AppId = ?", distributionGroup.Id, distributionGroup.AppId);
 			Database.Main.InsertOrReplaceAll(testers);
 			NotificationManager.Shared.ProcDistributionGroupMembersChanged(distributionGroup.Id);
-			syncDistributionGroupsMembersTasks.Remove(distributionGroup.Id);
 		}
 
-
-		Dictionary<string, Task> syncDistributionGroupsReleasesTasks = new Dictionary<string, Task>();
 		public Task SyncDistributionGroupReleases(DistributionGroup distributionGroup)
 		{
-			Task syncReleasesTask;
-			syncDistributionGroupsReleasesTasks.TryGetValue(distributionGroup.Id, out syncReleasesTask);
-			if (syncReleasesTask?.IsCompleted ?? true)
-				syncDistributionGroupsReleasesTasks[distributionGroup.Id] = syncReleasesTask = syncDistributionGroupReleases(distributionGroup);
-			return syncReleasesTask;
+			return RunSingularTask(() => syncDistributionGroupReleases(distributionGroup), distributionGroup.Id);
 		}
 
 		async Task syncDistributionGroupReleases(DistributionGroup distributionGroup)
@@ -423,63 +375,31 @@ namespace MobileCenterApp
 			await Database.Main.ExecuteAsync("delete from DistributionReleaseGroup where DistributionId = ?", distributionGroup.Id);
 			Database.Main.InsertOrReplaceAll(releaseGroups);
 			NotificationManager.Shared.ProcDistributionGroupReleasesChanged(distributionGroup.Id);
-			syncDistributionGroupsReleasesTasks.Remove(distributionGroup.Id);
 		}
 
-		Dictionary<string, Task<bool>> inviteDistributionGroupTasks = new Dictionary<string, Task<bool>>();
-		public Task<bool> InviteDistributionGroup(DistributionGroup distribution, string email)
+		public Task<bool> InviteDistributionGroup(DistributionGroup distributionGroup, string email)
 		{
-
-			Task<bool> createDistributionGroupTask;
-			inviteDistributionGroupTasks.TryGetValue(email, out createDistributionGroupTask);
-			if (createDistributionGroupTask?.IsCompleted ?? true)
-			{
-				inviteDistributionGroupTasks[email] = createDistributionGroupTask = inviteDistributionGroup(distribution, email);
-			}
-			return createDistributionGroupTask;
-
+			return RunSingularTask(() => inviteDistributionGroup(distributionGroup,email), email);
 		}
 
 		async Task<bool> inviteDistributionGroup(DistributionGroup distribution, string email)
 		{
-			try
-			{
-				var app = Database.Main.GetObject<AppClass>(distribution.AppId);
-				var response = (await Api.Account.CreateDistributionGroupUsers(app.Owner.Name, app.Name, distribution.Name, new MobileCenterApi.Models.DistributionGroupUserRequest { UserEmails = new string[] { email } })).First();
-				return true;
-			}
-			finally
-			{
-				inviteDistributionGroupTasks.Remove(email);
-			}
+			var app = Database.Main.GetObject<AppClass>(distribution.AppId);
+			var response = (await Api.Account.CreateDistributionGroupUsers(app.Owner.Name, app.Name, distribution.Name, new MobileCenterApi.Models.DistributionGroupUserRequest { UserEmails = new string[] { email } })).First();
+			return true;
 		}
 
-		Dictionary<string, Task<bool>> removeTesterDistributionGroupTasks = new Dictionary<string, Task<bool>>();
 		public Task<bool> RemoveTester (Tester tester)
 		{
-			Task<bool> removeTesterTask;
-			removeTesterDistributionGroupTasks.TryGetValue(tester.Id, out removeTesterTask);
-			if (removeTesterTask?.IsCompleted ?? true)
-			{
-				removeTesterDistributionGroupTasks[tester.Id] = removeTesterTask = removeTester(tester);
-			}
-			return removeTesterTask;
-
+			return RunSingularTask(() => removeTester(tester), tester.Id);
 		}
 
 		async Task<bool> removeTester(Tester tester)
 		{
-			try
-			{
-				var distribution = Database.Main.GetObject<AppClass>(tester.DistributionId);
-				var app = Database.Main.GetObject<AppClass>(tester.AppId);
-				var response = await Api.Account.DeleteDistributionGroupUsers(app.Owner.Name, app.Name, distribution.Name, new MobileCenterApi.Models.DistributionGroupUserRequest { UserEmails = new string[] { tester.User.Email } });
-				return true;
-			}
-			finally
-			{
-				removeTesterDistributionGroupTasks.Remove(tester.Id);
-			}
+			var distribution = Database.Main.GetObject<AppClass>(tester.DistributionId);
+			var app = Database.Main.GetObject<AppClass>(tester.AppId);
+			var response = await Api.Account.DeleteDistributionGroupUsers(app.Owner.Name, app.Name, distribution.Name, new MobileCenterApi.Models.DistributionGroupUserRequest { UserEmails = new string[] { tester.User.Email } });
+			return true;
 		}
 
 		#endregion //Distribution
