@@ -8,6 +8,7 @@ using SimpleAuth;
 using Xamarin.Forms;
 using System.Threading.Tasks;
 using System.Web;
+using System.Runtime.CompilerServices;
 
 namespace MobileCenterApp
 {
@@ -75,6 +76,18 @@ namespace MobileCenterApp
 		protected override void OnResume()
 		{
 			// Handle when your app resumes
+		}
+
+		public static async void NotImplemented([CallerMemberName] string method = "",
+							   [CallerFilePath] string sourceFilePath = "",
+							   [CallerLineNumber] int sourceLineNumber = 0)
+		{
+			LogManager.Shared.LogEvent("Not Implemented", new Dictionary<string, string> {
+				{ "Method", method },
+				{"Line Number",sourceLineNumber.ToString()},
+				{"FileName",sourceFilePath}
+			});
+			await Current.MainPage.DisplayAlert("Comming Soon", "This feature hasn't been implemented yet", "Ok");
 		}
 	}
 }

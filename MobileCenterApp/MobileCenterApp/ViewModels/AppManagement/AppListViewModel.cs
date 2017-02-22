@@ -39,7 +39,7 @@ namespace MobileCenterApp
 				var app = ((MenuItem)obj).CommandParameter as AppClass;
 				var success = await SyncManager.Shared.DeleteApp(app);
 				if(!success)
-					App.Current.MainPage.DisplayActionSheet("Error deleting the app. Please try again", "Ok", null);
+					await App.Current.MainPage.DisplayActionSheet("Error deleting the app. Please try again", "Ok", null);
 			}
 			catch (Exception ex)
 			{
@@ -58,7 +58,7 @@ namespace MobileCenterApp
 			await SyncManager.Shared.SyncApps();
 		}
 
-		public override async void OnAppearing()
+		public override void OnAppearing()
 		{
 			base.OnAppearing();
 			NotificationManager.Shared.AppsChanged += Shared_AppsChanged;

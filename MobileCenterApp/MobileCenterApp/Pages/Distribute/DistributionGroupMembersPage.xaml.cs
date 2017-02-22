@@ -18,6 +18,7 @@ namespace MobileCenterApp
 			if (item == null)
 				return;
 			//(BindingContext as DistributeViewModel).OnSelected(item);
+			App.NotImplemented();
 		}
 		public async void OnDelete(object sender, EventArgs e)
 		{

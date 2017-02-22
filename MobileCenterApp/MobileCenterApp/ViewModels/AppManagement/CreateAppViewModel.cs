@@ -64,7 +64,7 @@ namespace MobileCenterApp
 			if (success)
 				await NavigationService.PopModalAsync();
 			//TODO: Show error
-			MobileCenterApp.App.Current.MainPage.DisplayActionSheet($"Error: Invalid data", "Ok",null);
+			await MobileCenterApp.App.Current.MainPage.DisplayActionSheet($"Error: Invalid data", "Ok",null);
 		}
 
 		public ICommand CancelCommand { get; private set; } = new Command(async (obj) =>

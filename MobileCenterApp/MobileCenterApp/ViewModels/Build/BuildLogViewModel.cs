@@ -29,19 +29,10 @@ namespace MobileCenterApp
 			}
 		}
 
-		public override async void OnAppearing()
-		{
-			base.OnAppearing();
-		}
-
 		public override async Task OnRefresh()
 		{
 			if (logs?.Count > 0 || CurrentBuild == null)
 				return;
-
-			//var app = Database.Main.GetObject<AppClass>(CurrentBuild.AppId);
-			//var l = await SyncManager.Shared.Api.BuildGetBuildLogs(CurrentBuild.BuildId, app.Owner.Name, app.Name);
-			//Logs = l.Logs;
 			var data = await SyncManager.Shared.DownloadLog(CurrentBuild);
 			Logs = data;
 		}

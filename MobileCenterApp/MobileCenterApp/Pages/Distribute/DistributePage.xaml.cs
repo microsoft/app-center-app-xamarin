@@ -25,6 +25,7 @@ namespace MobileCenterApp
 			//var result = await DisplayAlert("Are you sure?", $"Deleting '{app.DisplayName}'", "Delete", "Nevermind");
 			//if (result)
 			//	(BindingContext as AppListViewModel).DeleteCommand.Execute(sender);
+			App.NotImplemented();
 		}
 		public async void OnInstall(object sender, EventArgs e)
 		{

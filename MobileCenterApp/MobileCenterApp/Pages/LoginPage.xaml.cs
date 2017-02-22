@@ -14,10 +14,10 @@ namespace MobileCenterApp
 			this.authenticator = authenticator;
 			InitializeComponent();
 			this.Title = "Login";
-			this.ToolbarItems.Add(new ToolbarItem("Cancel", null, () =>
+			this.ToolbarItems.Add(new ToolbarItem("Cancel", null, async () =>
 			{
 				authenticator.OnCancelled();
-				NavigationService.PopModalAsync();
+				await NavigationService.PopModalAsync();
 			}));
 		}
 
