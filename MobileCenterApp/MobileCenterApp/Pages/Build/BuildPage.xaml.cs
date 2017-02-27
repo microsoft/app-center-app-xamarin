@@ -13,6 +13,7 @@ namespace MobileCenterApp
 		}
 		async void Handle_ItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
 		{
+			((ListView)sender).SelectedItem = null;
 			var item = e.SelectedItem as Branch;
 			if (item == null)
 				return;
