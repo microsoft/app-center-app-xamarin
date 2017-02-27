@@ -130,6 +130,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Pages\Distribute\InviteMemberPage.xaml.cs">
       <DependentUpon>InviteMemberPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Models\CrashGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ReasonStackFrame.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\CrashGroupStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />

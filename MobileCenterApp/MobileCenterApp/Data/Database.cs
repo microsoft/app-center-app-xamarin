@@ -45,7 +45,9 @@ namespace MobileCenterApp
 				typeof(DistributionGroup),
 				typeof(Tester),
 				typeof(User),
-				typeof(DistributionReleaseGroup)
+				typeof(DistributionReleaseGroup),
+				typeof(CrashGroup),
+				typeof(ReasonStackFrame)
 			);
 		}
 

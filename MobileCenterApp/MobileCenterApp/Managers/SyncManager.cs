@@ -32,7 +32,7 @@ namespace MobileCenterApp
 			object obj;
 			Task foundTask;
 			bool shouldClear = false;
-			lock(taskLocker)
+			lock (taskLocker)
 			{
 				TaskDictionary.TryGetValue(key, out obj);
 				foundTask = obj as Task;
@@ -56,7 +56,7 @@ namespace MobileCenterApp
 					}
 				}
 			}
-		
+
 		}
 
 		async Task<T> RunSingularTask<T>(Func<Task<T>> getTask, string id = null, [CallerMemberName]string grouping = "")
@@ -436,5 +436,28 @@ namespace MobileCenterApp
 
 		#endregion //Distribution
 
+		#region Crashes
+		public Task SyncCrashGroups(AppClass app)
+		{
+			return RunSingularTask(() => syncCrashGroups(app), app.Id);
+		}
+
+		async Task syncCrashGroups(AppClass app)
+		{
+			var response = await Api.Crash.GetCrashGroups(app.Owner.Name, app.Name);
+			var crashes = new List<CrashGroup>();
+			var stacks = new List<ReasonStackFrame>();
+			foreach (var r in response)
+			{
+				var crash = r.ToCrashGroup(app);
+				crashes.Add(crash);
+				if(r.ReasonFrame != null)
+					stacks.Add(r.ReasonFrame.ToReasonStackFrame(crash));
+			}
+			Database.Main.InsertOrReplaceAll(crashes);
+			Database.Main.InsertOrReplaceAll(stacks);
+		}
+
+		#endregion //Crashes
 	}
 }

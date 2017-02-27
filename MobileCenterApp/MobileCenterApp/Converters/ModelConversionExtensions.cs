@@ -258,5 +258,44 @@ namespace MobileCenterApp
 				AppId = distribution.AppId,
 			};
 		}
+
+		public static CrashGroup ToCrashGroup(this MobileCenterApi.Models.CrashGroup crash, AppClass app)
+		{
+			return new CrashGroup
+			{
+				AppId = app.Id,
+				AppVersion = crash.AppVersion,
+				Build = crash.Build,
+				Count = crash.Count,
+				DisplayId = crash.DisplayId,
+				ErrorReason = crash.ErrorReason,
+				Exception = crash.Exception,
+				Fatal = crash.Fatal,
+				FirstOccurrence = crash.FirstOccurrence,
+				Id = crash.CrashGroupId,
+				ImpactedUsers = crash.ImpactedUsers,
+				LastOccurrence = crash.LastOccurrence,
+				Status = (CrashGroupStatus)(int)crash.Status
+			};
+		}
+
+		public static ReasonStackFrame ToReasonStackFrame(this MobileCenterApi.Models.ReasonStackFrame stack, CrashGroup crashGroup)
+		{
+			return new ReasonStackFrame
+			{
+				AppCode = stack.AppCode,
+				AppId = crashGroup.AppId,
+				ClassMethod = stack.ClassMethod,
+				ClassName = stack.ClassName,
+				CodeFormatted = stack.CodeFormatted,
+				CrashGroupId = crashGroup.Id,
+				File = stack.File,
+				FrameworkName = stack.FrameworkName,
+				Language = stack.Language.HasValue ? (ReasonStackFrameLanguage?)stack.Language : null,
+				Line = stack.Line,
+				Method = stack.Method,
+				MethodParams = stack.MethodParams,
+			};
+		}
 	}
 }
