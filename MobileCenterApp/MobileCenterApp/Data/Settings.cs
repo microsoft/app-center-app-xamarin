@@ -9,11 +9,22 @@ namespace MobileCenterApp
 {
 	public static class Settings
 	{
-		public static string CurrentApp {
+		public static string CurrentAppId {
 			get { return GetString (); }
 			set { 
 				SetString (value);
 				NotificationManager.Shared.ProcAppsChanged(value);
+			}
+		}
+		public static AppClass CurrentApp
+		{
+			get {
+				var appId = CurrentAppId;
+				return string.IsNullOrWhiteSpace(appId) ? null : Database.Main.GetObject<AppClass>(appId);
+			}
+			set
+			{
+				CurrentAppId = value?.Id;
 			}
 		}
 

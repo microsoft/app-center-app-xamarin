@@ -17,13 +17,11 @@ namespace MobileCenterApp
 			get { return items; }
 			set { ProcPropertyChanged(ref items, value); }
 		}
-
-
 		public AppClass CurrentApp { get; set; }
 
 		public override async Task OnRefresh()
 		{
-			var currentId = Settings.CurrentApp;
+			var currentId = Settings.CurrentAppId;
 			if (string.IsNullOrWhiteSpace(currentId))
 				return;
 			CurrentApp = Database.Main.GetObject<AppClass>(currentId);

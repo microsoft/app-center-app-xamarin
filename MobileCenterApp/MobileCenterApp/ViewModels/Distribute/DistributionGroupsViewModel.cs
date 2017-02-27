@@ -44,7 +44,7 @@ namespace MobileCenterApp
 
 		public override async Task OnRefresh()
 		{
-			var currentId = Settings.CurrentApp;
+			var currentId = Settings.CurrentAppId;
 			if (string.IsNullOrWhiteSpace(currentId))
 				return;
 			CurrentApp = Database.Main.GetObject<AppClass>(currentId);
@@ -65,7 +65,7 @@ namespace MobileCenterApp
 
 		void Shared_DistributionGroupsChanged(object sender, MobileCenterApp.EventArgs<string> e)
 		{
-			if (e.Data != Settings.CurrentApp)
+			if (e.Data != Settings.CurrentAppId)
 				return;
 			SetGroupInfo();
 		}

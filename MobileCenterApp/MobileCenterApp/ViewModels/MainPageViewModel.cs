@@ -70,7 +70,7 @@ namespace MobileCenterApp
 
 		async void SetCurrentApp()
 		{
-			var currentId = Settings.CurrentApp;
+			var currentId = Settings.CurrentAppId;
 			CurrentApp = Database.Main.GetObject<AppClass>(currentId);
 			if (string.IsNullOrWhiteSpace(currentId) || CurrentApp == null)
 				await NavigationService.PushModalAsync(new AppListViewModel());

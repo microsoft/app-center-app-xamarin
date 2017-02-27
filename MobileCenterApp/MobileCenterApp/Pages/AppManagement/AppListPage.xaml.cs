@@ -17,7 +17,7 @@ namespace MobileCenterApp
 			var item = e.SelectedItem as AppClass;
 			if (item == null)
 				return;
-			Settings.CurrentApp = item.Id;
+			Settings.CurrentAppId = item.Id;
 			await NavigationService.PopModalAsync();
 		}
 

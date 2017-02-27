@@ -32,7 +32,7 @@ namespace MobileCenterApp
 					await App.Current.MainPage.DisplayAlert("Error ", "Invalid Name", "Ok");
 					return;
 				}
-				var app = Database.Main.GetObject<AppClass>(Settings.CurrentApp);
+				var app = Database.Main.GetObject<AppClass>(Settings.CurrentAppId);
 				var success = await SyncManager.Shared.CreateDistributionGroup(app, Name);
 				if (success)
 					await NavigationService.PopModalAsync();
