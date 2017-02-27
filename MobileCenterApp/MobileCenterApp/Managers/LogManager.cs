@@ -23,7 +23,12 @@ namespace MobileCenterApp
 							   [CallerFilePath] string sourceFilePath = "",
 							   [CallerLineNumber] int sourceLineNumber = 0)
 		{
-			Console.WriteLine(ex);
+			if (ex.Data.Contains("HttpContent"))
+			{
+				Console.WriteLine(ex.Data["HttpContent"]);
+			}
+			else
+				Console.WriteLine(ex);
 			var fileName = Path.GetFileNameWithoutExtension(sourceFilePath);
 			LogEvent("Exception", new Dictionary<string, string>
 			{

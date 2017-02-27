@@ -128,5 +128,23 @@ namespace MobileCenterApp
 		{
 			return NavigationService.PushAsync(new BranchDetailsViewModel { CurrentBranch = branch });
 		}
+
+		public async Task BuildBranch(Branch branch)
+		{
+			try
+			{
+				await SyncManager.Shared.QueueBranch(branch);
+			}
+			catch (Exception ex)
+			{
+				if (ex.Data.Contains("HttpContent"))
+				{
+					Debug.WriteLine(ex.Data["HttpContent"]);
+				}
+				else
+					Debug.WriteLine(ex);
+				await App.Current.MainPage.DisplayAlert("Error", "There was an error Queing the build. Pleas try again.", "Ok");
+			}
+		}
 	}
 }

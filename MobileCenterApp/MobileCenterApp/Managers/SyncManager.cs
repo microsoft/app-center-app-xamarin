@@ -282,6 +282,18 @@ namespace MobileCenterApp
 			return logs;
 
 		}
+
+		public Task QueueBranch(Branch branch)
+		{
+			return RunSingularTask(() => queueBranch(branch), branch.Id);
+		}
+
+		async Task queueBranch(Branch branch)
+		{
+			var builds = await Api.Build.QueueBuild(branch.Name, branch.App.Owner.Name, branch.App.Name);
+			Database.Main.InsertOrReplaceAll(builds.Select(x => x.ToBuild(branch.AppId)));
+		}
+
 		#endregion //Build
 
 		#region Distribution

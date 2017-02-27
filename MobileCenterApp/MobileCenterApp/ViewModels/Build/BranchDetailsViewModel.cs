@@ -1,13 +1,18 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace MobileCenterApp
 {
 	public class BranchDetailsViewModel : BaseViewModel
 	{
+		public ICommand QueueCommand { get; set; }
 		public BranchDetailsViewModel()
 		{
 			Title = "Branch Details";
+			QueueCommand = new Command(async (obj) => await QueueBranch());
 		}
 
 		SimpleDatabaseSource<Build> items = new SimpleDatabaseSource<Build>(Database.Main) { IsGrouped = false};
@@ -56,6 +61,20 @@ namespace MobileCenterApp
 		protected override void LoggingPageView()
 		{
 			LogManager.Shared.PageView("Branch Details");
+		}
+
+		public async Task QueueBranch()
+		{
+			try
+			{
+				await SyncManager.Shared.QueueBranch(CurrentBranch);
+				Items.ResfreshData();
+			}
+			catch (Exception ex)
+			{
+				LogManager.Shared.Report(ex);
+				await App.Current.MainPage.DisplayAlert("Error", "There was an error Queing the build. Pleas try again.", "Ok");
+			}
 		}
 	}
 }
