@@ -53,8 +53,6 @@ namespace MobileCenterApp
 			if (OnInstallApp == null)
 				throw new NotImplementedException("OnInstallApp has not been implemented");
 
-			//await MainPage.DisplayActionSheet("Do you want to install
-
 			if (release.InstallUrl == null)
 			{
 				await SyncManager.Shared.SyncReleasesDetails(release);
