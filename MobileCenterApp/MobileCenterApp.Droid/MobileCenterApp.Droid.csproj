@@ -122,9 +122,6 @@
     <Reference Include="Plugin.Settings">
       <HintPath>..\..\packages\Xam.Plugins.Settings.2.5.4\lib\MonoAndroid10\Plugin.Settings.dll</HintPath>
     </Reference>
-    <Reference Include="SimpleDatabase">
-      <HintPath>..\..\packages\Clancey.SimpleDatabase.1.0.4\lib\netstandard1.1\SimpleDatabase.dll</HintPath>
-    </Reference>
     <Reference Include="SimpleAuth">
       <HintPath>..\..\packages\Clancey.SimpleAuth.1.0.32\lib\MonoAndroid\SimpleAuth.dll</HintPath>
     </Reference>
@@ -187,6 +184,9 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\packages\Xamarin.Forms.2.3.3.193\lib\MonoAndroid10\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleDatabase">
+      <HintPath>..\..\packages\Clancey.SimpleDatabase.1.1.2\lib\netstandard1.1\SimpleDatabase.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

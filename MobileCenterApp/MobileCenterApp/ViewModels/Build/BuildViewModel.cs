@@ -27,8 +27,8 @@ namespace MobileCenterApp
 		void SetupItems()
 		{
 			var groupInfo = Database.Main.GetGroupInfo<Branch>().Clone();
-			groupInfo.Filter = "AppId = ?";
-			groupInfo.Params = CurrentApp?.Id;
+			groupInfo.Filter = "AppId = @AppId";
+			groupInfo.Params["@AppId"] = CurrentApp?.Id;
 			Items = new SimpleDatabaseSource<Branch> (Database.Main){ GroupInfo = groupInfo };
 		}
 
@@ -80,8 +80,8 @@ namespace MobileCenterApp
 		bool HasRepoConfigs()
 		{
 			var groupInfo = Database.Main.GetGroupInfo<RepoConfig>().Clone();
-			groupInfo.Filter = "AppId = ?";
-			groupInfo.Params = CurrentApp?.Id;
+			groupInfo.Filter = "AppId = @AppId";
+			groupInfo.Params["@AppId"] = CurrentApp?.Id;
 			var count = Database.Main.RowsInSection<RepoConfig>(groupInfo,0);
 			return count > 0;
 		}

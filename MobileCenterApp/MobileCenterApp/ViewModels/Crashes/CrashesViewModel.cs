@@ -38,8 +38,9 @@ namespace MobileCenterApp
 			var groupInfo = Database.Main.GetGroupInfo<CrashGroup>().Clone();
 			groupInfo.GroupOrderByDesc = true;
 			groupInfo.OrderByDesc = true;
-			groupInfo.Filter = $"AppId = '{Settings.CurrentApp?.Id}' and Status = ?";
-			groupInfo.Params = CrashGroupStatus.Open;
+			groupInfo.Filter = $"AppId = @AppId and Status = @Status";
+			groupInfo.Params["@AppId"] = Settings.CurrentApp?.Id;
+			groupInfo.Params["@Status"] = CrashGroupStatus.Open;
 			Items.GroupInfo = groupInfo;
 		}
 	}

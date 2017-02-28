@@ -85,8 +85,8 @@ namespace MobileCenterApp
 		{
 			var distributionGroup = DistributionGroup;
 			var groupInfo = Database.Main.GetGroupInfo<Tester>().Clone();
-			groupInfo.Filter = "DistributionId = ?";
-			groupInfo.Params = distributionGroup?.Id;
+			groupInfo.Filter = "DistributionId = @DistributionId";
+			groupInfo.Params["@DistributionId"] = distributionGroup?.Id;
 			Members.GroupInfo = groupInfo;
 		}
 
@@ -96,8 +96,8 @@ namespace MobileCenterApp
 			var groupInfo = Database.Main.GetGroupInfo<DistributionReleaseGroup>().Clone();
 			groupInfo.GroupOrderByDesc = true;
 			groupInfo.OrderByDesc = true;
-			groupInfo.Filter = "DistributionId = ?";
-			groupInfo.Params = DistributionGroup?.Id;
+			groupInfo.Filter = "DistributionId = @DistributionId";
+			groupInfo.Params["@DistributionId"] = distributionGroup?.Id;
 			Releases.GroupInfo = groupInfo;
 		}
 

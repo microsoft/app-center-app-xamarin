@@ -195,9 +195,6 @@
     <Reference Include="Plugin.Settings">
       <HintPath>..\..\packages\Xam.Plugins.Settings.2.5.4\lib\Xamarin.iOS10\Plugin.Settings.dll</HintPath>
     </Reference>
-    <Reference Include="SimpleDatabase">
-      <HintPath>..\..\packages\Clancey.SimpleDatabase.1.0.4\lib\Xamarin.iOS10\SimpleDatabase.dll</HintPath>
-    </Reference>
     <Reference Include="SimpleAuth">
       <HintPath>..\..\packages\Clancey.SimpleAuth.1.0.32\lib\Xamarin.iOS10\SimpleAuth.dll</HintPath>
     </Reference>
@@ -212,6 +209,9 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\packages\Xamarin.Forms.2.3.3.193\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleDatabase">
+      <HintPath>..\..\packages\Clancey.SimpleDatabase.1.1.2\lib\Xamarin.iOS10\SimpleDatabase.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

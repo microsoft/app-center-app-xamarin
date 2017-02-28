@@ -49,8 +49,10 @@ namespace MobileCenterApp
 			var groupInfo = Database.Main.GetGroupInfo<Build>().Clone();
 			groupInfo.GroupOrderByDesc = true;
 			groupInfo.OrderByDesc = true;
-			groupInfo.Filter = $"AppId = '{CurrentBranch?.AppId}' and SourceBranch = ?";
-			groupInfo.Params = CurrentBranch?.Name;
+			groupInfo.Filter = $"AppId = @AppId and SourceBranch = @SourceBranch";
+			groupInfo.Params["@AppId"] = CurrentBranch?.AppId;
+			groupInfo.Params["@SourceBranch"] = CurrentBranch?.Name;
+
 			Items.GroupInfo = groupInfo;
 		}
 

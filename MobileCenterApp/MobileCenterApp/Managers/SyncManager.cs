@@ -458,6 +458,8 @@ namespace MobileCenterApp
 			Database.Main.InsertOrReplaceAll(stacks);
 		}
 
+
+
 		#endregion //Crashes
 	}
 }

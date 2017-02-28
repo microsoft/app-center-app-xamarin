@@ -34,8 +34,8 @@ namespace MobileCenterApp
 		{
 			var groupInfo = Database.Main.GetGroupInfo<Release>().Clone();
 			groupInfo.OrderByDesc = true;
-			groupInfo.Filter = $"AppId = ?";
-			groupInfo.Params = CurrentApp?.Id;
+			groupInfo.Filter = "AppId = @AppId";
+			groupInfo.Params["@AppId"] = CurrentApp?.Id;
 			Items.GroupInfo = groupInfo;
 		}
 
