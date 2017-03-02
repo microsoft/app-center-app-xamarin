@@ -297,5 +297,63 @@ namespace MobileCenterApp
 				MethodParams = stack.MethodParams,
 			};
 		}
+
+		public static StackTrace ToStackTrace(this MobileCenterApi.Models.Stacktrace stack, CrashGroup crashGroup)
+		{
+			return new StackTrace
+			{
+				CrashGroupId = crashGroup.Id,
+				Exception = stack.Exception?.ToExceptionModel(),
+				Reason = stack.Reason,
+				Threads = stack.Threads?.Select(x=> x.ToThreadModel()).ToArray(),
+				Title = stack.Title,
+			};
+		}
+
+		public static ThreadModel ToThreadModel(this MobileCenterApi.Models.Thread thread)
+		{
+			return new ThreadModel
+			{
+				Exception = thread.Exception?.ToExceptionModel(),
+				Frames = thread.Frames?.Select(x=> x.ToStackFrame()).ToArray(),
+				Platform = (ExceptionPlatform?)thread.Platform,
+				Relevant = thread.Relevant,
+				Title = thread.Title,
+			};
+		}
+
+		public static ExceptionModel ToExceptionModel(this MobileCenterApi.Models.Exception ex)
+		{
+			return new ExceptionModel
+			{
+				Frames = ex.Frames?.Select(x=> x.ToStackFrame()).ToArray(),
+				InnerExceptions = ex.InnerExceptions?.Select(x=> x.ToExceptionModel()).ToArray(),
+				Platform = (ExceptionPlatform?)ex.Platform,
+				Reason = ex.Reason,
+				Relevant = ex.Relevant,
+				Type = ex.Type,
+			};
+		}
+
+		public static StackFrame ToStackFrame(this MobileCenterApi.Models.StackFrame frame)
+		{
+			return new StackFrame
+			{
+				Address = frame.Address,
+				AppCode = frame.AppCode,
+				ClassName = frame.ClassName,
+				Relevant = frame.Relevant,
+				ClassMethod = frame.ClassMethod,
+				CodeFormatted = frame.CodeFormatted,
+				CodeRaw = frame.CodeRaw,
+				File = frame.File,
+				FrameworkName = frame.FrameworkName,
+				Language = (StackFrameLanguage?)frame.Language,
+				Line = frame.Line,
+				Method = frame.Method,
+				MethodParams = frame.MethodParams,
+			};
+		}
+
 	}
 }

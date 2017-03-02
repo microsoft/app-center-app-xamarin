@@ -458,6 +458,15 @@ namespace MobileCenterApp
 			Database.Main.InsertOrReplaceAll(stacks);
 		}
 
+		public Task SyncStackTrace(CrashGroup crashGroup) => RunSingularTask(()=>syncStackTrace(crashGroup),crashGroup.Id);
+
+		async Task syncStackTrace(CrashGroup crashGroup)
+		{
+			var app = Database.Main.GetObject<AppClass>(crashGroup.AppId);
+			var resp = await Api.Crash.GetGroupStacktrace(crashGroup.Id, app.Owner.Name, app.Name);
+			var stack = resp.ToStackTrace(crashGroup);
+			Database.Main.InsertOrReplace(stack);
+		}
 
 
 		#endregion //Crashes

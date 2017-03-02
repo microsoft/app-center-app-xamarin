@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <local:BasePage xmlns:local="clr-namespace:MobileCenterApp;" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MobileCenterApp.CrashesPage">
-	<ListView ItemsSource="{Binding Items}" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsLoading, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}">
+	<ListView ItemsSource="{Binding Items}" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsLoading, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemSelected="Handle_ItemSelected" >
 		<ListView.ItemTemplate>
 			<DataTemplate>
 				<TextCell Text="{Binding ErrorReason}" Detail="{Binding Exception}" />

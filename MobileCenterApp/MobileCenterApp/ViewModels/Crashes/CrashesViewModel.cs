@@ -43,5 +43,11 @@ namespace MobileCenterApp
 			groupInfo.Params["@Status"] = CrashGroupStatus.Open;
 			Items.GroupInfo = groupInfo;
 		}
+
+		public async void CrashSelected(CrashGroup crashGroup)
+		{
+			await NavigationService.PushAsync(new CrashDetailsViewModel { CrashGroupId = crashGroup.Id });
+		}
+
 	}
 }

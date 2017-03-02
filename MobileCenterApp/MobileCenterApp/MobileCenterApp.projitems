@@ -133,6 +133,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\CrashGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ReasonStackFrame.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\CrashGroupStatus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Crashes\CrashDetailsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\StackTrace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\StackFrame.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ExceptionModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ThreadModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Crashes\CrashDetailsPage.xaml.cs">
+      <DependentUpon>CrashDetailsPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />
@@ -218,6 +226,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Distribute\InviteMemberPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Crashes\CrashDetailsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
