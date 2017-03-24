@@ -26,8 +26,8 @@ namespace MobileCenterApp.Droid
 		
 		public static void UpdateIdValues()
 		{
-			global::NGraphics.Android.Resource.String.library_name = global::MobileCenterApp.Droid.Resource.String.library_name;
 			global::ModernHttpClient.Resource.String.library_name = global::MobileCenterApp.Droid.Resource.String.library_name;
+			global::NGraphics.Android.Resource.String.library_name = global::MobileCenterApp.Droid.Resource.String.library_name;
 			global::SimpleAuth.Resource.Id.loginButton = global::MobileCenterApp.Droid.Resource.Id.loginButton;
 			global::SimpleAuth.Resource.Id.password = global::MobileCenterApp.Droid.Resource.Id.password;
 			global::SimpleAuth.Resource.Id.username = global::MobileCenterApp.Droid.Resource.Id.username;
