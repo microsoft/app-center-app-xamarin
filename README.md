@@ -10,7 +10,7 @@ The key design philosophy of mobile version is to let developers retrieve app us
 This project was built on the shoulders of giants!
 
 - [Xamarin](https://www.xamarin.com/)
-- [Xamarin.Froms](https://github.com/xamarin/Xamarin.Forms)
+- [Xamarin.Forms](https://github.com/xamarin/Xamarin.Forms)
 - [NGraphics](https://github.com/praeclarum/NGraphics)
 - [Json.NET](https://github.com/JamesNK/Newtonsoft.Json)
 - [ModernHttpClient](https://github.com/paulcbetts/ModernHttpClient)
