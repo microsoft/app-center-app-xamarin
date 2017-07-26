@@ -252,7 +252,8 @@ namespace MobileCenterApp
 
 		public int IndexOf(object value)
 		{
-			throw new NotImplementedException();
+		    return 0;
+			//throw new NotImplementedException();
 		}
 
 		public void Insert(int index, object value)

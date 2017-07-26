@@ -121,10 +121,10 @@ namespace MobileCenterApp
 			};
 		}
 
-		public static List<LogSection> ToLogSections(this MobileCenterApi.Models.LogResponse response)
+		public static List<LogSection> ToLogSections(this MobileCenterApi.Models.BuildLog buildLog)
 		{
 			int i = 0;
-			var logs = ParseLogSection(ref i, response.Logs);
+			var logs = ParseLogSection(ref i, buildLog.Value);
 			return logs;
 		}
 
@@ -192,15 +192,15 @@ namespace MobileCenterApp
 				AppName = releaseDetails.AppName,
 				DownloadUrl = releaseDetails.DownloadUrl,
 				Fingerprint = releaseDetails.Fingerprint,
-				Id = releaseDetails.Id,
-				InstallUrl = releaseDetails.InstallUrl,
+				Id = releaseDetails.Id.ToString(),    // TODO: Fix up if needed; was string before and is now is number; added ToString to get to compile
+                InstallUrl = releaseDetails.InstallUrl,
 				MinOs = releaseDetails.MinOs,
 				ProvisioningProfileName = releaseDetails.ProvisioningProfileName,
 				ReleaseNotes = releaseDetails.ReleaseNotes,
 				ShortVersion = releaseDetails.ShortVersion,
 				Size = releaseDetails.Size,
 				Status = releaseDetails.Status.ToString(),
-				UploadedAt = releaseDetails.UploadedAt,
+				UploadedAt = DateTime.MinValue, // TODO: Fix this hack & properly convert releaseDetails.UploadedAt to date time
 				Version = releaseDetails.Version,
 			};
 		}
@@ -211,7 +211,7 @@ namespace MobileCenterApp
 			release.AppName = releaseDetails.AppName;
 			release.DownloadUrl = releaseDetails.DownloadUrl;
 			release.Fingerprint = releaseDetails.Fingerprint;
-			release.Id = releaseDetails.Id;
+			release.Id = releaseDetails.Id.ToString();  // TODO: Fix up if needed; was string before and is now is number; added ToString to get to compile
 			release.InstallUrl = releaseDetails.InstallUrl;
 			release.MinOs = releaseDetails.MinOs;
 			release.ProvisioningProfileName = releaseDetails.ProvisioningProfileName;
@@ -219,7 +219,7 @@ namespace MobileCenterApp
 			release.ShortVersion = releaseDetails.ShortVersion;
 			release.Size = releaseDetails.Size;
 			release.Status = releaseDetails.Status.ToString();
-			release.UploadedAt = releaseDetails.UploadedAt;
+		    release.UploadedAt = DateTime.MinValue; // TODO: Fix this hack & properly convert releaseDetails.UploadedAt to date time
 			release.Version = releaseDetails.Version;
 			return release;
 		}
@@ -268,7 +268,7 @@ namespace MobileCenterApp
 				Build = crash.Build,
 				Count = crash.Count,
 				DisplayId = crash.DisplayId,
-				ErrorReason = crash.ErrorReason,
+				ErrorReason = crash.CrashReason,
 				Exception = crash.Exception,
 				Fatal = crash.Fatal,
 				FirstOccurrence = crash.FirstOccurrence,

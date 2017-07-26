@@ -12,7 +12,7 @@ namespace MobileCenterApp
 	public class SyncManager
 	{
 		public static SyncManager Shared { get; set; } = new SyncManager();
-		public MobileCenterApi.MobileCenterAPIServiceApiKeyApi Api { get; set; } = new MobileCenterApi.MobileCenterAPIServiceApiKeyApi("MobileCenter", "Ttw8AMUjYeEkr=="
+		public MobileCenterApi.MobileCenterClientApiKeyApi Api { get; set; } = new MobileCenterApi.MobileCenterClientApiKeyApi("MobileCenter", "Ttw8AMUjYeEkr=="
 #if __MOBILE__
 																																	   , new ModernHttpClient.NativeMessageHandler()
 #endif
@@ -101,7 +101,7 @@ namespace MobileCenterApp
 		{
 			if (Settings.IsOfflineMode)
 				return;
-			var apps = await Api.Account.GetApps1();
+			var apps = await Api.Account.List4();
 			var owners = new List<Owner>();
 			var myApps = new List<AppClass>();
 
@@ -122,7 +122,7 @@ namespace MobileCenterApp
 		{
 			return RunSingularTask(() => Task.Run(async () =>
 				 {
-					 var profile = await Api.Account.GetUserProfile();
+					 var profile = await Api.Account.Get();
 					 var user = new User
 					 {
 						 AvatarUrl = profile.AvatarUrl,
@@ -142,7 +142,7 @@ namespace MobileCenterApp
 		{
 			try
 			{
-				var resp = await Api.Account.CreateApp(app.ToAppRequest());
+				var resp = await Api.Account.Create3(app.ToAppRequest());
 				var newApp = resp.ToAppClass();
 				var owner = resp.Owner.ToAppOwner();
 				Database.Main.InsertOrReplace(newApp);
@@ -169,7 +169,7 @@ namespace MobileCenterApp
 		{
 			try
 			{
-				await Api.Account.DeleteApp(app.Name, app.Owner.Name);
+				await Api.Account.Delete4(app.Name, app.Owner.Name);
 				Database.Main.Delete(app);
 				NotificationManager.Shared.ProcAppsChanged();
 				return true;
@@ -195,7 +195,7 @@ namespace MobileCenterApp
 
 		async Task syncBranch(AppClass app)
 		{
-			var branchStatus = await Api.Build.GetBranches(app.Owner.Name, app.Name);
+			var branchStatus = await Api.Build.ListBranches(app.Owner.Name, app.Name);
 
 			var branches = new List<Branch>();
 			var commits = new List<CommitClass>();
@@ -225,7 +225,7 @@ namespace MobileCenterApp
 
 		async Task syncRepoConfig(AppClass app)
 		{
-			var configs = await Api.Build.GetRepositoryConfiguration(app.Owner.Name, app.Name, true).ConfigureAwait(false);
+			var configs = await Api.Build.List2(app.Owner.Name, app.Name, true).ConfigureAwait(false);
 			Database.Main.InsertOrReplaceAll(configs.Select(x => x.ToRepoConfig(app.Id)));
 		}
 
@@ -238,7 +238,7 @@ namespace MobileCenterApp
 		async Task syncBuilds(Branch branch)
 		{
 			var app = branch.App;
-			var builds = await Api.Build.GetBranchBuilds(branch.Name, app.Owner.Name, app.Name).ConfigureAwait(false);
+			var builds = await Api.Build.ListByBranch(branch.Name, app.Owner.Name, app.Name).ConfigureAwait(false);
 			var myBuilds = builds.Select(x => x.ToBuild(app.Id)).ToList();
 			await Database.Main.ExecuteAsync("delete from Build where AppId = ? and SourceBranch = ?", app.Id, branch.Name);
 
@@ -275,7 +275,7 @@ namespace MobileCenterApp
 			}
 
 			var app = Database.Main.GetObject<AppClass>(build.AppId);
-			var logData = await Api.Build.GetBuildLogs(build.BuildId, app.Owner.Name, app.Name).ConfigureAwait(false);
+			var logData = await Api.Build.GetLog(build.BuildId, app.Owner.Name, app.Name).ConfigureAwait(false);
 			var logs = logData.ToLogSections();
 			//Write our temp data
 			File.WriteAllText(tempPath, logs.ToJson());
@@ -290,9 +290,10 @@ namespace MobileCenterApp
 
 		async Task queueBranch(Branch branch)
 		{
-			var builds = await Api.Build.QueueBuild(branch.Name, branch.App.Owner.Name, branch.App.Name);
-			Database.Main.InsertOrReplaceAll(builds.Select(x => x.ToBuild(branch.AppId)));
-		}
+			var build = await Api.Build.Queue(branch.Name, branch.App.Owner.Name, branch.App.Name);
+		    //TODO: Is this correct? It returned multiple builds before: Database.Main.InsertOrReplaceAll(builds.Select(x => x.ToBuild(branch.AppId)));
+		    Database.Main.InsertOrReplace(build.ToBuild(branch.AppId));
+        }
 
 		#endregion //Build
 
@@ -304,7 +305,7 @@ namespace MobileCenterApp
 
 		async Task syncReleases(AppClass app)
 		{
-			var releases = await Api.Distribute.GetV01AppsReleases(app.Owner.Name, app.Name).ConfigureAwait(false);
+			var releases = await Api.Distribute.List(app.Owner.Name, app.Name).ConfigureAwait(false);
 			//This one does ignore. Just incase we fixed the missing fields
 			Database.Main.InsertOrIgnoreAll(releases.Select(x => x.ToRelease(app)));
 			NotificationManager.Shared.ProcReleasesChanged(app.Id);
@@ -319,9 +320,10 @@ namespace MobileCenterApp
 		async Task syncReleasesDetails(Release release)
 		{
 			var app = Database.Main.GetObject<AppClass>(release.AppId);
-			var r = await Api.Distribute.GetReleaseOrLatestRelease(release.Id, app.Owner.Name, app.Name).ConfigureAwait(false);
+			var r = await Api.Distribute.GetLatestByUser(release.Id, app.Owner.Name, app.Name).ConfigureAwait(false);
 			Database.Main.InsertOrReplace(r.UpdateRelease(release));
-			NotificationManager.Shared.ProcReleaseDetailsChanged(r.Id);
+		    // TODO: The Id was a string before, now a double. Are other changes needed for that? This is just a hack to get it to compile.
+			NotificationManager.Shared.ProcReleaseDetailsChanged(r.Id.ToString());
 		}
 
 		public Task SyncDistributionGroups(AppClass app)
@@ -331,7 +333,7 @@ namespace MobileCenterApp
 
 		async Task syncDistributionGroups(AppClass app)
 		{
-			var groups = await Api.Account.GetDistributionGroups(app.Owner.Name, app.Name);
+			var groups = await Api.Account.List3(app.Owner.Name, app.Name);
 
 			Database.Main.Execute("delete from DistributionGroup where AppId = ?", app.Id);
 			Database.Main.InsertOrReplaceAll(groups.Select(x => x.ToDistributionGroup(app)));
@@ -346,7 +348,7 @@ namespace MobileCenterApp
 		async Task<bool> delete(DistributionGroup distribution)
 		{
 			var app = Database.Main.GetObject<AppClass>(distribution.AppId);
-			await Api.Account.DeleteDistributionGroup(app.Name, app.Owner.Name, distribution.Name);
+			await Api.Account.Delete3(app.Name, app.Owner.Name, distribution.Name);
 			Database.Main.Delete(distribution);
 			NotificationManager.Shared.ProcDistributionGroupsChanged(app.Id);
 			return true;
@@ -360,7 +362,7 @@ namespace MobileCenterApp
 
 		async Task<bool> createDistributionGroup(AppClass app, string name)
 		{
-			var distribution = await Api.Account.CreateDistributionGroup(app.Owner.Name, app.Name, new MobileCenterApi.Models.DistributionGroupRequest { Name = name });
+			var distribution = await Api.Account.Create2(app.Owner.Name, app.Name, new MobileCenterApi.Models.DistributionGroupRequest { Name = name });
 			Database.Main.Insert(distribution.ToDistributionGroup(app));
 			NotificationManager.Shared.ProcDistributionGroupsChanged(app.Id);
 			return true;
@@ -374,7 +376,7 @@ namespace MobileCenterApp
 		async Task syncDistributionGroupMembers(DistributionGroup distributionGroup)
 		{
 			var app = Database.Main.GetObject<AppClass>(distributionGroup.AppId);
-			var members = await Api.Account.GetDistributionGroupUsers(app.Owner.Name, app.Name, distributionGroup.Name);
+			var members = await Api.Account.ListUsers(app.Owner.Name, app.Name, distributionGroup.Name);
 			var users = new List<User>();
 			var testers = new List<Tester>();
 			foreach (var resp in members)
@@ -398,7 +400,7 @@ namespace MobileCenterApp
 		async Task syncDistributionGroupReleases(DistributionGroup distributionGroup)
 		{
 			var app = Database.Main.GetObject<AppClass>(distributionGroup.AppId);
-			var resp = await Api.Distribute.GetReleasesForDistributionGroup(distributionGroup.Name, app.Owner.Name, app.Name);
+			var resp = await Api.Distribute.ListByDistributionGroup(distributionGroup.Name, app.Owner.Name, app.Name);
 			var releases = resp.Select(x => x.ToRelease(app)).ToList();
 			var releaseGroups = releases.Select(x => new DistributionReleaseGroup { DistributionId = distributionGroup.Id, Release = x });
 			Database.Main.Execute("delete from Release where AppId = ? and ReleaseId in (select ReleaseId from DistributionReleaseGroup where DistributionId = ?)", distributionGroup.AppId, distributionGroup.Id);
@@ -417,7 +419,7 @@ namespace MobileCenterApp
 		async Task<bool> inviteDistributionGroup(DistributionGroup distribution, string email)
 		{
 			var app = Database.Main.GetObject<AppClass>(distribution.AppId);
-			var response = (await Api.Account.CreateDistributionGroupUsers(app.Owner.Name, app.Name, distribution.Name, new MobileCenterApi.Models.DistributionGroupUserRequest { UserEmails = new string[] { email } })).First();
+			var response = (await Api.Account.AddUser(app.Owner.Name, app.Name, distribution.Name, new MobileCenterApi.Models.DistributionGroupUserRequest { UserEmails = new string[] { email } })).First();
 			return true;
 		}
 
@@ -430,7 +432,7 @@ namespace MobileCenterApp
 		{
 			var distribution = Database.Main.GetObject<AppClass>(tester.DistributionId);
 			var app = Database.Main.GetObject<AppClass>(tester.AppId);
-			var response = await Api.Account.DeleteDistributionGroupUsers(app.Owner.Name, app.Name, distribution.Name, new MobileCenterApi.Models.DistributionGroupUserRequest { UserEmails = new string[] { tester.User.Email } });
+			var response = await Api.Account.RemoveUser1(app.Owner.Name, app.Name, distribution.Name, new MobileCenterApi.Models.DistributionGroupUserRequest { UserEmails = new string[] { tester.User.Email } });
 			return true;
 		}
 
@@ -444,7 +446,7 @@ namespace MobileCenterApp
 
 		async Task syncCrashGroups(AppClass app)
 		{
-			var response = await Api.Crash.GetCrashGroups(app.Owner.Name, app.Name);
+			var response = await Api.Crash.List4(app.Owner.Name, app.Name);
 			var crashes = new List<CrashGroup>();
 			var stacks = new List<ReasonStackFrame>();
 			foreach (var r in response)
@@ -463,7 +465,7 @@ namespace MobileCenterApp
 		async Task syncStackTrace(CrashGroup crashGroup)
 		{
 			var app = Database.Main.GetObject<AppClass>(crashGroup.AppId);
-			var resp = await Api.Crash.GetGroupStacktrace(crashGroup.Id, app.Owner.Name, app.Name);
+			var resp = await Api.Crash.GetStacktrace(crashGroup.Id, app.Owner.Name, app.Name);
 			var stack = resp.ToStackTrace(crashGroup);
 			Database.Main.InsertOrReplace(stack);
 		}

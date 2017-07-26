@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MobileCenterApi.Models;
 using Xamarin.Forms;
+using Exception = System.Exception;
 
 namespace MobileCenterApp
 {
@@ -36,7 +37,7 @@ namespace MobileCenterApp
 
 		public override async Task OnRefresh()
 		{
-			Repositories = await SyncManager.Shared.Api.Build.GetRepositories("github", CurrentApp.Owner.Name, CurrentApp.Name, MobileCenterApi.Models.Form.Lite);
+			Repositories = await SyncManager.Shared.Api.Build.List(SourceHost.Github, CurrentApp.Owner.Name, CurrentApp.Name, MobileCenterApi.Models.Form.Lite);
 		}
 
 		public async Task SelectRepo(MobileCenterApi.Models.SourceRepository repo)
@@ -44,7 +45,8 @@ namespace MobileCenterApp
 			IsLoading = true;
 			try
 			{
-				var resp =await SyncManager.Shared.Api.Build.CreateRepositoryConfiguration(new MobileCenterApi.Models.RepoInfo { RepoUrl = repo.CloneUrl }, CurrentApp.Owner.Name, CurrentApp.Name);
+			    // TODO: The cast to string probably isn't correct here but at least makes it compile--make proper fix, also resolving the duplicate CloneUrl property issue
+				var resp =await SyncManager.Shared.Api.Build.Update1(new MobileCenterApi.Models.RepoInfo { RepoUrl = (string) repo.CloneUrl }, CurrentApp.Owner.Name, CurrentApp.Name);
 				Debug.WriteLine(resp.Message);
 				await NavigationService.PopModalAsync();
 			}

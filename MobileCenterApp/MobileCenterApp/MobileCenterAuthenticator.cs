@@ -38,10 +38,10 @@ namespace MobileCenterApi
 
 	}
 
-	public partial class MobileCenterAPIServiceApiKeyApi : SimpleAuth.BasicAuthApi
+	public partial class MobileCenterClientApiKeyApi : SimpleAuth.BasicAuthApi
 	{
 
-		public MobileCenterAPIServiceApiKeyApi(string apiKey, string encryptionKey, System.Net.Http.HttpMessageHandler handler = null) :
+		public MobileCenterClientApiKeyApi(string apiKey, string encryptionKey, System.Net.Http.HttpMessageHandler handler = null) :
 				base(apiKey, encryptionKey, "v0.1/api_tokens", handler)
 		{
 			BaseAddress = new System.Uri("https://api.mobile.azure.com"); ;
@@ -271,8 +271,11 @@ namespace MobileCenterApi.Models
 		[JsonProperty("ssh_url")]
 		public string SshUrl { get; set; }
 
+	    /*
+         * TODO: Commented out to avoid conflict with CloneUrl in generated version of this class. Another fix needed here?
 		[JsonProperty("clone_url")]
 		public string CloneUrl { get; set; }
+        */
 
 		[JsonProperty("svn_url")]
 		public string SvnUrl { get; set; }
