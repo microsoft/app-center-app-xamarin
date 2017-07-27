@@ -190,6 +190,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Effects\ViewRoundedCornersEffect.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -211,12 +212,20 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\arrow_right.png" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MobileCenterApp.Resources\MobileCenterApp.Resources.csproj">
       <Project>{D147A6DD-C8AF-4835-9BDA-A68D38ACC54B}</Project>
       <Name>MobileCenterApp.Resources</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\arrow_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\arrow_right.png" />
   </ItemGroup>
   <Import Project="..\MobileCenterApp\MobileCenterApp.projitems" Label="Shared" Condition="Exists('..\MobileCenterApp\MobileCenterApp.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

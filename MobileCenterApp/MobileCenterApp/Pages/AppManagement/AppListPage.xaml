@@ -4,22 +4,35 @@
 		<ToolbarItem Name="+" Command="{Binding CreateCommand}">
 		</ToolbarItem>
 	</ContentPage.ToolbarItems>
-	<ListView IsGroupingEnabled="true" GroupDisplayBinding="{Binding Display}" GroupShortNameBinding="{Binding Display}" ItemsSource="{Binding Items}" ItemSelected="Handle_ItemSelected" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsLoading, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}">
+    <ListView IsGroupingEnabled="true" GroupDisplayBinding="{Binding Display}" GroupShortNameBinding="{Binding Display}" ItemsSource="{Binding Items}" ItemSelected="Handle_ItemSelected" HasUnevenRows="true" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsLoading, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}">
+	    
 		<ListView.ItemTemplate>
 			<DataTemplate>
-				<ViewCell>
+                <ViewCell Appearing="ViewCell_Appearing">
 					<ViewCell.ContextActions>
 						<MenuItem Clicked="OnDelete" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
 					</ViewCell.ContextActions>
-					<StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+
+				    <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal" Padding="16,8,16,8">
+				        <Label x:Name="AppIconLabel" AutomationId="AppIconLabel" HeightRequest="40" WidthRequest="40" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                        <StackLayout HorizontalOptions="StartAndExpand" Padding="4" VerticalOptions="StartAndExpand" Orientation="Vertical">
+                            <Label Text="{Binding DisplayName}" VerticalTextAlignment="Center" AutomationId="ListApps" Style="{DynamicResource ListItemTextStyle}" />
+				        </StackLayout>
+				        <Image VerticalOptions="Center" Source="arrow_right.png" />
+				    </StackLayout>
+
+                    <!--Previous UI, before replaced with Tester App-style UI above
+                    <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
 						<Image WidthRequest="44" HeightRequest="44" Source="{Binding IconUrl}" />
 						<StackLayout Padding="5,0,0,0" VerticalOptions="StartAndExpand" Orientation="Vertical">
 							<Label Text="{Binding DisplayName}" VerticalTextAlignment="Center" Font="Medium" />
 							<Label Text="{Binding Description}" VerticalTextAlignment="Center" Font="Micro" />
 						</StackLayout>
 					</StackLayout>
+                    -->
 				</ViewCell>
 			</DataTemplate>
 		</ListView.ItemTemplate>
-	</ListView>
+
+    </ListView>
 </local:BasePage>

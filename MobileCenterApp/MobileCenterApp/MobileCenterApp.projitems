@@ -9,12 +9,15 @@
     <Import_RootNamespace>MobileCenterApp</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Effects\RoundedCornersEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenterAPIService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenterAuthenticator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Identicon.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Managers\LogManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\Murmur3.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\BaseViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SimpleDatabaseSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Database.cs" />
@@ -143,13 +146,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Models\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Pages\" />
     <Folder Include="$(MSBuildThisFileDirectory)Managers\" />
     <Folder Include="$(MSBuildThisFileDirectory)ViewModels\" />
     <Folder Include="$(MSBuildThisFileDirectory)Data\" />
     <Folder Include="$(MSBuildThisFileDirectory)Helpers\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Controls\" />
     <Folder Include="$(MSBuildThisFileDirectory)Converters\" />
     <Folder Include="$(MSBuildThisFileDirectory)Pages\Build\" />
     <Folder Include="$(MSBuildThisFileDirectory)Pages\Test\" />
