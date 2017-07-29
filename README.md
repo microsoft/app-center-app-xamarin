@@ -6,7 +6,7 @@ Microsoft Mobile Center Mobile App complement Microsoft Mobile Center portal to 
 
 The key design philosophy of mobile version is to let developers retrieve app usage data from customizable notification mechanism. Developers only want to fetch data or message, view them in the mobile. They can further do the app update through the web portal.
 
-#Open Source Software
+# Open Source Software
 This project was built on the shoulders of giants!
 
 - [Xamarin](https://www.xamarin.com/)
