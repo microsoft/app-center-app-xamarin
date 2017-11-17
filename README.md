@@ -1,8 +1,8 @@
-# Mobile Center Mobile App
+# App Center Mobile App
 
-[Microsoft Mobile Center](https://www.visualstudio.com/vs/mobile-center/) is mission control to help mobile developers build mobile apps.
+[Microsoft App Center](https://www.visualstudio.com/vs/app-center/) is mission control to help mobile developers build mobile apps.
 
-Microsoft Mobile Center Mobile App complement Microsoft Mobile Center portal to let mobile developers track their developed apps' usage from customers in a light and mobile manner.
+Microsoft App Center Mobile App complement Microsoft App Center portal to let mobile developers track their developed apps' usage from customers in a light and mobile manner.
 
 The key design philosophy of mobile version is to let developers retrieve app usage data from customizable notification mechanism. Developers only want to fetch data or message, view them in the mobile. They can further do the app update through the web portal.
 
